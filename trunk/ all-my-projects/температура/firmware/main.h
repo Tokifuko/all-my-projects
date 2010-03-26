@@ -15,3 +15,10 @@ void key1_event (void);
 
 void led0_set (unsigned char on_off);
 void led1_set (unsigned char on_off);
+
+/* Port A Data Register - PORTA */
+#define    PA4      4
+#define    PA3      3
+#define    PA2      2
+#define    PA1      1
+#define    PA0      0

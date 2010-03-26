@@ -987,7 +987,7 @@
         </option>
         <option>
           <name>CDynDriver</name>
-          <state>DRAGONAVR</state>
+          <state>SIMAVR</state>
         </option>
         <option>
           <name>DebuggerUseUbrofResetVector</name>

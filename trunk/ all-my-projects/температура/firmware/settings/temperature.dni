@@ -1,6 +1,3 @@
-[TraceHelper]
-Enabled=0
-ShowSource=1
 [DebugChecksum]
 Checksum=-1110654185
 [Log file]
@@ -9,3 +6,6 @@ LogFile=_ ""
 Category=_ 0
 [Breakpoints]
 Count=0
+[TraceHelper]
+Enabled=0
+ShowSource=1

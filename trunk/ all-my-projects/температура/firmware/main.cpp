@@ -22,6 +22,7 @@ Data Stack size         : 32
 
 #include "iotiny24.h"
 #include "main.h"
+#include "delay.h" 
 
 
 // Read the 8 most significant bits
@@ -42,8 +43,25 @@ return ADCH;
 
 void led0_set (unsigned char on_off)
 {
-  if (on_off)  {PORTA_PORTA2=1;DDRA_DDA2=1;}
-    else {PORTA_PORTA2=0;DDRA_DDA2=0;};
+  
+  
+  if (on_off==1)
+  {
+    DDRA_DDA2=1;
+    //DDRA|=(1<<PA2);
+    //PORTA&=~(1<<PA2);
+    PORTA_PORTA2=0;
+  }
+
+  else
+  {
+    DDRA_DDA2=0;
+    //PORTA|=(1<<PA2);
+    //DDRA&=~(1<<PA2);
+    PORTA_PORTA2=1;
+  }
+
+
 }
 
 void key0_event (void)
@@ -150,6 +168,9 @@ ADCSRB|=0x10;
 while (1)
       {
       // Place your code here
-
+        led0_set(1);
+        delay_ms(100);
+        led0_set(0);
+        delay_ms(100);
       }
 }

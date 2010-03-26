@@ -1667,7 +1667,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>C:\&#x43e;_&#x432;&#x430;&#x449;&#x435;_&#x445;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\program.bat</postbuild>
       </data>
     </settings>
     <settings>
@@ -1679,16 +1679,16 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>temperature.a90</state>
+          <state>$PROJ_FNAME$.hex</state>
         </option>
         <option>
           <name>OutputFormat</name>
           <version>11</version>
-          <state>25</state>
+          <state>23</state>
         </option>
         <option>
           <name>FormatVariant</name>
@@ -1962,9 +1962,6 @@
       <data/>
     </settings>
   </configuration>
-  <file>
-    <name>$PROJ_DIR$\iotiny24.h</name>
-  </file>
   <file>
     <name>$PROJ_DIR$\main.cpp</name>
   </file>

@@ -12,7 +12,7 @@
           
           
           
-        <Column0>394</Column0><Column1>12</Column1><Column2>27</Column2><Column3>1241940</Column3></ColumnWidths>
+        <Column0>528</Column0><Column1>12</Column1><Column2>27</Column2><Column3>1241940</Column3></ColumnWidths>
       </Workspace>
       <Build>
         
@@ -63,14 +63,14 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\main.cpp</Filename><XPos>0</XPos><YPos>111</YPos><SelStart>2852</SelStart><SelEnd>2852</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>117</SelStart><SelEnd>117</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\Program Files\IAR Systems\Embedded Workbench 5.3\avr\INC\iom64.h</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>1385</SelStart><SelEnd>1398</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\LED_driver.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>237</SelStart><SelEnd>237</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\Display\display.h</Filename><XPos>0</XPos><YPos>277</YPos><SelStart>18602</SelStart><SelEnd>18616</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\Display\display.c</Filename><XPos>0</XPos><YPos>604</YPos><SelStart>24656</SelStart><SelEnd>24656</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\Display\Font_7x10_thin.c</Filename><XPos>0</XPos><YPos>252</YPos><SelStart>10268</SelStart><SelEnd>10274</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\IAR_clock_prog\Display\Font_12x16.c</Filename><XPos>0</XPos><YPos>318</YPos><SelStart>121</SelStart><SelEnd>121</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\&#x43e;_&#x432;&#x430;&#x449;&#x435;_&#x445;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;\&#x410;&#x440;&#x445;&#x438;&#x432;\&#x41F;&#x43B;&#x430;&#x442;&#x430;_&#x443;&#x43F;&#x440;&#x430;&#x432;&#x43B;&#x435;&#x43D;&#x438;&#x44F;_main_&#x441;_&#x434;&#x438;&#x441;&#x43F;&#x43B;&#x435;&#x435;&#x43C;\LED_driver.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>82</SelStart><SelEnd>82</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\INC\bitdefinitions\iom64.inc</Filename><XPos>0</XPos><YPos>491</YPos><SelStart>10939</SelStart><SelEnd>11083</SelEnd></Tab><ActiveTab>1</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-00b19718><key>iaridepm.enu1</key></Toolbar-00b19718></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>462</Bottom><Right>453</Right><x>-2</x><y>-2</y><xscreen>360</xscreen><yscreen>401</yscreen><sizeHorzCX>287540</sizeHorzCX><sizeHorzCY>582849</sizeHorzCY><sizeVertCX>363419</sizeVertCX><sizeVertCY>674419</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>182</Bottom><Right>1254</Right><x>-2</x><y>-2</y><xscreen>1256</xscreen><yscreen>184</yscreen><sizeHorzCX>1003195</sizeHorzCX><sizeHorzCY>267442</sizeHorzCY><sizeVertCX>287540</sizeVertCX><sizeVertCY>582849</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-0068cf20><key>iaridepm.enu1</key></Toolbar-0068cf20></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>651</Bottom><Right>608</Right><x>-2</x><y>-2</y><xscreen>482</xscreen><yscreen>554</yscreen><sizeHorzCX>286905</sizeHorzCX><sizeHorzCY>583158</sizeHorzCY><sizeVertCX>363095</sizeVertCX><sizeVertCY>687368</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>251</Bottom><Right>1682</Right><x>-2</x><y>-2</y><xscreen>1684</xscreen><yscreen>253</yscreen><sizeHorzCX>1002381</sizeHorzCX><sizeHorzCY>266316</sizeHorzCY><sizeVertCX>286905</sizeVertCX><sizeVertCY>583158</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

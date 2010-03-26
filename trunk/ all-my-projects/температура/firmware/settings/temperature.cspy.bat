@@ -22,7 +22,7 @@
 @REM but they are listed at the end of this file for reference.
 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\common\bin\cspybat" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\avrproc.dll" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\avrJtagIce-mkII.dll"  %1 --plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\<libsupport_plugin>" --backend -B "--cpu=tiny24" "--enhanced_core" "-p" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\Config\iotiny24.ddf" "--eeprom_size" "128" "-d" "jtagIceMkII" "--drv_dragon" "--jtagice_leave_timers_running" "--drv_communication=USB" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\common\bin\cspybat" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\avrproc.dll" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\avrsim.dll"  %1 --plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\bin\<libsupport_plugin>" --backend -B "--cpu=tiny24" "--enhanced_core" "-p" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 5.4\avr\Config\iotiny24.ddf" "--eeprom_size" "128" "-d" "sim" 
 
 
 @REM Loaded plugins:
