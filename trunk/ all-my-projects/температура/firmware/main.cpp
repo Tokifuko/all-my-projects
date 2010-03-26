@@ -39,7 +39,15 @@ while ((ADCSRA & 0x10)==0);
 ADCSRA|=0x10;
 return ADCH;
 }
+ 
 
+
+// USI counter overflow interrupt service routine
+//interrupt [USI_OVF] void usi_ovf_isr(void)
+//{
+// Place your code here
+
+//}
 
 void led0_set (unsigned char on_off)
 {
@@ -60,13 +68,41 @@ void led0_set (unsigned char on_off)
     //DDRA&=~(1<<PA2);
     PORTA_PORTA2=1;
   }
+}
 
-
+void OE_set (unsigned char on_off)
+{ 
+  
+    DDRA_DDA0=1;
+  
+  if (on_off==1)PORTA_PORTA0=1;
+  else PORTA_PORTA0=0;
+}
+void LE_set (unsigned char on_off)
+{
+    DDRA_DDA1=1;  
+  if (on_off==1)   PORTA_PORTA1=1;
+  else    PORTA_PORTA1=0;
 }
 
 void key0_event (void)
 {
   led0_set (1);
+}
+
+void SPI_DATA_TO_LED (char data)
+{
+  USIDR=data;
+  OE_set(1);
+  char i=0;
+  while (i!=16)
+  {
+    i++;
+    USICR_USITC=1;
+  }
+  LE_set(1);
+  LE_set(0);
+  OE_set(0);
 }
 // Declare your global variables here
 
@@ -83,9 +119,9 @@ CLKPR=0x00;
 // Input/Output Ports initialization
 // Port A initialization
 // Func7=Out Func6=Out Func5=In Func4=Out Func3=Out Func2=Out Func1=Out Func0=Out 
-// State7=0 State6=0 State5=T State4=0 State3=0 State2=0 State1=0 State0=0 
+// State7=0 State6=0 State5=0 State4=0 State3=0 State2=0 State1=0 State0=0 
 PORTA=0x00;
-DDRA=0xDF;
+DDRA=0xFF;
 
 // Port B initialization
 // Func3=In Func2=In Func1=In Func0=In 
@@ -141,10 +177,10 @@ TIMSK0=0x00;
 TIMSK1=0x00;
 
 // Universal Serial Interface initialization
-// Mode: Disabled
-// Clock source: Register & Counter=no clk.
-// USI Counter Overflow Interrupt: Off
-USICR=0x00;
+// Mode: Three Wire (SPI)
+// Clock source: Reg.=ext. pos. edge, Cnt.=USITC
+// USI Counter Overflow Interrupt: On
+USICR=0x5A;
 
 // Analog Comparator initialization
 // Analog Comparator: Off
@@ -165,12 +201,14 @@ ADCSRA=0xA2;
 ADCSRB&=0x68;
 ADCSRB|=0x10;
 
-while (1)
+while (1) 
       {
       // Place your code here
-        led0_set(1);
-        delay_ms(100);
-        led0_set(0);
-        delay_ms(100);
+SPI_DATA_TO_LED(0xFF);
+        
+        //led0_set(0);
+       delay_ms(100);
+       //SPI_DATA_TO_LED(0x00);
+      // delay_ms(100);
       }
 }

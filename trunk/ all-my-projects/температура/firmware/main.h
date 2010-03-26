@@ -15,6 +15,9 @@ void key1_event (void);
 
 void led0_set (unsigned char on_off);
 void led1_set (unsigned char on_off);
+void OE_set (unsigned char on_off);
+void LE_set (unsigned char on_off);
+void SPI_DATA_TO_LED (void);
 
 /* Port A Data Register - PORTA */
 #define    PA4      4
