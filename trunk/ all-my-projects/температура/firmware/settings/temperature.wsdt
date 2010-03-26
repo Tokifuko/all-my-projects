@@ -2,45 +2,41 @@
 
 <Workspace>
   <ConfigDictionary>
-    <CurrentConfigs>
-      <Project>temperature/Release</Project>
-    </CurrentConfigs>
-  </ConfigDictionary>
+    
+  <CurrentConfigs><Project>temperature/Release</Project></CurrentConfigs></ConfigDictionary>
   <Desktop>
     <Static>
       <Workspace>
         <ColumnWidths>
-          <Column0>163</Column0>
-          <Column1>27</Column1>
-          <Column2>27</Column2>
-          <Column3>27</Column3>
-        </ColumnWidths>
+          
+          
+          
+          
+        <Column0>65</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
       <Build>
-        <ColumnWidth0>26</ColumnWidth0>
-        <ColumnWidth1>1208</ColumnWidth1>
-        <ColumnWidth2>322</ColumnWidth2>
-        <ColumnWidth3>80</ColumnWidth3>
-      </Build>
-    </Static>
+        
+        
+        
+        
+      <ColumnWidth0>26</ColumnWidth0><ColumnWidth1>1208</ColumnWidth1><ColumnWidth2>322</ColumnWidth2><ColumnWidth3>80</ColumnWidth3></Build>
+    <Debug-Log><ColumnWidth0>24</ColumnWidth0><ColumnWidth1>1256</ColumnWidth1></Debug-Log></Static>
     <Windows>
-      <Wnd0>
+      
+      
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-11922-19560</Identity>
             <TabName>Workspace</TabName>
             <Factory>Workspace</Factory>
             <Session>
-              <NodeDict>
-                <ExpandedNode>temperature</ExpandedNode>
-                <ExpandedNode>temperature/Output</ExpandedNode>
-              </NodeDict>
-            </Session>
+              
+            <NodeDict><ExpandedNode>temperature</ExpandedNode><ExpandedNode>temperature/Output</ExpandedNode></NodeDict></Session>
           </Tab>
         </Tabs>
-        <SelectedTab>0</SelectedTab>
-      </Wnd0>
-      <Wnd1>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-6154-5527</Identity>
@@ -48,110 +44,22 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
-        </Tabs>
-        <SelectedTab>0</SelectedTab>
-      </Wnd1>
-    </Windows>
+        <Tab><Identity>TabID-31045-15409</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>1</SelectedTab></Wnd3></Windows>
     <Editor>
-      <Pane>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435; &#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.cpp</Filename>
-          <XPos>0</XPos>
-          <YPos>68</YPos>
-          <SelStart>1316</SelStart>
-          <SelEnd>1316</SelEnd>
-        </Tab>
-        <ActiveTab>0</ActiveTab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435; &#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\iotiny24.h</Filename>
-          <XPos>0</XPos>
-          <YPos>153</YPos>
-          <SelStart>7392</SelStart>
-          <SelEnd>7396</SelEnd>
-        </Tab>
-        <Tab>
-          <Factory>TextEditor</Factory>
-          <Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435; &#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.h</Filename>
-          <XPos>0</XPos>
-          <YPos>0</YPos>
-          <SelStart>424</SelStart>
-          <SelEnd>461</SelEnd>
-        </Tab>
-      </Pane>
-      <ActivePane>0</ActivePane>
-      <Sizes>
-        <Pane>
-          <X>1000000</X>
-          <Y>1000000</Y>
-        </Pane>
-      </Sizes>
-      <SplitMode>1</SplitMode>
-    </Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\&#x43e; &#x432;&#x430;&#x449;&#x435; &#x445;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>203</SelStart><SelEnd>203</SelEnd></Tab><ActiveTab>0</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
-      <Top>
-        <Row0>
-          <Sizes>
-            <Toolbar-022904b8>
-              <key>iaridepm.enu1</key>
-            </Toolbar-022904b8>
-          </Sizes>
-        </Row0>
-      </Top>
-      <Left>
-        <Row0>
-          <Sizes>
-            <Wnd0>
-              <Rect>
-                <Top>-2</Top>
-                <Left>-2</Left>
-                <Bottom>704</Bottom>
-                <Right>237</Right>
-                <x>-2</x>
-                <y>-2</y>
-                <xscreen>200</xscreen>
-                <yscreen>200</yscreen>
-                <sizeHorzCX>119048</sizeHorzCX>
-                <sizeHorzCY>210526</sizeHorzCY>
-                <sizeVertCX>142262</sizeVertCX>
-                <sizeVertCY>743158</sizeVertCY>
-              </Rect>
-            </Wnd0>
-          </Sizes>
-        </Row0>
-      </Left>
-      <Right>
-        <Row0>
-          <Sizes/>
-        </Row0>
-      </Right>
-      <Bottom>
-        <Row0>
-          <Sizes>
-            <Wnd1>
-              <Rect>
-                <Top>-2</Top>
-                <Left>-2</Left>
-                <Bottom>198</Bottom>
-                <Right>1682</Right>
-                <x>-2</x>
-                <y>-2</y>
-                <xscreen>1684</xscreen>
-                <yscreen>200</yscreen>
-                <sizeHorzCX>1002381</sizeHorzCX>
-                <sizeHorzCY>210526</sizeHorzCY>
-                <sizeVertCX>119048</sizeVertCX>
-                <sizeVertCY>210526</sizeVertCY>
-              </Rect>
-            </Wnd1>
-          </Sizes>
-        </Row0>
-      </Bottom>
-      <Float>
-        <Sizes/>
-      </Float>
-    </Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-0051d058><key>iaridepm.enu1</key></Toolbar-0051d058></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>233</Bottom><Right>139</Right><x>-2</x><y>-2</y><xscreen>118</xscreen><yscreen>107</yscreen><sizeHorzCX>87798</sizeHorzCX><sizeHorzCY>175123</sizeHorzCY><sizeVertCX>104911</sizeVertCX><sizeVertCY>384615</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>330</Bottom><Right>1346</Right><x>-2</x><y>-2</y><xscreen>1348</xscreen><yscreen>332</yscreen><sizeHorzCX>1002976</sizeHorzCX><sizeHorzCY>543372</sizeHorzCY><sizeVertCX>87798</sizeVertCX><sizeVertCY>175123</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 
