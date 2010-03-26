@@ -2,20 +2,43 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>245403734</fileChecksum>
+  <fileChecksum>3452022470</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\iotiny24.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\temperature.pbd</file>
-      <file>$PROJ_DIR$\main.cpp</file>
-      <file>$PROJ_DIR$\main.h</file>
-      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
-      <file>$PROJ_DIR$\Debug\Exe\temperature.d90</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
+      <file>$PROJ_DIR$\main.cpp</file>
+      <file>$PROJ_DIR$\Debug\Exe\temperature.d90</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
+      <file>$PROJ_DIR$\main.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\temperature.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
     </outputs>
+    <file>
+      <name>$PROJ_DIR$\main.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 0 1 5 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0 1 5 6</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>$PROJ_DIR$\Debug\Obj\temperature.pbd</name>
       <inputs>
@@ -26,34 +49,11 @@
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\main.cpp</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 7</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1 0 5 4</file>
-        </tool>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 1 0 5 4</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 6</file>
+          <file> 4</file>
         </tool>
       </outputs>
     </file>
@@ -68,43 +68,43 @@
   <configuration>
     <name>Release</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\iotiny24.h</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\main.cpp</file>
-      <file>$PROJ_DIR$\main.h</file>
-      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
-      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.r90</file>
       <file>$TOOLKIT_DIR$\src\template\cfgtiny24.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.r90</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
+      <file>$PROJ_DIR$\main.h</file>
       <file>$PROJ_DIR$\Release\Obj\temperature.pbd</file>
       <file>$TOOLKIT_DIR$\inc\inavr.h</file>
       <file>$TOOLKIT_DIR$\src\template\cfg0t.xcl</file>
       <file>$PROJ_DIR$\Release\Exe\temperature.a90</file>
       <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r90</file>
       <file>$PROJ_DIR$\Release\Exe\temperature.hex</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r90</file>
       <file>$PROJ_DIR$\delay.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\main.cpp</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
+          <name>ICCAVR</name>
+          <file> 13</file>
         </tool>
         <tool>
-          <name>ICCAVR</name>
-          <file> 12</file>
+          <name>BICOMP</name>
+          <file> 15</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 1 0 4 3 15 8 11</file>
+          <name>ICCAVR</name>
+          <file> 0 1 5 6 14 8 11</file>
         </tool>
         <tool>
-          <name>ICCAVR</name>
-          <file> 1 0 4 3 15 8 11</file>
+          <name>BICOMP</name>
+          <file> 0 1 5 6 14 8 11</file>
         </tool>
       </inputs>
     </file>
@@ -113,7 +113,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 14</file>
+          <file> 15</file>
         </tool>
       </inputs>
     </file>
@@ -122,7 +122,16 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 6 9 12 5</file>
+          <file> 3 9 13 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\temperature.hex</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 3 9 13 4</file>
         </tool>
       </inputs>
     </file>
@@ -131,18 +140,9 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 13</file>
+          <file> 12</file>
         </tool>
       </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\temperature.hex</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 6 9 12 5</file>
-        </tool>
-      </inputs>
     </file>
   </configuration>
 </project>

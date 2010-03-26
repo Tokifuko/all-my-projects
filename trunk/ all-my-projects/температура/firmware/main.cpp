@@ -58,7 +58,7 @@ void led0_set (unsigned char on_off)
     DDRA_DDA2=1;
     //DDRA|=(1<<PA2);
     //PORTA&=~(1<<PA2);
-    PORTA_PORTA2=0;
+  //  PORTA_PORTA2=0;
   }
 
   else
@@ -66,7 +66,7 @@ void led0_set (unsigned char on_off)
     DDRA_DDA2=0;
     //PORTA|=(1<<PA2);
     //DDRA&=~(1<<PA2);
-    PORTA_PORTA2=1;
+   // PORTA_PORTA2=1;
   }
 }
 
@@ -198,17 +198,18 @@ ADCSRB=0x00;
 // ADC4: On, ADC5: On, ADC6: On, ADC7: On
 DIDR0=0x00;
 ADCSRA=0xA2;
-ADCSRB&=0x68;
+ADCSRB&=0x68; 
 ADCSRB|=0x10;
-
+  
 while (1) 
       {
       // Place your code here
 SPI_DATA_TO_LED(0xFF);
         
-        //led0_set(0);
+        led0_set(0);
        delay_ms(100);
        //SPI_DATA_TO_LED(0x00);
-      // delay_ms(100);
+       led0_set(1);
+       delay_ms(100);
       }
 }
