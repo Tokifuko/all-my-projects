@@ -23,86 +23,32 @@ Data Stack size         : 32
 #include "iotiny24.h"
 #include "main.h"
 #include "delay.h" 
+#include "7_sigmentnik.cpp"
+#include "ADC_modul.cpp"
 
 
-// Read the 8 most significant bits
-// of the AD conversion result
-unsigned char read_adc(unsigned char adc_input)
-{
- ADMUX=ADC_temp_set;
-//ADMUX=adc_input | (ADC_VREF_TYPE & 0xff);
-// Delay needed for the stabilization of the ADC input voltage
-//// Start the AD conversion
-ADCSRA|=0x40;
-// Wait for the AD conversion to complete
-while ((ADCSRA & 0x10)==0);
-ADCSRA|=0x10;
-return ADCH;
-}
- 
-
-
-// USI counter overflow interrupt service routine
-//interrupt [USI_OVF] void usi_ovf_isr(void)
-//{
-// Place your code here
-
-//}
 
 void led0_set (unsigned char on_off)
 {
-  
-  
-  if (on_off==1)
-  {
-    DDRA_DDA2=1;
-    //DDRA|=(1<<PA2);
-    //PORTA&=~(1<<PA2);
-  //  PORTA_PORTA2=0;
-  }
-
-  else
-  {
-    DDRA_DDA2=0;
-    //PORTA|=(1<<PA2);
-    //DDRA&=~(1<<PA2);
-   // PORTA_PORTA2=1;
-  }
+  if (on_off==1)DDRA_DDA2=1;
+  else DDRA_DDA2=0;
 }
 
-void OE_set (unsigned char on_off)
-{ 
-  
-    DDRA_DDA0=1;
-  
-  if (on_off==1)PORTA_PORTA0=1;
-  else PORTA_PORTA0=0;
-}
-void LE_set (unsigned char on_off)
-{
-    DDRA_DDA1=1;  
-  if (on_off==1)   PORTA_PORTA1=1;
-  else    PORTA_PORTA1=0;
-}
+
 
 void key0_event (void)
 {
   led0_set (1);
 }
 
-void SPI_DATA_TO_LED (char data)
+void temp_chek (void)
 {
-  USIDR=data;
-  OE_set(1);
+  int sum=0;
   char i=0;
-  while (i!=16)
-  {
-    i++;
-    USICR_USITC=1;
-  }
-  LE_set(1);
-  LE_set(0);
-  OE_set(0);
+  temp[temp_counter]=read_adc(ADC_temp_set);
+  if ((temp_counter++)>TEMP_ARRAY)temp_counter=0;
+  while ((i++)<=TEMP_ARRAY)sum+=temp[i];
+  temp_curent=(sum/TEMP_ARRAY)-TEMP_OFFSET;
 }
 // Declare your global variables here
 
@@ -121,7 +67,7 @@ CLKPR=0x00;
 // Func7=Out Func6=Out Func5=In Func4=Out Func3=Out Func2=Out Func1=Out Func0=Out 
 // State7=0 State6=0 State5=0 State4=0 State3=0 State2=0 State1=0 State0=0 
 PORTA=0x00;
-DDRA=0xFF;
+DDRA=0x00;
 
 // Port B initialization
 // Func3=In Func2=In Func1=In Func0=In 
@@ -176,40 +122,28 @@ TIMSK0=0x00;
 // Timer/Counter 1 Interrupt(s) initialization
 TIMSK1=0x00;
 
-// Universal Serial Interface initialization
-// Mode: Three Wire (SPI)
-// Clock source: Reg.=ext. pos. edge, Cnt.=USITC
-// USI Counter Overflow Interrupt: On
-USICR=0x5A;
-
 // Analog Comparator initialization
 // Analog Comparator: Off
 // Analog Comparator Input Capture by Timer/Counter 1: Off
 ACSR=0x80;
 ADCSRB=0x00;
 
-// ADC initialization
-// ADC Clock frequency: 1000,000 kHz
-// ADC Bipolar Input Mode: Off
-// ADC Auto Trigger Source: Free Running
-// Only the 8 most significant bits of
-// the AD conversion result are used
-// Digital input buffers on ADC0: On, ADC1: On, ADC2: On, ADC3: On
-// ADC4: On, ADC5: On, ADC6: On, ADC7: On
-DIDR0=0x00;
-ADCSRA=0xA2;
-ADCSRB&=0x68; 
-ADCSRB|=0x10;
+
+SPI_init();
+ADC_init();
+unsigned int i=30;
   
-while (1) 
+while (1)  
       {
       // Place your code here
-SPI_DATA_TO_LED(0xFF);
-        
+    Display(temp_curent);
+    temp_chek();    
         led0_set(0);
-       delay_ms(100);
+       delay_ms(10); 
+     
+        i=i/8;
        //SPI_DATA_TO_LED(0x00);
        led0_set(1);
-       delay_ms(100);
+       delay_ms(10);
       }
 }

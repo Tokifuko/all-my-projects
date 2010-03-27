@@ -1313,12 +1313,12 @@
         <option>
           <name>CCOptimization</name>
           <version>1</version>
-          <state>4</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCAllowList</name>
           <version>3</version>
-          <state>111111</state>
+          <state>000000</state>
         </option>
         <option>
           <name>CCCrossCallPassesList</name>
@@ -1417,7 +1417,7 @@
         <option>
           <name>CCOptimizationSlave</name>
           <version>1</version>
-          <state>4</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOutputFile</name>
@@ -1667,7 +1667,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>\program.bat</postbuild>
+        <postbuild>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\program.bat</postbuild>
       </data>
     </settings>
     <settings>

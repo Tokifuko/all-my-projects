@@ -9,15 +9,19 @@
 //итого 10000111
 
 #define ADC_curent_set    0x87
+#define TEMP_OFFSET       26 //для перевода в градусы
+#define TEMP_ARRAY       16
 
 void key0_event (void);
 void key1_event (void);
+void temp_chek (void);
 
 void led0_set (unsigned char on_off);
 void led1_set (unsigned char on_off);
-void OE_set (unsigned char on_off);
-void LE_set (unsigned char on_off);
-void SPI_DATA_TO_LED (void);
+unsigned char temp[TEMP_ARRAY];
+unsigned char temp_counter;
+unsigned char temp_curent;
+
 
 /* Port A Data Register - PORTA */
 #define    PA4      4
