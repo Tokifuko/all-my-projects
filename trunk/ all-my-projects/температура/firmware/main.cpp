@@ -26,6 +26,21 @@ Data Stack size         : 32
 #include "7_sigmentnik.cpp"
 #include "ADC_modul.cpp"
 
+// Timer 0 overflow interrupt service routine
+#pragma vector = TIM0_OVF_vect 
+__interrupt void TIM0_OVF_vect_isr(void)
+{
+  if (delay_counter==0)
+  {
+    led0_set (triger);
+    if (triger==1) triger=0;
+      else triger=1;
+  }
+  
+  delay_counter++;
+  if (delay_counter>15000)delay_counter=0;
+   
+}
 
 
 void led0_set (unsigned char on_off)
@@ -57,7 +72,7 @@ void temp_chek (void)
 {
   float x;
   // вычисление наподобе скользящего среднего
-    x=read_adc(ADC_temp_set);  
+    x=read_adc();  
     if (x<i_sr_temp_curent) i_sr_temp_curent-=(i_sr_temp_curent-x)/TEMP_ACCURACY;
     else i_sr_temp_curent+=(x-i_sr_temp_curent)/TEMP_ACCURACY;
 }
@@ -79,6 +94,7 @@ CLKPR=0x00;
 // State7=0 State6=0 State5=0 State4=0 State3=0 State2=0 State1=0 State0=0 
 PORTA=0x00;
 DDRA=0x00;
+DDRA_DDA7=1;
 
 // Port B initialization
 // Func3=In Func2=In Func1=In Func0=In 
@@ -88,12 +104,12 @@ DDRB=0x00;
 
 // Timer/Counter 0 initialization
 // Clock source: System Clock
-// Clock value: Timer 0 Stopped
+// Clock value: 4000,000 kHz
 // Mode: Fast PWM top=FFh
 // OC0A output: Disconnected
-// OC0B output: Non-Inverted PWM
-TCCR0A=0x23;
-TCCR0B=0x00;
+// OC0B output: Inverted PWM
+TCCR0A=0x33;
+TCCR0B=0x01;
 TCNT0=0x00;
 OCR0A=0x00;
 OCR0B=0x00;
@@ -129,7 +145,7 @@ MCUCR=0x00;
 GIMSK=0x00;
 
 // Timer/Counter 0 Interrupt(s) initialization
-TIMSK0=0x00;
+TIMSK0=0x01;
 // Timer/Counter 1 Interrupt(s) initialization
 TIMSK1=0x00;
 
@@ -147,6 +163,9 @@ unsigned char key0_counter=0;
 unsigned char key1_counter=0;
 unsigned char key0_state=KEY_OFF;
 unsigned char key1_state=KEY_OFF;
+
+// Global enable interrupts
+SREG_I=1;
   
 while (1)  
     {
@@ -192,11 +211,8 @@ while (1)
       
     Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();    
-    led0_set(0);
     Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();     
-    led0_set(1);
-
     led1_set (key0_state);
 
 
