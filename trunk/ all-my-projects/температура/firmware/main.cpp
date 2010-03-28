@@ -215,8 +215,8 @@ while (1)
       
     //Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();    
-    //Display(i_sr_temp_curent-TEMP_OFFSET);
-    Display(universal_counter);
+    Display(i_sr_temp_curent-TEMP_OFFSET);
+    //Display(universal_counter);
     temp_chek();     
     led1_set (key0_state);
 
