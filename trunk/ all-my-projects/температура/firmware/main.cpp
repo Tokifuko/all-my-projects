@@ -34,12 +34,24 @@ void led0_set (unsigned char on_off)
   else DDRA_DDA2=0;
 }
 
+void led1_set (unsigned char on_off)
+{
+  if (on_off==1)DDRA_DDA3=1;
+  else DDRA_DDA3=0;
+}
+
 
 
 void key0_event (void)
 {
-  led0_set (1);
+  //led1_set (0);
 }
+
+void key1_event (void)
+{
+  //led1_set (1);
+}
+
 
 void temp_chek (void)
 {
@@ -130,21 +142,63 @@ ADCSRB=0x00;
  
 SPI_init(); 
 ADC_init();
-unsigned int i=30;
+
+unsigned char key0_counter=0;
+unsigned char key1_counter=0;
+unsigned char key0_state=KEY_OFF;
+unsigned char key1_state=KEY_OFF;
   
 while (1)  
-      {
-      // Place your code here
+    {
+//-----------проверяем кнопку KEY_0 PINB2-----------------
+      if (PINB_PINB2) key0_counter--;
+        else key0_counter++;
+      if (key0_counter>KEY_TIME_OUT) // кнопка нажата 
+      { 
+        key0_counter=KEY_TIME_OUT;
+        if (key0_state==KEY_OFF) 
+        {
+          key0_state=KEY_ON;
+          key0_event(); // при детектировании нажатия кнопки- фиксируем событие
+        }
+      }
+      if (key0_counter<1) // кнопка отжата 
+      { 
+        key0_counter=1;
+        if (key0_state==KEY_ON) key0_state=KEY_OFF;
+      }          
+//----------------------------------------------------------------
+//-----------проверяем кнопку KEY_1 PINB1-----------------
+      if (PINB_PINB1) key1_counter--;
+        else key1_counter++;
+      if (key1_counter>KEY_TIME_OUT) // кнопка нажата 
+      { 
+        key1_counter=KEY_TIME_OUT;
+        if (key1_state==KEY_OFF) 
+        {
+          key1_state=KEY_ON;
+          key1_event(); // при детектировании нажатия кнопки- фиксируем событие
+        }
+      }
+      if (key1_counter<1) // кнопка отжата 
+      { 
+        key1_counter=1;
+        if (key1_state==KEY_ON) key1_state=KEY_OFF;
+      }          
+//---------------------------------------------------------------- 
+ 
+
+    
+      
     Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();    
-        led0_set(0);
-       delay_ms(100); 
-         Display(i_sr_temp_curent-TEMP_OFFSET);
+    led0_set(0);
+    Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();     
+    led0_set(1);
 
-       //SPI_DATA_TO_LED(0x00);
-       led0_set(1);
-       delay_ms(100);
+    led1_set (key0_state);
 
-      }
+
+    }
 }

@@ -7,10 +7,14 @@
 
 // Для измерения тока ADC7 (PA7) 000111 и Internal 1.1V voltage reference
 //итого 10000111
-
 #define ADC_curent_set    0x87
+
 #define TEMP_OFFSET       26 //для перевода в градусы
-#define TEMP_ACCURACY       32
+#define TEMP_ACCURACY       128 // количество отсчетов для вычесления скользящего среднего
+
+#define KEY_TIME_OUT      50 // зазор для защиты от дребезга контактов максимум (0xFF-1)
+#define KEY_OFF            0
+#define KEY_ON             1
 
 void key0_event (void);
 void key1_event (void);
