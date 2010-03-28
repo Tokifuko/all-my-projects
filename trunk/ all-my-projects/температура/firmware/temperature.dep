@@ -9,11 +9,11 @@
       <file>$PROJ_DIR$\iotiny24.h</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\main.cpp</file>
+      <file>$PROJ_DIR$\Debug\Obj\temperature.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
       <file>$PROJ_DIR$\Debug\Exe\temperature.d90</file>
       <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
       <file>$PROJ_DIR$\main.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\temperature.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
     </outputs>
     <file>
@@ -25,17 +25,17 @@
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 3</file>
+          <file> 4</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 0 1 5 6</file>
+          <file> 0 1 6 7</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 0 1 5 6</file>
+          <file> 0 1 6 7</file>
         </tool>
       </inputs>
     </file>
@@ -53,7 +53,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 4</file>
+          <file> 5</file>
         </tool>
       </outputs>
     </file>
@@ -70,11 +70,11 @@
     <outputs>
       <file>$PROJ_DIR$\iotiny24.h</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
-      <file>$TOOLKIT_DIR$\src\template\cfgtiny24.xcl</file>
       <file>$PROJ_DIR$\main.cpp</file>
       <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
       <file>$PROJ_DIR$\main.h</file>
       <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.r90</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgtiny24.xcl</file>
       <file>$PROJ_DIR$\Release\Obj\temperature.pbd</file>
       <file>$TOOLKIT_DIR$\inc\inavr.h</file>
       <file>$TOOLKIT_DIR$\src\template\cfg0t.xcl</file>
@@ -84,12 +84,12 @@
       <file>$PROJ_DIR$\delay.h</file>
       <file>$PROJ_DIR$\7_sigmentnik.h</file>
       <file>$PROJ_DIR$\7_sigmentnik.cpp</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r90</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
       <file>$TOOLKIT_DIR$\inc\dlib\ycheck.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\yvals.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\stdlib.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r90</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
       <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\DLib_Product.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\xencoding_limits.h</file>
@@ -98,7 +98,6 @@
       <file>$PROJ_DIR$\Release\Obj\ADC_modul.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\ADC_modul.r90</file>
       <file>$PROJ_DIR$\ADC_modul.h</file>
-      <file>$PROJ_DIR$\Release\Obj\7_sigmentnik.r90</file>
       <file>$PROJ_DIR$\ADC_modul.cpp</file>
       <file>$PROJ_DIR$\Release\Obj\7_sigmentnik.pbi</file>
     </outputs>
@@ -107,21 +106,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 17</file>
+          <file> 21</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 16</file>
+          <file> 20</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 0 1 4 5 13 8 11 15 14 20 18 19 21 23 24 25 26 31 29</file>
+          <file> 0 1 3 4 13 8 11 15 14 18 16 17 19 23 24 25 26 30 29</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 0 1 4 5 13 8 11 15 14 20 18 19 21 22 23 24 25 26 31 29</file>
+          <file> 0 1 3 4 13 8 11 15 14 18 16 17 19 22 23 24 25 26 30 29</file>
         </tool>
       </inputs>
     </file>
@@ -130,7 +129,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 32 27 17</file>
+          <file> 21</file>
         </tool>
       </inputs>
     </file>
@@ -139,16 +138,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 2 9 16 6</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\temperature.hex</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 2 9 16 6</file>
+          <file> 6 9 20 5</file>
         </tool>
       </inputs>
     </file>
@@ -162,21 +152,30 @@
       </outputs>
     </file>
     <file>
+      <name>$PROJ_DIR$\Release\Exe\temperature.hex</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 6 9 20 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
       <name>$PROJ_DIR$\7_sigmentnik.cpp</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 32</file>
+          <file> 31</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 14 20 18 19 21 23 24 25 26</file>
+          <file> 14 18 16 17 19 23 24 25 26</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 14 20 18 19 21 22 23 24 25 26</file>
+          <file> 14 18 16 17 19 22 23 24 25 26</file>
         </tool>
       </inputs>
     </file>

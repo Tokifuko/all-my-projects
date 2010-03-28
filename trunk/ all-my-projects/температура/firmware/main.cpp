@@ -43,12 +43,11 @@ void key0_event (void)
 
 void temp_chek (void)
 {
-  int sum=0;
-  char i=0;
-  temp[temp_counter]=read_adc(ADC_temp_set);
-  if ((temp_counter++)>TEMP_ARRAY)temp_counter=0;
-  while ((i++)<=TEMP_ARRAY)sum+=temp[i];
-  temp_curent=(sum/TEMP_ARRAY)-TEMP_OFFSET;
+  float x;
+  // вычисление наподобе скользящего среднего
+    x=read_adc(ADC_temp_set);  
+    if (x<i_sr_temp_curent) i_sr_temp_curent-=(i_sr_temp_curent-x)/TEMP_ACCURACY;
+    else i_sr_temp_curent+=(x-i_sr_temp_curent)/TEMP_ACCURACY;
 }
 // Declare your global variables here
 
@@ -58,7 +57,7 @@ void main(void)
 
 // Crystal Oscillator division factor: 1
 
-CLKPR=0x80;
+CLKPR=0x80; 
 CLKPR=0x00;
 
 
@@ -128,22 +127,24 @@ TIMSK1=0x00;
 ACSR=0x80;
 ADCSRB=0x00;
 
-
-SPI_init();
+ 
+SPI_init(); 
 ADC_init();
 unsigned int i=30;
   
 while (1)  
       {
       // Place your code here
-    Display(temp_curent);
+    Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();    
         led0_set(0);
-       delay_ms(10); 
-     
-        i=i/8;
+       delay_ms(100); 
+         Display(i_sr_temp_curent-TEMP_OFFSET);
+    temp_chek();     
+
        //SPI_DATA_TO_LED(0x00);
        led0_set(1);
-       delay_ms(10);
+       delay_ms(100);
+
       }
 }

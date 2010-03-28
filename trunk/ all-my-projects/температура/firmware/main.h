@@ -10,7 +10,7 @@
 
 #define ADC_curent_set    0x87
 #define TEMP_OFFSET       26 //для перевода в градусы
-#define TEMP_ARRAY       16
+#define TEMP_ACCURACY       32
 
 void key0_event (void);
 void key1_event (void);
@@ -18,9 +18,8 @@ void temp_chek (void);
 
 void led0_set (unsigned char on_off);
 void led1_set (unsigned char on_off);
-unsigned char temp[TEMP_ARRAY];
-unsigned char temp_counter;
-unsigned char temp_curent;
+
+float i_sr_temp_curent;
 
 
 /* Port A Data Register - PORTA */
