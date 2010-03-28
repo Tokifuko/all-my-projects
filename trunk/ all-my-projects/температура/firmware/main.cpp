@@ -25,6 +25,7 @@ Data Stack size         : 32
 #include "delay.h" 
 #include "7_sigmentnik.cpp"
 #include "ADC_modul.cpp"
+#include "EEPROM_func.cpp"
 
 // Timer 0 overflow interrupt service routine
 #pragma vector = TIM0_OVF_vect 
@@ -33,6 +34,8 @@ __interrupt void TIM0_OVF_vect_isr(void)
   if (delay_counter==0)
   {
     led0_set (triger);
+    universal_counter++;
+    EEPROM_write(EEPROM_ADDR,universal_counter);
     if (triger==1) triger=0;
       else triger=1;
   }
@@ -166,6 +169,7 @@ unsigned char key1_state=KEY_OFF;
 
 // Global enable interrupts
 SREG_I=1;
+universal_counter=EEPROM_read(EEPROM_ADDR);
   
 while (1)  
     {
@@ -209,9 +213,10 @@ while (1)
 
     
       
-    Display(i_sr_temp_curent-TEMP_OFFSET);
+    //Display(i_sr_temp_curent-TEMP_OFFSET);
     temp_chek();    
-    Display(i_sr_temp_curent-TEMP_OFFSET);
+    //Display(i_sr_temp_curent-TEMP_OFFSET);
+    Display(universal_counter);
     temp_chek();     
     led1_set (key0_state);
 

@@ -101,6 +101,8 @@
       <file>$PROJ_DIR$\7_sigmentnik.cpp</file>
       <file>$TOOLKIT_DIR$\inc\dlib\ycheck.h</file>
       <file>$TOOLKIT_DIR$\inc\dlib\yvals.h</file>
+      <file>$PROJ_DIR$\EEPROM_func.c</file>
+      <file>$PROJ_DIR$\EEPROM_func.cpp</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\main.cpp</name>
@@ -117,11 +119,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 3 5 0 4 28 20 25 30 29 13 31 32 14 15 16 17 18 19 11 10</file>
+          <file> 3 5 0 4 28 20 25 30 29 13 31 32 14 15 16 17 18 19 11 10 34</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 3 5 0 4 28 20 25 30 29 13 31 32 14 16 17 18 19 11 10</file>
+          <file> 3 5 0 4 28 20 25 30 29 13 31 32 14 16 17 18 19 11 10 34</file>
         </tool>
       </inputs>
     </file>

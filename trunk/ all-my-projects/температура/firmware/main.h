@@ -14,6 +14,10 @@
 
 
 
+#define EEPROM_ADDR         0x0001  //здесь храниться переменная  universal_counter
+
+
+
 
 
 
@@ -27,4 +31,5 @@ void led1_set (unsigned char on_off);
 float i_sr_temp_curent;
 unsigned int delay_counter=0;
 unsigned char triger;
+unsigned char universal_counter;
 
