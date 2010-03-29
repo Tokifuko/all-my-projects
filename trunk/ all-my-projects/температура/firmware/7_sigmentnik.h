@@ -32,9 +32,11 @@ unsigned char Dig[10]; // Массив, в котором хранятся числа, которые нужно
 // вывести через порт на индикатор, чтобы он показал цифру, равную номеру
 // элемента массива. Числа зависят только от макросов.
 
-void OE_set (unsigned char on_off);
-void LE_set (unsigned char on_off);
+//void OE_set (unsigned char on_off);
+//void LE_set (unsigned char on_off);
 void SPI_DATA_TO_LED (unsigned char data1,unsigned char data2);
 void Dig_init(void);
+inline void Display_off (void);
+inline void Display_on (void);
 
 //#include "7_sigmentnik.cpp"

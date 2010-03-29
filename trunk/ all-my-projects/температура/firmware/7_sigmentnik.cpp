@@ -31,6 +31,7 @@ void Dig_init()
 
 }
 
+
 void Display (unsigned char Number)
 {
   div_t x;
@@ -38,6 +39,16 @@ void Display (unsigned char Number)
   x=div(x.rem,10);
   SPI_DATA_TO_LED(Dig[x.quot],Dig[x.rem]);
 }
+
+inline void Display_on (void)
+{
+  SPI_OE_DDR=1; // OE вход драйвера как выход
+}
+inline void Display_off (void)
+{
+  SPI_OE_DDR=0; // OE вход драйвера в 3-e состояние
+}
+
 
 void SPI_DATA_TO_LED (unsigned char data1,unsigned char data2)
 {

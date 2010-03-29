@@ -31,17 +31,15 @@ Data Stack size         : 32
 #pragma vector = TIM0_OVF_vect 
 __interrupt void TIM0_OVF_vect_isr(void)
 {
+  delay_counter++;
+  if (delay_counter>7000)delay_counter=0;
+  
   if (delay_counter==0)
   {
-    led0_set (triger);
-    universal_counter++;
-    EEPROM_write(EEPROM_ADDR,universal_counter);
+    sec_counter++;    
     if (triger==1) triger=0;
       else triger=1;
   }
-  
-  delay_counter++;
-  if (delay_counter>15000)delay_counter=0;
    
 }
 
@@ -60,14 +58,33 @@ void led1_set (unsigned char on_off)
 
 
 
-void key0_event (void)
+void key0_event (void)          // кнопка T+
 {
-  //led1_set (0);
+  if (curent_mode==SETUP_MODE) 
+  {
+    set_temp++;                         // в режиме установки температуры прибавляет значение 
+    if (set_temp>99)set_temp=99;
+    EEPROM_write(EEPROM_ADDR,set_temp); // запоминаем установленное значение
+  }
+   
+  if (curent_mode==IDLE_MODE)curent_mode=SHOW_MODE;
+    else curent_mode=SETUP_MODE;
+  sec_counter=0;
+  led1_set(1); // зажигаем светодиод. тухнет он по времени sec_counter
 }
 
-void key1_event (void)
+void key1_event (void)      // кнопка T-
 {
-  //led1_set (1);
+  if (curent_mode==SETUP_MODE) 
+  {
+    set_temp--;  // в режиме установки температуры убавляет значение 
+    if (set_temp<1)set_temp=1;
+    EEPROM_write(EEPROM_ADDR,set_temp); // запоминаем установленное значение
+  }
+  if (curent_mode==IDLE_MODE)curent_mode=SHOW_MODE;
+    else curent_mode=SETUP_MODE;
+  sec_counter=0;
+  led1_set(1); // зажигаем светодиод. тухнет он по времени sec_counter
 }
 
 
@@ -76,8 +93,9 @@ void temp_chek (void)
   float x;
   // вычисление наподобе скользящего среднего
     x=read_adc();  
-    if (x<i_sr_temp_curent) i_sr_temp_curent-=(i_sr_temp_curent-x)/TEMP_ACCURACY;
-    else i_sr_temp_curent+=(x-i_sr_temp_curent)/TEMP_ACCURACY;
+    if (x<f_sr_temp_curent) f_sr_temp_curent-=(f_sr_temp_curent-x)/TEMP_ACCURACY;
+    else f_sr_temp_curent+=(x-f_sr_temp_curent)/TEMP_ACCURACY;
+    ch_temp=f_sr_temp_curent;
 }
 // Declare your global variables here
 
@@ -162,15 +180,15 @@ ADCSRB=0x00;
 SPI_init(); 
 ADC_init();
 
-unsigned char key0_counter=0;
-unsigned char key1_counter=0;
+unsigned char key0_counter=50;
+unsigned char key1_counter=50;
 unsigned char key0_state=KEY_OFF;
 unsigned char key1_state=KEY_OFF;
 
 // Global enable interrupts
 SREG_I=1;
-universal_counter=EEPROM_read(EEPROM_ADDR);
-  
+set_temp=EEPROM_read(EEPROM_ADDR);
+FAN_SPEED_CONTROL=FAN_SPEED_OFF;
 while (1)  
     {
 //-----------проверяем кнопку KEY_0 PINB2-----------------
@@ -209,16 +227,60 @@ while (1)
         if (key1_state==KEY_ON) key1_state=KEY_OFF;
       }          
 //---------------------------------------------------------------- 
- 
-
+//------управление дисплеем в разных режимах и  переключение режимов по времени---      
+    switch (curent_mode) 
+    {
+      case    IDLE_MODE:                     
+        Display_off();
+        led0_set(triger);
+        break;
+      case    SETUP_MODE:                    
+        if (sec_counter>SETUP_MODE_TIMEOUT) curent_mode=SHOW_MODE;
+        if (triger)Display_on(); // мигаем дисплем
+          else Display_off();
+        Display(set_temp);      // на десплее настроенная темпеература
+        led0_set(0);
+        break;
+      case    SHOW_MODE:  
+        Display_on();
+        if (sec_counter>SHOW_MODE_TIMEOUT) curent_mode=IDLE_MODE;
+        Display(ch_temp-TEMP_OFFSET); // на десплее текущая темпеература
+        led0_set(1);
+        break;        
+    }
+//---------------------------------------------------------------------------
     
-      
-    //Display(i_sr_temp_curent-TEMP_OFFSET);
-    temp_chek();    
-    Display(i_sr_temp_curent-TEMP_OFFSET);
-    //Display(universal_counter);
+// управление вентилятором в зависимости от текущей температуры и заданной температуры
+    switch (FAN_SPEED_CONTROL) 
+    {
+      case    FAN_SPEED_OFF:
+        if (ch_temp>=(set_temp+TEMP_OFF+FAN_MODE_OFFSET))//например Ттек>Туст+(-5)+1
+          FAN_SPEED_CONTROL=FAN_SPEED_SLOW;
+        break;
+        
+      case    FAN_SPEED_SLOW:
+        if (ch_temp<=(set_temp+TEMP_OFF-FAN_MODE_OFFSET))
+          FAN_SPEED_CONTROL=FAN_SPEED_OFF;
+        if (ch_temp>=(set_temp+TEMP_SLOW+FAN_MODE_OFFSET))
+          FAN_SPEED_CONTROL=FAN_SPEED_MEDI;
+        break;
+        
+      case    FAN_SPEED_MEDI:
+        if (ch_temp<=(set_temp+TEMP_SLOW-FAN_MODE_OFFSET))
+          FAN_SPEED_CONTROL=FAN_SPEED_SLOW;
+        if (ch_temp>=(set_temp+TEMP_MEDI+FAN_MODE_OFFSET))
+          FAN_SPEED_CONTROL=FAN_SPEED_FAST;
+        break;
+        
+      case    FAN_SPEED_FAST:
+        if (ch_temp<=(set_temp+TEMP_MEDI-FAN_MODE_OFFSET))
+          FAN_SPEED_CONTROL=FAN_SPEED_MEDI;
+        break;        
+    }
+//-------------------------------------------------------------------    
+    
     temp_chek();     
-    led1_set (key0_state);
+  if (sec_counter==1) led1_set(0); // после нажатия кнопки через пол секунды гасим диод
 
 
     }
