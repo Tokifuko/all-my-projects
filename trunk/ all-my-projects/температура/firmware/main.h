@@ -7,14 +7,14 @@
 #define KEY_OFF            0
 #define KEY_ON             1
 
-#define FAN_SPEED_OFF         0x00
-#define FAN_SPEED_SLOW         0x10
-#define FAN_SPEED_MEDI        0xA0
-#define FAN_SPEED_FAST        0xFF
+#define FAN_SPEED_OFF         0x03
+#define FAN_SPEED_SLOW         0x10  
+#define FAN_SPEED_MEDI        0x30
+#define FAN_SPEED_FAST        0xFF 
 #define FAN_SPEED_CONTROL     OCR0B
                         // у нас 4 температурных режима 
 #define FAN_MODE_OFFSET       1  // зазор для переключения вежимов
-#define TEMP_OFF              (-5) 
+#define TEMP_OFF              (-3) 
 #define TEMP_SLOW             (-2) 
 #define TEMP_MEDI             0
 
@@ -26,7 +26,7 @@
 #define SETUP_MODE            2     // индикатор мигает, кнопки устанавливают значения
 #define SHOW_MODE             3     // индикатор показывает температуру
 #define SETUP_MODE_TIMEOUT          10
-#define SHOW_MODE_TIMEOUT           120
+#define SHOW_MODE_TIMEOUT           60
 
 
 

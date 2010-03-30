@@ -24,7 +24,7 @@
     <Windows>
       
       
-    <Wnd0>
+    <Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-11922-19560</Identity>
@@ -36,7 +36,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-6154-5527</Identity>
@@ -46,20 +46,20 @@
           </Tab>
         <Tab><Identity>TabID-31045-15409</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
     <Editor>
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.cpp</Filename><XPos>0</XPos><YPos>229</YPos><SelStart>5806</SelStart><SelEnd>5806</SelEnd></Tab><ActiveTab>0</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.h</Filename><XPos>0</XPos><YPos>24</YPos><SelStart>1293</SelStart><SelEnd>1300</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\EEPROM_func.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>289</SelStart><SelEnd>289</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\iotiny24.h</Filename><XPos>0</XPos><YPos>153</YPos><SelStart>7284</SelStart><SelEnd>7284</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\7_sigmentnik.cpp</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>1036</SelStart><SelEnd>1042</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x425;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;_&#x43F;&#x440;&#x43e;&#x435;&#x43A;&#x442;&#x43e;&#x432;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\7_sigmentnik.h</Filename><XPos>0</XPos><YPos>6</YPos><SelStart>1583</SelStart><SelEnd>1583</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\&#x43e;_&#x432;&#x430;&#x449;&#x435;_&#x445;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.cpp</Filename><XPos>0</XPos><YPos>250</YPos><SelStart>6891</SelStart><SelEnd>6891</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>C:\&#x43e;_&#x432;&#x430;&#x449;&#x435;_&#x445;&#x440;&#x430;&#x43D;&#x438;&#x43B;&#x438;&#x449;&#x435;\&#x442;&#x435;&#x43C;&#x43F;&#x435;&#x440;&#x430;&#x442;&#x443;&#x440;&#x430;\firmware\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>330</SelStart><SelEnd>330</SelEnd></Tab><ActiveTab>1</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-02251510><key>iaridepm.enu1</key></Toolbar-02251510></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>572</Bottom><Right>339</Right><x>-2</x><y>-2</y><xscreen>118</xscreen><yscreen>107</yscreen><sizeHorzCX>70238</sizeHorzCX><sizeHorzCY>112632</sizeHorzCY><sizeVertCX>202976</sizeVertCX><sizeVertCY>604211</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>330</Bottom><Right>1682</Right><x>-2</x><y>-2</y><xscreen>1684</xscreen><yscreen>332</yscreen><sizeHorzCX>1002381</sizeHorzCX><sizeHorzCY>349474</sizeHorzCY><sizeVertCX>70238</sizeVertCX><sizeVertCY>112632</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-0224d8e8><key>iaridepm.enu1</key></Toolbar-0224d8e8></Sizes></Row0></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>572</Bottom><Right>339</Right><x>-2</x><y>-2</y><xscreen>118</xscreen><yscreen>107</yscreen><sizeHorzCX>70238</sizeHorzCX><sizeHorzCY>112632</sizeHorzCY><sizeVertCX>202976</sizeVertCX><sizeVertCY>604211</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>330</Bottom><Right>1682</Right><x>-2</x><y>-2</y><xscreen>1684</xscreen><yscreen>332</yscreen><sizeHorzCX>1002381</sizeHorzCX><sizeHorzCY>349474</sizeHorzCY><sizeVertCX>70238</sizeVertCX><sizeVertCY>112632</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

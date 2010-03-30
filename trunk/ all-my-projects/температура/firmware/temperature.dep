@@ -2,18 +2,18 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1873248515</fileChecksum>
+  <fileChecksum>245403734</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
       <file>$PROJ_DIR$\Debug\Obj\temperature.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
       <file>$PROJ_DIR$\main.cpp</file>
-      <file>$PROJ_DIR$\main.h</file>
       <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
       <file>$PROJ_DIR$\Debug\Exe\temperature.d90</file>
       <file>$PROJ_DIR$\iotiny24.h</file>
-      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$PROJ_DIR$\main.h</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
     </outputs>
     <file>
@@ -40,11 +40,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 6 7 0 3</file>
+          <file> 6 2 1 7</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 6 7 0 3</file>
+          <file> 6 2 1 7</file>
         </tool>
       </inputs>
     </file>
@@ -69,12 +69,12 @@
     <name>Release</name>
     <outputs>
       <file>$TOOLKIT_DIR$\inc\bitdefinitions\iotiny24.inc</file>
-      <file>$PROJ_DIR$\main.cpp</file>
-      <file>$PROJ_DIR$\main.h</file>
-      <file>$PROJ_DIR$\iotiny24.h</file>
       <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
-      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.r90</file>
+      <file>$PROJ_DIR$\main.cpp</file>
+      <file>$PROJ_DIR$\iotiny24.h</file>
+      <file>$PROJ_DIR$\main.h</file>
       <file>$TOOLKIT_DIR$\src\template\cfgtiny24.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dlAVR-0t-ec_nomul-n.r90</file>
       <file>$PROJ_DIR$\Release\Obj\temperature.pbd</file>
       <file>$PROJ_DIR$\Release\Obj\ADC_modul.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\ADC_modul.r90</file>
@@ -94,9 +94,9 @@
       <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
       <file>$PROJ_DIR$\Release\Obj\7_sigmentnik.r90</file>
       <file>$PROJ_DIR$\Release\Obj\main.r90</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release\Exe\temperature.hex</file>
       <file>$PROJ_DIR$\delay.h</file>
+      <file>$PROJ_DIR$\Release\Exe\temperature.hex</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
       <file>$PROJ_DIR$\7_sigmentnik.h</file>
       <file>$PROJ_DIR$\7_sigmentnik.cpp</file>
       <file>$TOOLKIT_DIR$\inc\dlib\ycheck.h</file>
@@ -108,7 +108,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 26</file>
+          <file> 28</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
@@ -118,11 +118,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 3 4 0 2 28 20 23 30 29 13 31 32 14 16 17 18 19 11 10 33</file>
+          <file> 3 1 0 4 26 20 23 30 29 13 31 32 14 16 17 18 19 11 10 33</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 3 4 0 2 28 20 23 30 29 13 31 32 14 15 16 17 18 19 11 10 33</file>
+          <file> 3 1 0 4 26 20 23 30 29 13 31 32 14 15 16 17 18 19 11 10 33</file>
         </tool>
       </inputs>
     </file>
@@ -131,7 +131,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 26</file>
+          <file> 28</file>
         </tool>
       </inputs>
     </file>
@@ -172,7 +172,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 6 21 25 5</file>
+          <file> 5 21 25 6</file>
         </tool>
       </inputs>
     </file>
@@ -181,7 +181,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 6 21 25 5</file>
+          <file> 5 21 25 6</file>
         </tool>
       </inputs>
     </file>
@@ -200,11 +200,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 29 3 4 0 13 31 32 14 16 17 18 19</file>
+          <file> 29 3 1 0 13 31 32 14 16 17 18 19</file>
         </tool>
         <tool>
           <name>ICCAVR</name>
-          <file> 29 3 4 0 13 31 32 14 15 16 17 18 19</file>
+          <file> 29 3 1 0 13 31 32 14 15 16 17 18 19</file>
         </tool>
       </inputs>
     </file>
