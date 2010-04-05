@@ -101,6 +101,49 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
+[Document6]
+DocumentPath=CAMtastic1.Cam
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
+[GeneratedDocument1]
+DocumentPath=Project Outputs for пульт\пульт.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Project Outputs for пульт\пульт.GBL
+DItemRevisionGUID=
+
+[GeneratedDocument3]
+DocumentPath=Project Outputs for пульт\пульт.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument4]
+DocumentPath=Project Outputs for пульт\пульт.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument5]
+DocumentPath=Project Outputs for пульт\пульт.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument6]
+DocumentPath=Project Outputs for пульт\пульт.REP
+DItemRevisionGUID=
+
+[GeneratedDocument7]
+DocumentPath=Project Outputs for пульт\пульт.RUL
+DItemRevisionGUID=
+
 [Generic_SmartPDF]
 AutoOpenFile=-1
 AutoOpenOutJob=-1
@@ -287,7 +330,7 @@ OutputDefault3=0
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
-TargetPrinter=HP LaserJet 1022n
+TargetPrinter=Microsoft XPS Document Writer
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing
@@ -385,14 +428,14 @@ Name=Fabrication Outputs
 Description=
 TargetPrinter=Microsoft XPS Document Writer
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintWhat=1
-OutputType1=CompositeDrill
-OutputName1=Composite Drill Drawing
+OutputType1=Drill
+OutputName1=Drill Drawing/Guides
 OutputDocumentPath1=
 OutputVariantName1=
 OutputDefault1=0
 PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType2=Drill
-OutputName2=Drill Drawing/Guides
+OutputType2=Mask
+OutputName2=Solder/Paste Mask Prints
 OutputDocumentPath2=
 OutputVariantName2=
 OutputDefault2=0
@@ -403,38 +446,42 @@ OutputDocumentPath3=
 OutputVariantName3=
 OutputDefault3=0
 PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType4=Gerber
-OutputName4=Gerber Files
+OutputType4=CompositeDrill
+OutputName4=Composite Drill Drawing
 OutputDocumentPath4=
 OutputVariantName4=
 OutputDefault4=0
-OutputType5=Mask
-OutputName5=Solder/Paste Mask Prints
+PageOptions4=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+OutputType5=NC Drill
+OutputName5=NC Drill Files
 OutputDocumentPath5=
 OutputVariantName5=
 OutputDefault5=0
-PageOptions5=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType6=NC Drill
-OutputName6=NC Drill Files
+Configuration5_Name1=OutputConfigurationParameter1
+Configuration5_Item1=BoardEdgeRoutToolDia=2000000|GenerateBoardEdgeRout=False|GenerateDrilledSlotsG85=False|GenerateSeparatePlatedNonPlatedFiles=False|NumberOfDecimals=4|NumberOfUnits=4|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Record=DrillView|Units=Metric|ZeroesMode=SuppressTrailingZeroes
+OutputType6=ODB
+OutputName6=ODB++ Files
 OutputDocumentPath6=
 OutputVariantName6=
 OutputDefault6=0
-OutputType7=ODB
-OutputName7=ODB++ Files
+OutputType7=Plane
+OutputName7=Power-Plane Prints
 OutputDocumentPath7=
 OutputVariantName7=
 OutputDefault7=0
-OutputType8=Plane
-OutputName8=Power-Plane Prints
+PageOptions7=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
+OutputType8=Test Points
+OutputName8=Test Point Report
 OutputDocumentPath8=
 OutputVariantName8=
 OutputDefault8=0
-PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PaperKind=A4|PrintScaleMode=1
-OutputType9=Test Points
-OutputName9=Test Point Report
+OutputType9=Gerber
+OutputName9=Gerber Files
 OutputDocumentPath9=
 OutputVariantName9=
 OutputDefault9=0
+Configuration9_Name1=OutputConfigurationParameter1
+Configuration9_Item1=AddToAllPlots.Set=SerializeLayerHash.Version~2,ClassName~TLayerToBoolean|CentrePlots=False|DrillDrawingSymbol=GraphicsSymbol|DrillDrawingSymbolSize=500000|EmbeddedApertures=True|FilmBorderSize=10000000|FilmXSize=200000000|FilmYSize=160000000|FlashAllFills=False|FlashPadShapes=True|G54OnApertureChange=False|GenerateDRCRulesFile=True|GenerateReliefShapes=True|GerberUnit=Metric|IncludeUnconnectedMidLayerPads=False|LeadingAndTrailingZeroesMode=SuppressLeadingZeroes|MaxApertureSize=2500000|MinusApertureTolerance=39|Mirror.Set=SerializeLayerHash.Version~2,ClassName~TLayerToBoolean|MirrorDrillDrawingPlots=False|MirrorDrillGuidePlots=False|NumberOfDecimals=4|OptimizeChangeLocationCommands=True|OriginPosition=Relative|Panelize=False|Plot.Set=SerializeLayerHash.Version~2,ClassName~TLayerToBoolean,16973834~1,16777217~1,16842751~1,16973835~1|PlotPositivePlaneLayers=False|PlotUsedDrillDrawingLayerPairs=False|PlotUsedDrillGuideLayerPairs=False|PlusApertureTolerance=39|Record=GerberView|SoftwareArcs=False|Sorted=False
 
 [OutputGroup6]
 Name=Report Outputs
