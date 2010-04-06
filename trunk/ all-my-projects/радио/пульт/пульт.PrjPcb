@@ -116,32 +116,63 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
+[Document7]
+DocumentPath=CAMtastic2.Cam
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+
 [GeneratedDocument1]
-DocumentPath=Project Outputs for пульт\пульт.EXTREP
+DocumentPath=Project Outputs for пульт\пульт.DRL
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Project Outputs for пульт\пульт.GBL
+DocumentPath=Project Outputs for пульт\пульт.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Project Outputs for пульт\пульт.GBS
+DocumentPath=Project Outputs for пульт\пульт.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for пульт\пульт.GTL
+DocumentPath=Project Outputs for пульт\пульт.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for пульт\пульт.GTS
+DocumentPath=Project Outputs for пульт\пульт.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for пульт\пульт.REP
+DocumentPath=Project Outputs for пульт\пульт.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument7]
+DocumentPath=Project Outputs for пульт\пульт.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument8]
+DocumentPath=Project Outputs for пульт\пульт.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument9]
+DocumentPath=Project Outputs for пульт\пульт.REP
+DItemRevisionGUID=
+
+[GeneratedDocument10]
 DocumentPath=Project Outputs for пульт\пульт.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument11]
+DocumentPath=Project Outputs for пульт\пульт.TXT
 DItemRevisionGUID=
 
 [Generic_SmartPDF]
