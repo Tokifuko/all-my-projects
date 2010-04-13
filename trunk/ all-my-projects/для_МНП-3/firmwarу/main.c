@@ -28,10 +28,10 @@ unsigned char step;
 ISR(TIMER0_OVF_vect)
 {
 // Reinitialize Timer 0 value
-TCNT0=0x00;
+TCNT0=0x55;
 step++;
 if (step>2) step=0;
-//DDRA=0;
+DDRA=0;
 if (step==0) DDRA=1;
 if (step==1) DDRA=2;
 if (step==2) DDRA=4;
