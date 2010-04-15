@@ -29,7 +29,8 @@ if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
    if (++rx_wr_index == RX_BUFFER_SIZE) rx_wr_index=0;
    if (++rx_counter == RX_BUFFER_SIZE)
       {
-      rx_counter=0;
+       if (rx_counter==255) rx_counter--;  // при переполнии буфера, старые данные затираются новыми
+     // rx_counter=0;
       rx_buffer_overflow=1;
       };
    };
