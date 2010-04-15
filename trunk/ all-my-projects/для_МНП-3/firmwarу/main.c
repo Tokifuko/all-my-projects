@@ -22,19 +22,26 @@ Data Stack size         : 256
 *****************************************************/
 
 #include <avr/io.h>
+#include <avr/delay.h>
 #include <avr/interrupt.h>
+// Standard Input/Output functions
+#include <UART.c>
+
+
 unsigned char step;
 // Timer 0 overflow interrupt service routine
 ISR(TIMER0_OVF_vect)
 {
 // Reinitialize Timer 0 value
 TCNT0=0x95;
-step++;
-if (step>2) step=0;
-DDRA=0;
+//step++;
+//if (step>7) step=0;
+//DDRA=step;
+/*
 if (step==0) DDRA=1;
 if (step==1) DDRA=2;
 if (step==2) DDRA=4;
+*/
 
 
 //DDRA=0x07;
@@ -132,11 +139,22 @@ SFIOR=0x00;
 
 
 // Global enable interrupts
-sei();
 
+UART_init();
+sei();
+//UART_putchar(step);
 while (1)
       {
-      // Place your code here
+   
+        step++;
+     UART_putchar(step);
+     UART_putchar(step);
+ DDRA=step;
+         _delay_ms(100);
+	// UART_putchar(step);
+     
+    step=UART_getchar();
+    // step=UART_getchar();
 
       }
 }
