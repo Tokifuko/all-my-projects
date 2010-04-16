@@ -22,7 +22,7 @@ Data Stack size         : 256
 *****************************************************/
 
 #include <avr/io.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 // Standard Input/Output functions
 #include <UART.c>

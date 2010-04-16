@@ -20,8 +20,8 @@ ISR (USART_RXC_vect) //void usart_rx_isr(void)
 char status,data;
 status=UCSRA;
 data=UDR;
-// РїСЂРё РїРµСЂРµРїРѕР»РЅРµРЅРёРё Р±СѓС„РµСЂР° РїСЂРёРµРј РЅРѕРІС‹С… РґР°РЅРЅС‹С… РїСЂРµРѕСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РґРѕ С‚РµС… РїРѕСЂ,
-//РїРѕРєР° РЅРµ Р±СѓРґРµС‚ СЃР±СЂРѕС€РµРЅ С„Р»Р°Рі UART_rx_buffer_overflow
+// при переполнении буфера прием новых данных преостанавливается до тех пор,
+
 if (UART_rx_buffer_full==1)  UART_rx_buffer_overflow=1;
 if (UART_rx_buffer_overflow ) return;
 if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
@@ -31,7 +31,7 @@ if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
    UART_rx_buffer_empty=0;
    if (++rx_counter == RX_BUFFER_SIZE)
       {
-     //  if (rx_counter==255) rx_counter--;  // С‡С‚РѕР± РЅРµ РїРµСЂРµРїРѕРЅРёР»СЃСЏ С‚РёРї unsigned char
+     //  if (rx_counter==255) rx_counter--;  // чтоб не перепонился тип unsigned char
      // rx_counter=0;
       UART_rx_buffer_full=1;
       };
@@ -86,17 +86,17 @@ else UART_tx_buffer_empty=1;
 //#pragma used+
 void UART_putchar(char c)
 {
-    while (tx_counter == TX_BUFFER_SIZE); // С‚СѓС‚ Р¶РґРµРј, РїРѕРєР° Р±СѓС„РµСЂ РѕСЃРІРѕР±РѕРґРёС‚СЊСЃСЏ. Р° РЅРµС…РµСЂ РїРёСЃР°С‚СЊ РїСЂРё С„Р»Р°РіРµ FULL
+    while (tx_counter == TX_BUFFER_SIZE); // тут ждем, пока буфер освободиться. а нехер писать при флаге FULL
 cli();
-if (tx_counter || ((UCSRA & DATA_REGISTER_EMPTY)==0)) // РµСЃР»Рё РІ Р±СѓС„РµСЂРµ РµСЃС‚СЊ С‡С‚РѕС‚Рѕ РёР»Рё РІ СЂРµРіРёС‚СЂРµ РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ - Р·Р°РїРёСЃС‹С‹РІР°РµРј РІ Р±СѓС„РµСЂ
+if (tx_counter || ((UCSRA & DATA_REGISTER_EMPTY)==0)) // если в буфере есть чтото или в регитре есть что-то - записыываем в буфер
    {
-   tx_buffer[tx_wr_index]=c;// Р·РїРёСЃС‹РІР°РµРј РґР°РЅРЅС‹Рµ РІ Р±СѓС„РµСЂ
+   tx_buffer[tx_wr_index]=c;// зписываем данные в буфер
    if (++tx_wr_index == TX_BUFFER_SIZE) tx_wr_index=0;
    ++tx_counter;
-   UART_tx_buffer_empty=0;  // Р±СѓС„РµСЂ СѓР¶Рµ РЅРµ РїСѓСЃС‚РѕР№
+   UART_tx_buffer_empty=0;  // буфер уже не пустой
    }
 else
-   UDR=c;// РµСЃР»Рё Р±СѓС„РµСЂ РїСѓСЃС‚РѕР№ Рё СЂРµРіРёСЃС‚СЂ РїРѕСЃС‚РѕР№ С‚Рѕ СЃСЂР°Р·Сѓ РїРёС€РµРј РІ СЂРµРіРёСЃС‚СЂ РЅР° РѕС‚РїСЂР°РІРєСѓ
+   UDR=c;   //если буфер пустой и регистр постой то сразу пишем в регистр на отправк
 sei();
 
 if (tx_counter == TX_BUFFER_SIZE) UART_tx_buffer_full=1;

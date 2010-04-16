@@ -41,7 +41,7 @@ char UART_getchar(void);
 void UART_putchar(char c);
 void UART_init (void);
 
-// С„Р»Р°РіРё РґР»СЏ РєРѕРЅС‚СЂРѕР»СЏ Р±СѓС„РµСЂРѕРІ
+// флаги для контроля буферов
 char UART_rx_buffer_overflow=0;
 char UART_rx_buffer_full=0;
 char UART_rx_buffer_empty=1;
