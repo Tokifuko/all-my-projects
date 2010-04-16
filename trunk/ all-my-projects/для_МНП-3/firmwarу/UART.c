@@ -1,11 +1,11 @@
-#include <UART.h>
+
 #include <util/delay.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
+#include <UART.h>
 
 // USART Receiver buffer
-#define RX_BUFFER_SIZE 8
+
 char rx_buffer[RX_BUFFER_SIZE];
 
 #if RX_BUFFER_SIZE<256
@@ -14,24 +14,26 @@ unsigned char rx_wr_index,rx_rd_index,rx_counter;
 unsigned int rx_wr_index,rx_rd_index,rx_counter;
 #endif
 
-// This flag is set on USART Receiver buffer overflow
-char rx_buffer_overflow;
-
 // USART Receiver interrupt service routine
 ISR (USART_RXC_vect) //void usart_rx_isr(void)
 {
 char status,data;
 status=UCSRA;
 data=UDR;
+// при переполнении буфера прием новых данных преостанавливается до тех пор,
+//пока не будет сброшен флаг UART_rx_buffer_overflow
+if (UART_rx_buffer_full==1)  UART_rx_buffer_overflow=1;
+if (UART_rx_buffer_overflow ) return;
 if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
    {
    rx_buffer[rx_wr_index]=data;
    if (++rx_wr_index == RX_BUFFER_SIZE) rx_wr_index=0;
+   UART_rx_buffer_empty=0;
    if (++rx_counter == RX_BUFFER_SIZE)
       {
-       if (rx_counter==255) rx_counter--;  // при переполнии буфера, старые данные затираются новыми
+     //  if (rx_counter==255) rx_counter--;  // чтоб не перепонился тип unsigned char
      // rx_counter=0;
-      rx_buffer_overflow=1;
+      UART_rx_buffer_full=1;
       };
    };
 }
@@ -49,13 +51,14 @@ if (++rx_rd_index == RX_BUFFER_SIZE) rx_rd_index=0;
 cli();
 --rx_counter;
 sei();
+UART_rx_buffer_full=0;
+if (rx_counter==0) UART_rx_buffer_empty=1;
 return data;
 }
 //#pragma used-
 #endif
 
-// USART Transmitter buffer
-#define TX_BUFFER_SIZE 8
+
 char tx_buffer[TX_BUFFER_SIZE];
 
 #if TX_BUFFER_SIZE<256
@@ -72,7 +75,9 @@ if (tx_counter)
    --tx_counter;
    UDR=tx_buffer[tx_rd_index];
    if (++tx_rd_index == TX_BUFFER_SIZE) tx_rd_index=0;
-   };
+   UART_tx_buffer_full=0;
+   }
+else UART_tx_buffer_empty=1;
 }
 
 #ifndef _DEBUG_TERMINAL_IO_
@@ -81,17 +86,20 @@ if (tx_counter)
 //#pragma used+
 void UART_putchar(char c)
 {
-    while (tx_counter == TX_BUFFER_SIZE);
+    while (tx_counter == TX_BUFFER_SIZE); // тут ждем, пока буфер освободиться. а нехер писать при флаге FULL
 cli();
-if (tx_counter || ((UCSRA & DATA_REGISTER_EMPTY)==0))
+if (tx_counter || ((UCSRA & DATA_REGISTER_EMPTY)==0)) // если в буфере есть чтото или в регитре есть что-то - записыываем в буфер
    {
-   tx_buffer[tx_wr_index]=c;
+   tx_buffer[tx_wr_index]=c;// зписываем данные в буфер
    if (++tx_wr_index == TX_BUFFER_SIZE) tx_wr_index=0;
    ++tx_counter;
+   UART_tx_buffer_empty=0;  // буфер уже не пустой
    }
 else
-   UDR=c;
+   UDR=c;// если буфер пустой и регистр постой то сразу пишем в регистр на отправку
 sei();
+
+if (tx_counter == TX_BUFFER_SIZE) UART_tx_buffer_full=1;
 }
 
 //#pragma used-

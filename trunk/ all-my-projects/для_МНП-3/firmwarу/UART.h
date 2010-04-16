@@ -33,8 +33,19 @@
 #define DATA_REGISTER_EMPTY (1<<UDRE)
 #define RX_COMPLETE (1<<RXC)
 
+#define RX_BUFFER_SIZE 8
+// USART Transmitter buffer
+#define TX_BUFFER_SIZE 8
+
 char UART_getchar(void);
 void UART_putchar(char c);
 void UART_init (void);
+
+// флаги для контроля буферов
+char UART_rx_buffer_overflow=0;
+char UART_rx_buffer_full=0;
+char UART_rx_buffer_empty=1;
+char UART_tx_buffer_full=0;
+char UART_tx_buffer_empty=1;
 
 

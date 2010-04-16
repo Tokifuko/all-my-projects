@@ -143,17 +143,31 @@ SFIOR=0x00;
 UART_init();
 sei();
 //UART_putchar(step);
+DDRA=0;
+ if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
+   else DDRA &=~ (1<<DDA0);
 while (1)
       {
    
         step++;
      UART_putchar(step);
-     UART_putchar(step);
- DDRA=step;
-         _delay_ms(100);
+     //UART_putchar(step);
+
+         _delay_ms(200);
+
 	// UART_putchar(step);
-     
-    step=UART_getchar();
+
+
+    if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
+   else DDRA &=~ (1<<DDA0);
+
+if (UART_rx_buffer_overflow ) DDRA |=(1<<DDA2);
+   else DDRA &=~ (1<<DDA2);
+
+    if (UART_rx_buffer_full ) DDRA |=(1<<DDA1);
+   else DDRA &=~ (1<<DDA1);
+
+    //step=UART_getchar();
     // step=UART_getchar();
 
       }
