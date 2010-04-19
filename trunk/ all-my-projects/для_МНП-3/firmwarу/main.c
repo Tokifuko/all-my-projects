@@ -26,6 +26,7 @@ Data Stack size         : 256
 #include <avr/interrupt.h>
 // Standard Input/Output functions
 #include <UART.c>
+#include <my_MNEA.c>
 
 
 unsigned char step;
@@ -156,6 +157,7 @@ while (1)
          _delay_ms(200);
 
 	// UART_putchar(step);
+
 
 
     if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);

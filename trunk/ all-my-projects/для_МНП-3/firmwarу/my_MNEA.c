@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <UART.h>
+//#include <UART.h>
 #include <my_MNEA.h>
 
 
@@ -13,6 +13,7 @@ unsigned char MNP_message_length=0;
 char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
 unsigned char MNP_message_mode =MNP_WAIT_START;
+char str[]="$PPER,0*";
 
 void MNP_message_reset ()
 {
@@ -112,7 +113,7 @@ char MNP_get_message(void)
             break;
 
         case MNP_GET_CR: //должен быть символ возврата каретки
-            if (data==0x0A) MNP_message_mode=MNP_GET_LF;// символ перевода строки
+            if (data==0x0A) MNP_message_mode=MNP_GET_LF;// символ возврата кареткии
             else return ERR_MNP_CR_EXPECTED;
 
             break; 
@@ -120,11 +121,22 @@ char MNP_get_message(void)
             if (data==0x0D) MNP_message_mode=MNP_WAIT_START;// символ перевода строки
             else return ERR_MNP_LF_EXPECTED;
             break;
+    }
     return 0;
-    }
-    
-    
-            
-      
+}
 
+char MNP_send_message(char *str)
+{
+    char tx_CRC=0;
+    char i=0;
+    while (str[i++]=='\0')
+    {
+        tx_CRC^=str[i];
+        UART_putchar(str[i]);
     }
+    UART_putchar('*');
+    
+
+
+    return 0; //UART_putchar(str++);
+}

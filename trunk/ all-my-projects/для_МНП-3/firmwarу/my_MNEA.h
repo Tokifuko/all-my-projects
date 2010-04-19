@@ -11,6 +11,8 @@ extern "C" {
 
 #endif	/* _MY_MNEA_H */
 
+
+// состояния принимающего автомата
 #define MNP_WAIT_START                  0
 #define MNP_GET_CRC_H                   1
 #define MNP_GET_CRC_L                   2
@@ -23,7 +25,7 @@ extern "C" {
 // размер буфера для сообщений
 #define	 MNP_MESSAGE_BUFFER_SIZE        128
 
-//коды ошибок
+//коды ошибок принимающего автомата
 #define ERR_RX_EMPTY                            -1 // буфер пустой
 #define ERR_RX_OVERFLOW                         -2 //переполнение приемного буфера
 #define ERR_MNP_MESSAGE_OVERFLOW                -3 //переполнение буфера сообщения
@@ -37,6 +39,11 @@ extern "C" {
 #define ERR_MNP_LF_EXPECTED                     -11 // должен был придти перевод строки
 #define ERR_MNP_CRC_ERROR                       -12// CRC не сошелся
 
-char MNP_get_message(void);
-void MNP_message_reset (void);
+
+#define PPER_command    "$PPER,0*" // команда самоконтроя МНП5
+
+char MNP_get_message(void); // принимает сообщение
+void MNP_message_reset (void); // срасывает принимающий автомат
+
+char MNP_send_message(char* str); // отправляет сообщение
 
