@@ -58,6 +58,14 @@ return data;
 //#pragma used-
 #endif
 
+// сброс входного буфера при его переполнении
+void UART_rx_overflow_reset(void)
+{
+    UART_rx_buffer_full=0;
+    UART_rx_buffer_empty=1;
+    rx_counter=0;
+}
+
 
 char tx_buffer[TX_BUFFER_SIZE];
 
