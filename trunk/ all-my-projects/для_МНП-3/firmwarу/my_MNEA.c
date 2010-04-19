@@ -8,6 +8,7 @@
 //заполняет буфер соообщения и подсчитывает контрольную сумму
 
 char MNP_CRC=0;
+unsigned char rx_CRC;
 unsigned char MNP_message_length=0;
 char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
@@ -30,60 +31,100 @@ char MNP_get_message(void)
         return ERR_RX_OVERFLOW;
     }
     char data;
-    if (!(UART_rx_buffer_empty )) // есть что-то в буфере
+    if (UART_rx_buffer_empty ) return 0;//буфер пустой
+    
+    data=UART_getchar();
+    switch (MNP_message_mode)
     {
-        data=UART_getchar();
-        switch (data)
-        {
-            case '$': // пришло начало нового сообщения
-                if(MNP_message_mode=MNP_WAIT_START) MNP_message_mode=MNP_WAIT_END; // начинаем принимать сообщение, пока не придет конец
-                else // если мы не в режиме ожидания начаа нового пакета
-                {
-                    MNP_message_reset(); // все сбрасываем и возвращаем ошибку
-                    return ERR_MNP_START_UNEXPECTED;
-                }                    
-                break;
-            case '*': //пришел конец сообщения. начинаем принимать CRC
-                if (MNP_message_mode=MNP_WAIT_END) //конец ожидаем
-                {   
-                    //ок. тут нужно обработать полученый пакет
-                    // сверить CRC
-                    // по сумма по исключаещему или должна быть равна нулю
-                    if (MNP_CRC)  // если CRC не равна нулю
+        case MNP_WAIT_START:// ждем начала сообщения
+            // получено начало сообщения,
+            if (data=='$')
+            {
+                MNP_message_mode=MNP_GET_DATA;  // начинаем принимать данные
+                MNP_CRC=0;// все сбрасываем
+                MNP_message_length=0;
+                MNP_message_counter=0;
+            }
+            else return ERR_MNP_START_EXPECTED;
+            break;
+        case MNP_GET_DATA: // тут получаем полезные данные
+            // проверяем на отсутствие служебных символов
+            if (data=='$') // символ начала нового сообщения
+            {
+                MNP_message_reset ();
+                return ERR_MNP_START_UNEXPECTED;
+            }
+            if (data==0x0A) // символ перевода строки
+            {
+                MNP_message_reset ();
+                return ERR_MNP_LF_UNEXPECTED;  
+            }
+            if (data==0x0D)  // символ возврата каретки
+            {
+                MNP_message_reset ();
+                return ERR_MNP_CR_UNEXPECTED;
+            }
+            
+            if (data=='*') // конец принимаемым данным
+            {
+                MNP_message_mode=MNP_GET_CRC_H; // переключаемся на прием CRC
+                return 0;
+            }
+            
+            if (MNP_message_counter>MNP_MESSAGE_BUFFER_SIZE) // если буфер заполнен
+            {
+                MNP_message_reset ();
+                return ERR_MNP_MESSAGE_OVERFLOW; // если буфер сообщения переполнился
+            }
+
+            MNP_message_buffer[MNP_message_counter++]=data; //байт в буфер
+            MNP_CRC^=data; // считаем CRC
+            break;
+
+        case MNP_GET_CRC_H: // здесь приимает старший символ CRC
+            // и переводим символ в число
+            if ((data >= '0') && (data <= '9')) rx_CRC=(data-'0')<<4;
+            else if ((data >= 'A') && (data <= 'F')) rx_CRC=(data-'A'+10)<<4;
+                else 
                     {
                         MNP_message_reset ();
-                        return ERR_MNP_CRC;
+                        return ERR_MNP_UNEXPECTED_CRC_CHAR;
                     }
+            MNP_message_mode=MNP_GET_CRC_L;
+            break;
 
-                    // передать сообщение на обработку парсеру
-                    MNP_message_mode=MNP_WAIT_END; // готовы начинать принимать новое сообщение
+        case MNP_GET_CRC_L: // здесь приимает младший символ CRC
+            if ((data >= '0') && (data <= '9')) rx_CRC+=(data-'0');
+            else if ((data >= 'A') && (data <= 'F')) rx_CRC+=(data-'A'+10);
+                else
+                    {
+                        MNP_message_reset ();
+                        return ERR_MNP_UNEXPECTED_CRC_CHAR;
+                    }
+            MNP_CRC^=rx_CRC;// считаем CRC
+            if (!(MNP_CRC==0) ) //если не сошелся то ошибку возвращаем
+            {
+                MNP_message_reset ();
+                return ERR_MNP_CRC_ERROR;
+            }
+            MNP_message_mode=MNP_GET_CR;
 
-                }
-                else // если мы не в режиме ожидания конца текущего пакета
-                {
-                    MNP_message_reset(); // все сбрасываем и возвращаем ошибку
-                    return ERR_MNP_END_UNEXPECTED;
-                }                
+            break;
 
-                break;
-            default: // пришли данные
-              
-                if (MNP_message_counter>MNP_MESSAGE_BUFFER_SIZE) return ERR_MNP_MESSAGE_OVERFLOW; // если буфер сообщения переполнился
-                MNP_message_buffer[MNP_message_counter++]=data;
-                MNP_CRC^=data;
-        }
-        
-        
+        case MNP_GET_CR: //должен быть символ возврата каретки
+            if (data==0x0A) MNP_message_mode=MNP_GET_LF;// символ перевода строки
+            else return ERR_MNP_CR_EXPECTED;
 
+            break; 
+        case MNP_GET_LF: // и в конце должен быть символ перевода строки
+            if (data==0x0D) MNP_message_mode=MNP_WAIT_START;// символ перевода строки
+            else return ERR_MNP_LF_EXPECTED;
+            break;
+    return 0;
     }
     
-}
-unsigned char CRC_convert(unsigned char H,unsigned char L)
-{
-  unsigned char res=0;
-  if ((H >= '0') && (H <= '9')) res+=(H-'0')<<4;
-  if ((H >= 'A') && (H <= 'F')) res+=(H-'A'+10)<<4;
-  if ((L >= '0') && (L <= '9')) res+=(L-'0');
-  if ((L >= 'A') && (L <= 'F')) res+=(L-'A'+10);
-  return res;
-}
+    
+            
+      
+
+    }
