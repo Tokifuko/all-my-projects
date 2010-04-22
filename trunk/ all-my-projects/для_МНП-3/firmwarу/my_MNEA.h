@@ -45,5 +45,5 @@ extern "C" {
 char MNP_get_message(void); // принимает сообщение
 void MNP_message_reset (void); // срасывает принимающий автомат
 
-char MNP_send_message(char* str); // отправляет сообщение
+char MNP_send_message(void);//char* str); // отправляет сообщение
 

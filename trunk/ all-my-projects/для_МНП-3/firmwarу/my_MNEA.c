@@ -2,6 +2,7 @@
 #include <avr/interrupt.h>
 //#include <UART.h>
 #include <my_MNEA.h>
+#include <stdlib.h>
 
 
 //функция принимает и обрабатывает сообщение из UART-a
@@ -13,7 +14,8 @@ unsigned char MNP_message_length=0;
 char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
 unsigned char MNP_message_mode =MNP_WAIT_START;
-char str[]="$PPER,0*";
+char *str="$PPER,0*";
+
 
 void MNP_message_reset ()
 {
@@ -125,18 +127,31 @@ char MNP_get_message(void)
     return 0;
 }
 
-char MNP_send_message(char *str)
+char MNP_send_message(void)//char *str)
 {
     char tx_CRC=0;
-    char i=0;
-    while (str[i++]=='\0')
-    {
-        tx_CRC^=str[i];
-        UART_putchar(str[i]);
-    }
-    UART_putchar('*');
+    char tx_CRC_H,tx_CRC_L;
     
+    while (*str)
+    {
+ 
+	if  ((*str!='$')&&(*str!='*')) tx_CRC^=*str;
+        UART_putchar(*str);
+		str++;
+    }
 
+    div_t x;
+    x=div(tx_CRC,16);
+    tx_CRC_H=x.quot;
+    tx_CRC_L=x.rem;
+    if ((tx_CRC_H >= 0) && (tx_CRC_H <= 9)) tx_CRC_H=(tx_CRC_H+'0');
+    if ((tx_CRC_H >= 0x0A) && (tx_CRC_H <= 0x0F)) tx_CRC_H=(tx_CRC_H+'A'-10);
+    UART_putchar(tx_CRC_H);
+    if ((tx_CRC_L >= 0) && (tx_CRC_L <= 9)) tx_CRC_L=(tx_CRC_L+'0');
+    if ((tx_CRC_L >= 0x0A) && (tx_CRC_L <= 0x0F)) tx_CRC_L=(tx_CRC_L+'A'-10);
+    UART_putchar(tx_CRC_L);
+    UART_putchar(0x0A);
+    UART_putchar(0x0D);
 
     return 0; //UART_putchar(str++);
 }

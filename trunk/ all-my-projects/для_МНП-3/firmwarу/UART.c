@@ -17,7 +17,7 @@ unsigned int rx_wr_index,rx_rd_index,rx_counter;
 // USART Receiver interrupt service routine
 ISR (USART_RXC_vect) //void usart_rx_isr(void)
 {
-char status,data;
+char status,data; 
 status=UCSRA;
 data=UDR;
 // при переполнении буфера прием новых данных преостанавливается до тех пор,

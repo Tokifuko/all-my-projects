@@ -1,25 +1,3 @@
-/*****************************************************
-This program was produced by the
-CodeWizardAVR V2.04.6 Evaluation
-Automatic Program Generator
-© Copyright 1998-2010 Pavel Haiduc, HP InfoTech s.r.l.
-http://www.hpinfotech.com
-
-Project :
-Version :
-Date    : 05.04.2010
-Author  : Freeware, for evaluation and non-commercial use only
-Company :
-Comments:
-
-
-Chip type               : ATmega16L
-Program type            : Application
-AVR Core Clock frequency: 4,000000 MHz
-Memory model            : Small
-External RAM size       : 0
-Data Stack size         : 256
-*****************************************************/
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -50,6 +28,7 @@ if (step==2) DDRA=4;
 }
 
 // Declare your global variables here
+
 
 int main(void)
 {
@@ -147,12 +126,15 @@ sei();
 DDRA=0;
  if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
    else DDRA &=~ (1<<DDA0);
+
+MNP_send_message();//str);
+//UART_putchar(step);
 while (1)
       {
    
-        step++;
-     UART_putchar(step);
-     //UART_putchar(step);
+       // step++;
+  //   UART_putchar(step);
+     
 
          _delay_ms(200);
 
@@ -163,9 +145,10 @@ while (1)
     if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
    else DDRA &=~ (1<<DDA0);
 
+    _delay_ms(200);
 if (UART_rx_buffer_overflow ) DDRA |=(1<<DDA2);
    else DDRA &=~ (1<<DDA2);
-
+_delay_ms(200);
     if (UART_rx_buffer_full ) DDRA |=(1<<DDA1);
    else DDRA &=~ (1<<DDA1);
 
