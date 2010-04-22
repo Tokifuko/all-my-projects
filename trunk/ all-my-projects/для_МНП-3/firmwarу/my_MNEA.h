@@ -47,3 +47,6 @@ void MNP_message_reset (void); // срасывает принимающий автомат
 
 char MNP_send_message(void);//char* str); // отправляет сообщение
 
+char MNP_message_parser(void);
+
+unsigned char step;

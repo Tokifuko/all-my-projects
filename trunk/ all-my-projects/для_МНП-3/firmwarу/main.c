@@ -6,8 +6,8 @@
 #include <UART.c>
 #include <my_MNEA.c>
 
+char error_code=0;
 
-unsigned char step;
 // Timer 0 overflow interrupt service routine
 ISR(TIMER0_OVF_vect)
 {
@@ -124,17 +124,26 @@ UART_init();
 sei();
 //UART_putchar(step);
 DDRA=0;
+/*
  if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
    else DDRA &=~ (1<<DDA0);
+*/
 
 MNP_send_message();//str);
 //UART_putchar(step);
+
 while (1)
       {
-   
+
+    error_code=MNP_get_message();
+    DDRA=error_code;
+
+
+
        // step++;
   //   UART_putchar(step);
      
+/*
 
          _delay_ms(200);
 
@@ -151,6 +160,7 @@ if (UART_rx_buffer_overflow ) DDRA |=(1<<DDA2);
 _delay_ms(200);
     if (UART_rx_buffer_full ) DDRA |=(1<<DDA1);
    else DDRA &=~ (1<<DDA1);
+*/
 
     //step=UART_getchar();
     // step=UART_getchar();

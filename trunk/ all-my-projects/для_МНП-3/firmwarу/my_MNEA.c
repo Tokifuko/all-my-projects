@@ -15,6 +15,8 @@ char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
 unsigned char MNP_message_mode =MNP_WAIT_START;
 char *str="$PPER,0*";
+unsigned char debug_counter=0;
+
 
 
 void MNP_message_reset ()
@@ -44,6 +46,7 @@ char MNP_get_message(void)
             if (data=='$')
             {
                 MNP_message_mode=MNP_GET_DATA;  // начинаем принимать данные
+                debug_counter++;
                 MNP_CRC=0;// все сбрасываем
                 MNP_message_length=0;
                 MNP_message_counter=0;
@@ -122,10 +125,11 @@ char MNP_get_message(void)
         case MNP_GET_LF: // и в конце должен быть символ перевода строки
             if (data==0x0D) MNP_message_mode=MNP_WAIT_START;// символ перевода строки
             else return ERR_MNP_LF_EXPECTED;
+            return MNP_message_parser();
             break;
     }
     return 0;
-}
+} 
 
 char MNP_send_message(void)//char *str)
 {
@@ -154,4 +158,51 @@ char MNP_send_message(void)//char *str)
     UART_putchar(0x0D);
 
     return 0; //UART_putchar(str++);
+}
+
+char MNP_message_parser(void)
+{
+   MNP_message_reset ();
+   MNP_send_message();
+   char stop_step=5;
+   step++;
+   if (step<stop_step) return 1;
+   if (step<stop_step) return 1;
+    if (MNP_message_buffer[0]!='P') return 1;
+    if (MNP_message_buffer[1]!='I') return 1;
+    if (MNP_message_buffer[2]!='R') return 1;
+    if (MNP_message_buffer[3]!='E') return 1;
+    if (MNP_message_buffer[4]!='A') return 1;
+    if (MNP_message_buffer[5]!=',') return 1;
+    return debug_counter;
+
+}
+
+// переводит символы из строки в число
+// H-старший байт, L- младший байт
+char str_to_hex(char H, char L)
+{
+    char res=0;
+    if ((H >= '0') && (H <= '9')) res=(H-'0')<<4;
+        else if ((H >= 'A') && (H <= 'F')) res=(H-'A'+10)<<4;
+    if ((L >= '0') && (L <= '9')) res+=(L-'0')<<4;
+    else if ((L >= 'A') && (L <= 'F')) res+=(L-'A'+10)<<4;    
+    return res;
+}
+
+
+// находит вхождение одной строки в другую
+// начинает с начала и до len
+// возвращает 0 - если несовпадает 1-если совпадает
+char str_in_str(char *str1, char *str2, char len)
+{
+    char i;
+    while (i<=len)
+    {
+        if ((*str1++)==(*str2++)) i++;
+        else return 0;
+    }
+    return 1;
+
+
 }
