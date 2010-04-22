@@ -40,7 +40,8 @@ extern "C" {
 #define ERR_MNP_CRC_ERROR                       -12// CRC не сошелся
 
 
-#define PPER_command    "$PPER,0*" // команда самоконтроя МНП5
+#define PPER_command    "PIPER,0" // команда самоконтроя МНП3
+#define GLRMS_message   "GLRMS"
 
 char MNP_get_message(void); // принимает сообщение
 void MNP_message_reset (void); // срасывает принимающий автомат

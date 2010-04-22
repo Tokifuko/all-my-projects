@@ -14,7 +14,7 @@ unsigned char MNP_message_length=0;
 char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
 unsigned char MNP_message_mode =MNP_WAIT_START;
-char *str="$PPER,0*";
+char *str=PPER_command;
 unsigned char debug_counter=0;
 
 
@@ -135,14 +135,16 @@ char MNP_send_message(void)//char *str)
 {
     char tx_CRC=0;
     char tx_CRC_H,tx_CRC_L;
+    UART_putchar('$');
     
     while (*str)
     {
  
-	if  ((*str!='$')&&(*str!='*')) tx_CRC^=*str;
+	tx_CRC^=*str;
         UART_putchar(*str);
 		str++;
     }
+    UART_putchar('*');
 
     div_t x;
     x=div(tx_CRC,16);
@@ -162,12 +164,25 @@ char MNP_send_message(void)//char *str)
 
 char MNP_message_parser(void)
 {
+    char *str2;
+    char r;
+    str2=GLRMS_message;
+    r=str_in_str(MNP_message_buffer,str2,4);
+    if (r)
+    {
+        return 1;
+
+
+    }
+return 0;
    MNP_message_reset ();
    MNP_send_message();
+/*
    char stop_step=5;
    step++;
    if (step<stop_step) return 1;
    if (step<stop_step) return 1;
+
     if (MNP_message_buffer[0]!='P') return 1;
     if (MNP_message_buffer[1]!='I') return 1;
     if (MNP_message_buffer[2]!='R') return 1;
@@ -175,7 +190,7 @@ char MNP_message_parser(void)
     if (MNP_message_buffer[4]!='A') return 1;
     if (MNP_message_buffer[5]!=',') return 1;
     return debug_counter;
-
+*/
 }
 
 // переводит символы из строки в число
