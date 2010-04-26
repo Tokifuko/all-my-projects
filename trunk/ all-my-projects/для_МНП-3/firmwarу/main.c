@@ -129,15 +129,23 @@ DDRA=0;
    else DDRA &=~ (1<<DDA0);
 */
 
-MNP_send_message();//str);
+//MNP_send_message();//str);
 //UART_putchar(step);
 
 while (1)
       {
 
     error_code=MNP_get_message();
-    DDRA=error_code;
+    //DDRA=error_code;
 
+    if (GL_valid_flag ) DDRA |=(1<<DDA0);
+   else DDRA &=~ (1<<DDA0);
+
+        if (GP_valid_flag ) DDRA |=(1<<DDA1);
+   else DDRA &=~ (1<<DDA1);
+
+        if (GN_valid_flag ) DDRA |=(1<<DDA2);
+   else DDRA &=~ (1<<DDA2);
 
 
        // step++;
@@ -151,8 +159,7 @@ while (1)
 
 
 
-    if (UART_rx_buffer_empty ) DDRA |=(1<<DDA0);
-   else DDRA &=~ (1<<DDA0);
+
 
     _delay_ms(200);
 if (UART_rx_buffer_overflow ) DDRA |=(1<<DDA2);

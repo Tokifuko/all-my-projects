@@ -41,7 +41,14 @@ extern "C" {
 
 
 #define PPER_command    "PIPER,0" // команда самоконтроя МНП3
-#define GLRMS_message   "GLRMS"
+#define GLRMS_message   "GLRMC"
+#define GPRMS_message   "GLRMC"
+#define GNRMS_message   "GNRMC"
+
+// режимы работы
+#define GL_only         1
+#define GP_only         2
+#define GL_and_GP       3
 
 char MNP_get_message(void); // принимает сообщение
 void MNP_message_reset (void); // срасывает принимающий автомат
@@ -49,5 +56,10 @@ void MNP_message_reset (void); // срасывает принимающий автомат
 char MNP_send_message(void);//char* str); // отправляет сообщение
 
 char MNP_message_parser(void);
+char MNP_RMS_message_parser(void);
+char* MNP_get_param(char par_num);
+//char str_in_str(char *str1, char *str2, char len);
+char str_in_str(void);
+
 
 unsigned char step;

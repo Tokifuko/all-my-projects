@@ -3,7 +3,7 @@
 //#include <UART.h>
 #include <my_MNEA.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 //функция принимает и обрабатывает сообщение из UART-a
 //заполняет буфер соообщения и подсчитывает контрольную сумму
@@ -14,10 +14,18 @@ unsigned char MNP_message_length=0;
 char MNP_message_buffer[MNP_MESSAGE_BUFFER_SIZE];
 unsigned char MNP_message_counter=0;
 unsigned char MNP_message_mode =MNP_WAIT_START;
-char *str=PPER_command;
-unsigned char debug_counter=0;
-
-
+unsigned char g_day=0;
+unsigned char g_month=0;
+unsigned char g_yaer=0;
+unsigned char g_minute=0;
+unsigned char g_hour=0;
+unsigned char g_sec=0;
+unsigned char g_m_sec=0;
+unsigned char GL_valid_flag=0;
+unsigned char GP_valid_flag=0;
+unsigned char GN_valid_flag=0;
+unsigned char sattelite_system=GL_and_GP;
+char* param;
 
 void MNP_message_reset ()
 {
@@ -46,7 +54,7 @@ char MNP_get_message(void)
             if (data=='$')
             {
                 MNP_message_mode=MNP_GET_DATA;  // начинаем принимать данные
-                debug_counter++;
+               // debug_counter++;
                 MNP_CRC=0;// все сбрасываем
                 MNP_message_length=0;
                 MNP_message_counter=0;
@@ -131,6 +139,7 @@ char MNP_get_message(void)
     return 0;
 } 
 
+/*
 char MNP_send_message(void)//char *str)
 {
     char tx_CRC=0;
@@ -161,36 +170,29 @@ char MNP_send_message(void)//char *str)
 
     return 0; //UART_putchar(str++);
 }
+*/
 
 char MNP_message_parser(void)
 {
-    char *str2;
-    char r;
-    str2=GLRMS_message;
-    r=str_in_str(MNP_message_buffer,str2,4);
-    if (r)
+    char* res;
+    switch (sattelite_system) //какая навигационная система?
     {
-        return 1;
-
-
+        case GL_only: 
+            res=strstr(MNP_message_buffer,GLRMS_message); // принято сообщение от ГЛОНАСС
+            if (res!=NULL) GL_valid_flag=MNP_RMS_message_parser();
+            break;
+        case GP_only:
+            res=strstr(MNP_message_buffer,GPRMS_message); // принято сообщение от GPS
+            if (res!=NULL) GP_valid_flag=MNP_RMS_message_parser();
+            break;
+        case GL_and_GP:
+            res=strstr(MNP_message_buffer,GNRMS_message); // принято сообщение от ГЛОНАСС + GPS
+            if (res!=NULL) GN_valid_flag=MNP_RMS_message_parser();
+            break;            
     }
-return 0;
-   MNP_message_reset ();
-   MNP_send_message();
-/*
-   char stop_step=5;
-   step++;
-   if (step<stop_step) return 1;
-   if (step<stop_step) return 1;
-
-    if (MNP_message_buffer[0]!='P') return 1;
-    if (MNP_message_buffer[1]!='I') return 1;
-    if (MNP_message_buffer[2]!='R') return 1;
-    if (MNP_message_buffer[3]!='E') return 1;
-    if (MNP_message_buffer[4]!='A') return 1;
-    if (MNP_message_buffer[5]!=',') return 1;
-    return debug_counter;
-*/
+    MNP_message_reset (); //готовимся к приму нового сообщения
+   
+   return 1;
 }
 
 // переводит символы из строки в число
@@ -200,24 +202,55 @@ char str_to_hex(char H, char L)
     char res=0;
     if ((H >= '0') && (H <= '9')) res=(H-'0')<<4;
         else if ((H >= 'A') && (H <= 'F')) res=(H-'A'+10)<<4;
-    if ((L >= '0') && (L <= '9')) res+=(L-'0')<<4;
-    else if ((L >= 'A') && (L <= 'F')) res+=(L-'A'+10)<<4;    
+    if ((L >= '0') && (L <= '9')) res+=(L-'0');
+    else if ((L >= 'A') && (L <= 'F')) res+=(L-'A'+10);
+    return res;
+}
+char str_to_dec(char H, char L)
+{
+    char res=0;
+    if ((H >= '0') && (H <= '9')) res=(H-'0')*10;
+    if ((L >= '0') && (L <= '9')) res+=(L-'0');
     return res;
 }
 
-
-// находит вхождение одной строки в другую
-// начинает с начала и до len
-// возвращает 0 - если несовпадает 1-если совпадает
-char str_in_str(char *str1, char *str2, char len)
+// обрабатывает GxRMS сообщения
+// извлекает из него дату и время, взврщает флаг годности
+char MNP_RMS_message_parser(void)
 {
-    char i;
-    while (i<=len)
-    {
-        if ((*str1++)==(*str2++)) i++;
-        else return 0;
-    }
+
+    param=MNP_get_param(2);
+
+
+
+    if (*param=='V') return 0; // решение не годно
+    if (*param=='A') return 0; // получено в автономном режиме
+   // if (*param=='D') return 0; // получено в дифиренциальном режиме   
+
+    param=MNP_get_param(1);
+    g_hour=str_to_dec(*param,*(param+1));
+    g_minute=str_to_dec(*(param+2),*(param+3));
+    g_sec=str_to_dec(*(param+4),*(param+5));
+    g_m_sec=str_to_dec(*(param+7),*(param+8));
+
+    param=MNP_get_param(9);
+    g_day=str_to_dec(*param,*(param+1));
+    g_month=str_to_dec(*(param+2),*(param+3));
+    g_yaer=str_to_dec(*(param+4),*(param+5));
     return 1;
+}
 
-
+char* MNP_get_param(char par_number)
+{
+    char i=0;
+    char *res;
+    res=MNP_message_buffer;
+   // par_number++;
+    while (i<par_number)
+    {
+        res=strchr(res,',');
+        res++;
+        i++;
+    }
+    return res;
 }
