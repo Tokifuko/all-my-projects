@@ -23,7 +23,7 @@ extern "C" {
 
 
 // размер буфера для сообщений
-#define	 MNP_MESSAGE_BUFFER_SIZE        128
+#define	 MNP_MESSAGE_BUFFER_SIZE        64
 
 //коды ошибок принимающего автомата
 #define ERR_RX_EMPTY                            -1 // буфер пустой

@@ -33,7 +33,7 @@
 #define DATA_REGISTER_EMPTY (1<<UDRE)
 #define RX_COMPLETE (1<<RXC)
 
-#define RX_BUFFER_SIZE 255 // USART Transmitter buffer
+#define RX_BUFFER_SIZE 64 // USART Transmitter buffer
 #define TX_BUFFER_SIZE 16
 
 char UART_getchar(void);

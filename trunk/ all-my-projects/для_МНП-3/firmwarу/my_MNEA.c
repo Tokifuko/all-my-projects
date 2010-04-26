@@ -25,7 +25,7 @@ unsigned char GL_valid_flag=0;
 unsigned char GP_valid_flag=0;
 unsigned char GN_valid_flag=0;
 unsigned char sattelite_system=GL_and_GP;
-char* param;
+
 
 void MNP_message_reset ()
 {
@@ -218,10 +218,8 @@ char str_to_dec(char H, char L)
 // извлекает из него дату и время, взврщает флаг годности
 char MNP_RMS_message_parser(void)
 {
-
+    char* param;
     param=MNP_get_param(2);
-
-
 
     if (*param=='V') return 0; // решение не годно
     if (*param=='A') return 0; // получено в автономном режиме

@@ -31,7 +31,7 @@ if ((status & (FRAMING_ERROR | PARITY_ERROR | DATA_OVERRUN))==0)
    UART_rx_buffer_empty=0;
    if (++rx_counter == RX_BUFFER_SIZE)
       {
-     //  if (rx_counter==255) rx_counter--;  // чтоб не перепонился тип unsigned char
+     // if (rx_counter==255) rx_counter--;  // чтоб не перепонился тип unsigned char
      // rx_counter=0;
       UART_rx_buffer_full=1;
       };
