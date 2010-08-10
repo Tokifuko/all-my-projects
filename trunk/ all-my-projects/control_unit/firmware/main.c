@@ -10,6 +10,7 @@ int main(void)
 {
 
 unsigned char i=0;
+unsigned char j=0;
 
 
 // Declare your local variables here
@@ -32,15 +33,18 @@ while (1)
       {
 
 
-        _delay_ms(150);
+        _delay_ms(75);
       	i++;
+        j++;
 	 	if (i>7) i=0;
+        if (j>199) j=0;
       //	display_digits[0]=i;
       //	display_digits[1]=i;
       //	display_digits[2]=i;
       //	display_digits[3]=i;
 	  display_animation(0,i);
-	 	display_char_out(1,i);
+	 	//display_char_out(1,i);
+                display_char_out(1,j/2);
 		//display_digits[2]=10;
 		//display_digits[3]=10;
       	//display_repaint();
