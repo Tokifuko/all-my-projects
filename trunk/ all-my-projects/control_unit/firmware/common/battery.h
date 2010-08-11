@@ -11,8 +11,8 @@
 #include <avr/io.h>
 
 // ============================== Defins =======================================
-#define BAT_CHARGER   // Uncomment this if charger is enabled
-//#define BAT_ADC
+//#define BAT_CHARGER   // Uncomment this if charger is enabled
+#define BAT_ADC
 
 #ifdef BAT_CHARGER
 #define BAT_CHRG_P      PB1
@@ -20,7 +20,7 @@
 #define BAT_CHRG_PORT   PORTB
 #define BAT_CHRG_PIN    PINB
 
-#define BAT_POLL_PERIOD 500 // ms
+#define BAT_CHRG_POLL_PERIOD 500 // ms
 #endif
 
 #ifdef BAT_ADC
@@ -33,25 +33,26 @@
 // Number of measures as power of 2: 0 means 1, 1 means 2, 3 means 8 and so on
 // Needed for averaging of values
 #define BAT_POWER_OF_MEASURES   3   // Power of 2
-#define BAT_NUMBER_OF_MEASURES  (1<<BATTERY_POWER_OF_MEASURES)
+#define BAT_NUMBER_OF_MEASURES  (1<<BAT_POWER_OF_MEASURES)
 
-#define BAT_U_DISCHARGED    703
+#define BAT_U_DISCHARGED    720 // About 3.6V
+#define BAT_MEASURE_PERIOD  999 // ms; Period of battery measurement
+#define ADC_PREPARE_TIMEOUT 50  // ms; Time for ADC to prepare
 
-#ifndef BAT_POLL_PERIOD
-#define BAT_POLL_PERIOD 999 // ms  Period of battery measurement
-#endif
+enum Bat_ADC_State_t {ADCNoMeasure, ADCInit, ADCMeasuring};
 #endif
 
 // ============================== Types ========================================
 struct Battery_t {
-    uint16_t Timer;
     #ifdef BAT_CHARGER
+    uint16_t ChargeTimer;
     bool IsCharging;
     #endif
     #ifdef BAT_ADC
+    uint16_t ADCTimer;
     uint8_t MeasuresCounter;
     uint16_t ADCValue;
-
+    enum Bat_ADC_State_t ADCState;
     #endif
 };
 extern struct Battery_t Battery;
@@ -77,6 +78,9 @@ void BatteryInit(void);
 #ifdef BAT_CHARGER
 void EVENT_ChargeStarted(void);
 void EVENT_ChargeEnded(void);
+#endif
+#ifdef BAT_ADC
+void EVENT_ADCMeasureCompleted(void);
 #endif
 
 #endif	/* _BATTERY_H */

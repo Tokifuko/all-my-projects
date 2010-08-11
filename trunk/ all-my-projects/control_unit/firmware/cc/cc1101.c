@@ -170,11 +170,9 @@ uint8_t CC_ReadWriteByte(uint8_t AByte){
 // ============================ Interrupts =====================================
 ISR(INT2_vect){
     // Packet has been successfully recieved
-    //PORTA |= (1<<PA1); // DEBUG
     uint8_t FifoSize = CC_ReadRegister(CC_RXBYTES); // Get bytes in FIFO
     if (FifoSize > 0) {
         CC_ReadRX(&CC.RX_PktArray[0], FifoSize);
         CC.NewPacketReceived = true;
     }
-    //PORTA &= ~(1<<PA1); // DEBUG
 }
