@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "control_unit.h"
+#include "/cc/cc1101.h"
+
 
 
 unsigned char curent_ind=0;
