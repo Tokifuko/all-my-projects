@@ -78,14 +78,23 @@ unsigned char i=0;
 while (1)
       {
         CC_Task();
-
-
         if (i>200)
         {
-            display_char_out(0,f_sr_RSSI);
-            display_char_out(1,f_sr_LQI);
-            i=0;
+            if (KEY_1_STATE)
+            {
+                display_int_out(f_sr_RSSI);
+                display_LED_off();
+            }
+                else
+                {
+                display_int_out(f_sr_LQI);
+                display_LED_on();
+                }
+
+        i=0;
         }
+          
+
         i++;
 /*
         _delay_ms(75);

@@ -11,7 +11,7 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-
+ 
     // управление светодиодом LED1 на плате пульта
 #define DISPLAY_LED_DDR     DDRC
 #define DISPLAY_LED_PORT    PORTC
@@ -66,8 +66,8 @@ extern "C" {
 #define DISPLAY_g 64       // Эти числа позволяют сделать программу независимой от подключения.
 #define DISPLAY_DP 8    // Измените эти числа, если индикатор выводит букву "зю"
 
-//unsigned char DigNumber = 0;
-extern unsigned char Dig[27]; // Массив, в котором хранятся числа, которые нужно
+#define DIG_NAMBER 27
+extern unsigned char Dig[DIG_NAMBER]; // Массив, в котором хранятся числа, которые нужно
 // вывести через порт на индикатор, чтобы он показал цифру, равную номеру
 // элемента массива. Числа зависят только от макросов.
 
@@ -81,6 +81,7 @@ void display_LED_off (void);
 void display_repaint(void);
 void display_byte_transmit(char);
 void display_char_out(unsigned char ind ,unsigned char char_data );
+void display_int_out(unsigned int int_data );
 void display_animation(unsigned char ind ,unsigned char animation_step );
 
 
