@@ -26,7 +26,7 @@ void control_unit_init(void)
 
 }
 
-unsigned char Dig[11];
+unsigned char Dig[DIG_NAMBER];
 void Dig_init(void)
 {
   Dig[0] = (DISPLAY_a+DISPLAY_b+DISPLAY_c+DISPLAY_d+DISPLAY_e+DISPLAY_f);   		// Если индикатор с общим анодом,
