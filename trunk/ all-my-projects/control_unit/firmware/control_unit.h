@@ -44,14 +44,14 @@ extern "C" {
 #define DISPLAY_POW_PIN     PD4
 
 	// у нас 8 кнопок подключеных на порт А
-#define  KEY_0_STATE 		((PINA>>PINA0) & 1)
-#define  KEY_1_STATE 		((PINA>>PINA1) & 1)
-#define  KEY_2_STATE 		((PINA>>PINA2) & 1)
-#define  KEY_3_STATE 		((PINA>>PINA3) & 1)
-#define  KEY_4_STATE 		((PINA>>PINA4) & 1)
-#define  KEY_5_STATE 		((PINA>>PINA5) & 1)
-#define  KEY_6_STATE 		((PINA>>PINA6) & 1)
-#define  KEY_7_STATE 		((PINA>>PINA7) & 1)
+#define  KEY_0_STATE 		(!((PINA>>PINA0) & 1))
+#define  KEY_1_STATE 		(!((PINA>>PINA1) & 1))
+#define  KEY_2_STATE 		(!((PINA>>PINA2) & 1))
+#define  KEY_3_STATE 		(!((PINA>>PINA3) & 1))
+#define  KEY_4_STATE 		(!((PINA>>PINA4) & 1))
+#define  KEY_5_STATE 		(!((PINA>>PINA5) & 1))
+#define  KEY_6_STATE 		(!((PINA>>PINA6) & 1))
+#define  KEY_7_STATE 		(!((PINA>>PINA7) & 1))
 
 	// всего индикаторов 4 штуки.
 #define DISPLAY_NAMBER      4
@@ -66,7 +66,7 @@ extern "C" {
 #define DISPLAY_g 64       // Эти числа позволяют сделать программу независимой от подключения.
 #define DISPLAY_DP 8    // Измените эти числа, если индикатор выводит букву "зю"
 
-#define DIG_NAMBER 27
+#define DIG_NAMBER 28
 extern unsigned char Dig[DIG_NAMBER]; // Массив, в котором хранятся числа, которые нужно
 // вывести через порт на индикатор, чтобы он показал цифру, равную номеру
 // элемента массива. Числа зависят только от макросов.
@@ -83,7 +83,7 @@ void display_byte_transmit(char);
 void display_char_out(unsigned char ind ,unsigned char char_data );
 void display_int_out(unsigned int int_data );
 void display_animation(unsigned char ind ,unsigned char animation_step );
-
+void display_signed_int_out(int signed_int_data );
 
 
 

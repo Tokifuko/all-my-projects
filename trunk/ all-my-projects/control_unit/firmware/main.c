@@ -15,10 +15,11 @@ void EVENT_NewPacket(void);
 unsigned char dat;
 
 
-float f_sr_LQI;
-float f_sr_RSSI;
+float f_sr_LQI=0;
+float f_sr_dBm=0;
+unsigned int poket_counter;
 
-#define RSSI_ACCURACY 128
+#define dBm_ACCURACY 128
 #define LQI_ACCURACY 128
 
 struct {
@@ -46,7 +47,8 @@ struct {
 
 #define DETECTOR_TIMEOUT    3996 // ms
 
-unsigned char j=0;
+
+int i_a;
 
 
 int main(void)
@@ -74,31 +76,35 @@ display_on();
     CC_Init();
     CC_SetChannel(0);
     CC_SetAddress(4);   //Never changes in CC itself
-unsigned char i=0;
+//unsigned char i=0;
+int  j=0;
 while (1)
       {
         CC_Task();
-        if (i>200)
+        if (j>10000)
         {
-            if (KEY_1_STATE)
+            if (KEY_1_STATE) // нажата первая кнопка -выводим LQI
             {
-                display_int_out(f_sr_RSSI);
-                display_LED_off();
-            }
-                else
-                {
                 display_int_out(f_sr_LQI);
                 display_LED_on();
+            }
+            else if (KEY_2_STATE) // нажата вторая кнопка - выводим количество пакетов
+                {
+                    display_int_out(poket_counter);
+                }
+                else    // ничего не нажато - выводим уровень сигнала помноженый на два
+                {
+                    display_signed_int_out(f_sr_dBm);
+                    display_LED_off();
                 }
 
-        i=0;
+         poket_counter=0;
+        j=0;
         }
-          
-
-        i++;
+j++;
 /*
         _delay_ms(75);
-      	i++;
+      	
         j++;
 	 	if (i>7) i=0;
         if (j>199) j=0;
@@ -169,11 +175,18 @@ void EVENT_NewPacket(void) {
             CStone.IsHere = true;
             EVENT_Detected();
         }
-    float f_RSSI;
-  // вычисление наподобе скользящего среднего
-    f_RSSI=CC.RX_Pkt.RSSI;
-    if (f_RSSI<f_sr_RSSI) f_sr_RSSI-=(f_sr_RSSI-f_RSSI)/RSSI_ACCURACY;
-    else f_sr_RSSI+=(f_RSSI-f_sr_RSSI)/RSSI_ACCURACY;
+
+       // poket_counter  - счетчик пакетов
+        poket_counter++;
+// переводим RSSI в двойные децебелы
+    float f_dBm;
+    if (CC.RX_Pkt.RSSI>=128) f_dBm=(CC.RX_Pkt.RSSI-256)-(74*2);
+        else f_dBm=CC.RX_Pkt.RSSI-(74*2);
+
+
+   // вычисление наподобе скользящего среднего   
+    if (f_dBm<f_sr_dBm) f_sr_dBm-=(f_sr_dBm-f_dBm)/dBm_ACCURACY;
+    else f_sr_dBm+=(f_dBm-f_sr_dBm)/dBm_ACCURACY;
 
     float f_LQI;
   // вычисление наподобе скользящего среднего

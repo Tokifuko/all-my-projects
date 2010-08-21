@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "control_unit.h"
-#include "/cc/cc1101.h"
+#include "cc/cc1101.h"
 
 
 
@@ -56,7 +56,8 @@ void Dig_init(void)
 	Dig[23] =DISPLAY_a;
 	Dig[24] =DISPLAY_a+DISPLAY_f;
 	Dig[25] =DISPLAY_f+DISPLAY_e;
-	Dig[26] =DISPLAY_e+DISPLAY_d;	
+	Dig[26] =DISPLAY_e+DISPLAY_d;
+  Dig[27] = DISPLAY_g;
 }
 
 
@@ -201,9 +202,35 @@ void display_animation(unsigned char ind ,unsigned char animation_step )
 void display_int_out(unsigned int int_data )
 {
 	div_t x;
-  	x=div(int_data,10000);//отсекаем что больше 100
+  	x=div(int_data,10000);//отсекаем что больше 10000
   	x=div(x.rem,100); // получаем целую часть и остаток от деления на 100
 	display_char_out(0, x.quot);
         display_char_out(1, x.rem);
 	display_repaint();
+}
+/************************************************************************************
+*	display_signed_int_out																*
+*	функция выводит число от -999, до 999 на оба индикатора                       *
+*       на верхний выводим старшую часть, на нижний младшую                         *
+ *	Входные параметры.																*
+*		signed_int_data - исло от -9990 до 999		(если больше - выводим 999)*
+************************************************************************************/
+
+void display_signed_int_out(int signed_int_data )
+{
+    if (signed_int_data<0)
+    {
+        signed_int_data=signed_int_data*(-1);
+        display_digits[0]=27;                   // знак минус
+    }
+    else display_digits[0]=10;              // пустое знакоместо
+
+  if (signed_int_data>999) signed_int_data=999;
+    div_t x;
+    x=div(signed_int_data,1000);//отсекаем что больше 1000
+    x=div(x.rem,100); // получаем целую часть и остаток от деления на 100
+    //display_char_out(0, x.quot);
+    display_char_out(1, x.rem);
+    display_digits[1]= x.quot;
+    display_repaint();
 }
