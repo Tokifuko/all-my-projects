@@ -31,11 +31,13 @@ __published:	// IDE-managed Components
         TButton *btDelRecord;
         TButton *btSaveData;
         TButton *btLoadData;
+        TComboBox *cbPort;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall btAddRecordClick(TObject *Sender);
         void __fastcall btDelRecordClick(TObject *Sender);
         void __fastcall btSaveDataClick(TObject *Sender);
         void __fastcall btLoadDataClick(TObject *Sender);
+        void __fastcall cbPortDropDown(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

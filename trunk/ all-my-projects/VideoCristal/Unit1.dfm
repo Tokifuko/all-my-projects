@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 192
-  Top = 147
+  Left = 305
+  Top = 567
   Width = 1305
   Height = 674
   Caption = 'Form1'
@@ -110,5 +110,14 @@ object Form1: TForm1
     Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1076#1072#1085#1085#1099#1077
     TabOrder = 8
     OnClick = btLoadDataClick
+  end
+  object cbPort: TComboBox
+    Left = 536
+    Top = 120
+    Width = 145
+    Height = 24
+    ItemHeight = 16
+    TabOrder = 9
+    OnDropDown = cbPortDropDown
   end
 end

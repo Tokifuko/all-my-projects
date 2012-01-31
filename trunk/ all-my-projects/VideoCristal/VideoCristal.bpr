@@ -4,7 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="VideoCristal.exe"/>
-    <OBJFILES value="VideoCristal.obj Unit1.obj"/>
+    <OBJFILES value="VideoCristal.obj Unit1.obj com_function.obj"/>
     <RESFILES value="VideoCristal.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -54,6 +54,7 @@
       <FILE FILENAME="VideoCristal.res" FORMNAME="" UNITNAME="VideoCristal.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="VideoCristal.cpp" FORMNAME="" UNITNAME="VideoCristal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Unit1.cpp" FORMNAME="Form1" UNITNAME="Unit1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="com_function.cpp" FORMNAME="" UNITNAME="com_function" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
