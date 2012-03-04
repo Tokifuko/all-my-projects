@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 302
-  Top = 140
+  Left = 559
+  Top = 43
   Width = 1305
-  Height = 778
+  Height = 771
   Caption = 'Form1'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -90,9 +90,9 @@ object Form1: TForm1
   object lPshFile: TLabel
     Left = 56
     Top = 680
-    Width = 367
+    Width = 119
     Height = 16
-    Caption = 'C:\AMV\psi\03605.kyle_m.Siar_Mortal-Slonik.amvnews.ru.mp4'
+    Caption = 'C:\'#1082#1080#1085#1086'\Kristall.mp4'
   end
   object ListBox1: TListBox
     Left = 56
@@ -249,7 +249,7 @@ object Form1: TForm1
     Top = 8
   end
   object Timer2: TTimer
-    Interval = 800
+    Interval = 1200
     OnTimer = Timer2Timer
     Left = 936
     Top = 8

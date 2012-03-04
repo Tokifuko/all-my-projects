@@ -14,7 +14,7 @@
 
 #define BUFSIZE 1
 
-#define PSH_VIDEO_LEN           60 // длинна пщщщ-видео в секундах
+#define PSH_VIDEO_LEN           15 // длинна пщщщ-видео в секундах
 #define STATE_PLAY_PSH          1
 #define STATE_PLAY_VIDEO        2
 
