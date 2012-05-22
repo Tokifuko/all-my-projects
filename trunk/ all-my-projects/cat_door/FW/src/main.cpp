@@ -14,7 +14,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#define DEBUG_LED_TIMEOUT	500
+#define DEBUG_LED_TIMEOUT	100
 #define OPEN_DELAY			1500
 
 // состояния автомата ручного управления
@@ -31,6 +31,8 @@
 #define AC_CLOSING_TEMP_UP			5
 #define AC_CLOSE					6
 
+#define ATX_ON_TIMEOUT				100000 // время ожидания включения блока питания ATX
+
 UART_Class* pUART1;
 UART_Class* pUART2;
 UART_Class* pUART3;
@@ -42,15 +44,18 @@ void GeneralInit(void);
 void MainControl(void);
 void AutoControl (void);
 void SensorDebug(void);
+uint32_t PowerSupplyOn(void);
+uint32_t PowerSupplyOff(void);
 UART_Class DbgUART;
 uint8_t chManualControlState;
 uint8_t chAutoControlState;
-uint8_t chSensorDebug;
+uint8_t chSensor1Debug;
+uint8_t chSensor2Debug;
 MotorClass Motor;
 uint32_t iOpenTimer;
 
 int main(void) {
-
+	uint32_t AdcValue;
 	uint32_t iDebugLedTimer;
 
 	Motor.Init();
@@ -58,6 +63,7 @@ int main(void) {
     Delay.ms(100);
     uint32_t flag=0;
     GeneralInit();
+
 
 
     //sprintf(str,"Hello word %в  \n",56);
@@ -71,26 +77,28 @@ int main(void) {
    // Motor.Downward();
     // ==== Main cycle ====
     chManualControlState=MC_IDLE;
+    PowAtxOff();
     while(1)
     {
     	SensorDebug();
     	MainControl();
-    	//Motor.Task();
+    	Motor.Task();
+    	if (Motor.GetOverloadFlag()==1)
+    	{
+    		AdcValue=Motor.GetCurrentConsumption();
+    		DbgUART.SendPrintF("ADC value= %d \n",AdcValue);
+    	}
     	if (Delay.Elapsed(&iDebugLedTimer,DEBUG_LED_TIMEOUT))
     	{
     		if (flag==0)
     			{
-    				Led1On();
-    				//Motor.Downward();
+    				if (!(PowAtxIsOk())) Led1On(); // зажикая светодиод тушим подсветку кнопки
     				flag=1;
-    				//DbgUART.SendByte('o');
     			}
     			else
     				{
     					Led1Off();
-    					//Motor.Upward();
     					flag=0;
-    					//DbgUART.SendByte('f');
     				}
     	}
         //i2cMgr.Task();
@@ -110,15 +118,31 @@ void SensorDebug()
 {
 	if (Sensor1Pressed())
 	{
-		if (chSensorDebug==1) return;
-		chSensorDebug=1;
-		DbgUART.SendPrintF("Sens 1 - activated \n");
+		if (chSensor1Debug==0)
+		{
+			chSensor1Debug=1;
+			DbgUART.SendPrintF("Sens 1 - activated \n");
+		}
 	}
 	else
 	{
-		if (chSensorDebug==0) return;
-		chSensorDebug=0;
-		DbgUART.SendPrintF("Sens 1 - deactivated \n");
+		if (chSensor1Debug==1)
+		{
+			chSensor1Debug=0;
+			DbgUART.SendPrintF("Sens 1 - deactivated \n");
+		}
+	}
+	if (Sensor2Pressed())
+	{
+		if (chSensor2Debug==1) return;
+		chSensor2Debug=1;
+		DbgUART.SendPrintF("Sens 2 - activated \n");
+	}
+	else
+	{
+		if (chSensor2Debug==0) return;
+		chSensor2Debug=0;
+		DbgUART.SendPrintF("Sens 2 - deactivated \n");
 	}
 
 }
@@ -130,33 +154,34 @@ void MainControl ()
 		AutoControl();
 		if (KeyDownPressed())
 			{
-				chManualControlState=MC_MOVE_DOWN;
 				DbgUART.SendPrintF("key_Down PRESSED \n");
+				if (PowerSupplyOn()==1)	chManualControlState=MC_MOVE_DOWN;
 			}
 		if (KeyUpPressed())
 			{
-				chManualControlState=MC_MOVE_UP;
 				DbgUART.SendPrintF("key_UP  PRESSED\n");
+				if (PowerSupplyOn()==1)	chManualControlState=MC_MOVE_UP;
 			}
 		break;
 	case MC_MOVE_DOWN: // дверь опускается
 		if (!KeyDownPressed()) // кнопка отжата
 		{
-			DbgUART.SendPrintF("key_Down RELISE \n");
 			Motor.Stop();
-			chManualControlState=MC_IDLE;
+			DbgUART.SendPrintF("key_Down RELISE \n");
+			if (PowerSupplyOff()==1)	chManualControlState=MC_IDLE;
+			//chAutoControlState=AC_OPEN;  // запоминаем положение двери
 		}
 		if (StopDown1Pressed()) // сработал концевой выключатель
 		{
-			DbgUART.SendPrintF("STOP_Down 1  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("STOP_Down 1  \n");
 			chManualControlState=MC_IDLE;
 			chAutoControlState=AC_CLOSE;  // запоминаем положение двери
 		}
 		if (StopDown2Pressed()) // сработал концевой выключатель
 		{
-			DbgUART.SendPrintF("STOP_Down 2  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("STOP_Down 2  \n");
 			chManualControlState=MC_IDLE;
 			chAutoControlState=AC_CLOSE;  // запоминаем положение двери
 		}
@@ -167,19 +192,19 @@ void MainControl ()
 		{
 			Motor.Stop();
 			DbgUART.SendPrintF("key_Up RELISE \n");
-			chManualControlState=MC_IDLE;
+			if (PowerSupplyOff()==1)	chManualControlState=MC_IDLE;
 		}
 		if (StopUp1Pressed()) // сработал концевой выключатель
 		{
-			DbgUART.SendPrintF("STOP_Up 1  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("STOP_Up 1  \n");
 			chManualControlState=MC_IDLE;
 			chAutoControlState=AC_OPEN;  // запоминаем положение двери
 		}
 		if (StopUp2Pressed()) // сработал концевой выключатель
 		{
-			DbgUART.SendPrintF("STOP_Up 2  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("STOP_Up 2  \n");
 			chManualControlState=MC_IDLE;
 			chAutoControlState=AC_OPEN;  // запоминаем положение двери
 		}
@@ -194,9 +219,12 @@ void AutoControl (void)
 	switch (chAutoControlState)
 	{
 	case AC_INIT:
-		chAutoControlState=AC_OPENING;
-		Motor.Upward();
 		DbgUART.SendPrintF("Auto Control Init  \n");
+		if (PowerSupplyOn()==1)
+		{
+			chAutoControlState=AC_OPENING;
+			Motor.Upward();
+		}
 		break;
 	case AC_OPENING:
 		if (WarningUpPressed())
@@ -205,10 +233,16 @@ void AutoControl (void)
 			chAutoControlState=AC_OPENING_TEMP_DOWN;
 			DbgUART.SendPrintF("War Up go to temp_down  \n");
 		}
+		if (Motor.GetOverloadFlag())
+		{
+			Motor.Downward();
+			chAutoControlState=AC_OPENING_TEMP_DOWN;
+			DbgUART.SendPrintF("Motor overload, go temp down  \n");
+		}
 		if (StopUp1Pressed() | StopUp2Pressed())
 		{
-			DbgUART.SendPrintF("Stop Up. new state - OPEN  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("Stop Up. new state - OPEN  \n");
 			chAutoControlState=AC_OPEN;
 			Delay.Reset(&iOpenTimer);
 		}
@@ -216,23 +250,33 @@ void AutoControl (void)
 	case AC_OPENING_TEMP_DOWN:
 		if (WarningDownPressed())
 		{
-			DbgUART.SendPrintF("War down. go to Movw UP  \n");
 			Motor.Upward();
+			DbgUART.SendPrintF("War down. go to Movw UP  \n");
+			chAutoControlState=AC_OPENING;
+		}
+		if (Motor.GetOverloadFlag())
+		{
+			Motor.Upward();
+			DbgUART.SendPrintF("Motor overload, go Movw UP  \n");
 			chAutoControlState=AC_OPENING;
 		}
 		if (StopDown1Pressed() | StopDown2Pressed())
 		{
-			DbgUART.SendPrintF("stop down, temp down complite, move UP  \n");
 			Motor.Upward();
+			DbgUART.SendPrintF("stop down, temp down complite, move UP  \n");
 			chAutoControlState=AC_OPENING;
 		}
 		break;
 	case AC_OPEN: // дверь открыта
+		if ((Sensor1Pressed()) | (Sensor2Pressed()))Delay.Reset(&iOpenTimer); // если сенсор сработал, значит кошка в проходе. сбрасываем таймер
 		if (Delay.Elapsed(&iOpenTimer,OPEN_DELAY))
 		{
-			chAutoControlState=AC_CLOSING;
-			Motor.Downward();
-			DbgUART.SendPrintF("Open Timeout Elapsed, go to CLOSING \n");
+			if (PowerSupplyOn()==1)
+			{
+				Motor.Downward();
+				chAutoControlState=AC_CLOSING;
+				DbgUART.SendPrintF("Open Timeout Elapsed, go to CLOSING \n");
+			}
 		}
 		break;
 	case AC_CLOSING: // начинаем закрываться
@@ -242,30 +286,64 @@ void AutoControl (void)
 			chAutoControlState=AC_CLOSING_TEMP_UP;
 			DbgUART.SendPrintF("War DOWN go to temp_up  \n");
 		}
+		if (Motor.GetOverloadFlag())
+		{
+			Motor.Upward();
+			chAutoControlState=AC_CLOSING_TEMP_UP;
+			DbgUART.SendPrintF("Motor overload, go temp_up  \n");
+		}
 		if (StopDown1Pressed() | StopDown2Pressed())
 		{
-			DbgUART.SendPrintF("Stop Down. new state - CLOSE  \n");
 			Motor.Stop();
+			DbgUART.SendPrintF("Stop Down. new state - CLOSE  \n");
 			chAutoControlState=AC_CLOSE;
 			//Delay.Reset(&iOpenTimer);
+		}
+		if ((Sensor1Pressed()) | (Sensor2Pressed()))
+		{
+			chAutoControlState=AC_OPENING;
+			Motor.Upward();
+			DbgUART.SendPrintF("Sensor act, open up  \n");
 		}
 		break;
 	case AC_CLOSING_TEMP_UP:
 		if (WarningUpPressed())
 		{
-			DbgUART.SendPrintF("War UP. go to Move Down  \n");
 			Motor.Downward();
+			DbgUART.SendPrintF("War UP. go to Move Down  \n");
+			chAutoControlState=AC_CLOSING;
+		}
+		if (Motor.GetOverloadFlag())
+		{
+			Motor.Downward();
+			DbgUART.SendPrintF("Motor overload, go to Move Down  \n");
 			chAutoControlState=AC_CLOSING;
 		}
 		if (StopUp1Pressed() | StopUp2Pressed())
 		{
-			DbgUART.SendPrintF("stop Up, temp Up complite, move down  \n");
 			Motor.Downward();
+			DbgUART.SendPrintF("stop Up, temp Up complite, move down  \n");
 			chAutoControlState=AC_CLOSING;
+		}
+		if ((Sensor1Pressed()) | (Sensor2Pressed()))
+		{
+			chAutoControlState=AC_OPENING;
+			Motor.Upward();
+			DbgUART.SendPrintF("Sensor act, open up  \n");
 		}
 		break;
 	case AC_CLOSE: // дверь закрыта
+		if (PowAtxIsOk())PowerSupplyOff(); // выключаем, если включен
+		if ((Sensor1Pressed()) | (Sensor2Pressed()))
+		{
+			if (PowerSupplyOn())
+			{
+				chAutoControlState=AC_OPENING;
+				Motor.Upward();
+				DbgUART.SendPrintF("Sensor act, open up  \n");
+			}
 
+		}
 		break;
 	}
 }
@@ -284,6 +362,7 @@ void GeneralInit(void) {
     		LED_1_CLK |
     		LED_2_CLK |
     		LED_3_CLK |
+    		LED_4_CLK |
     		KEY_DOWN_CLK |
     		KEY_UP_CLK |
     		STOP_UP_1_CLK |
@@ -294,6 +373,8 @@ void GeneralInit(void) {
     		WARNING_UP_CLK |
     		SENSOR_1_CLK |
     		SENSOR_2_CLK|
+    		POWER_ON_GPIO_CLK|
+    		POWER_OK_GPIO_CLK|
         RCC_APB2Periph_AFIO,
         ENABLE );
 
@@ -315,6 +396,11 @@ void GeneralInit(void) {
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( LED_3_PORT, &GPIO_InitStructure );
+    /* Configure LED_4_PIN as Output */
+    GPIO_InitStructure.GPIO_Pin =  LED_4_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_Init( LED_4_PORT, &GPIO_InitStructure );
 
     // кнопки ручного управления
     /* Configure KEY_DOWN_PIN as INPUT PULLUP */
@@ -362,18 +448,29 @@ void GeneralInit(void) {
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( WARNING_UP_PORT, &GPIO_InitStructure );
 
-    // Датчики ldb;tybz
-    /* Configure WARNING_DOWN_PIN as INPUT_FLOATING */
+    // Датчики движения
+    /* Configure SENSOR_1_PIN as INPUT_FLOATING */
     GPIO_InitStructure.GPIO_Pin =  SENSOR_1_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( SENSOR_1_PORT, &GPIO_InitStructure );
-    /* Configure WARNING_UP_PIN as INPUT_FLOATING */
+    /* Configure SENSOR_2_PIN as INPUT_FLOATING */
     GPIO_InitStructure.GPIO_Pin =  SENSOR_2_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( SENSOR_2_PORT, &GPIO_InitStructure );
 
+    // Управление питанием
+    /* Configure POWER_ON_PIN as Output */
+    GPIO_InitStructure.GPIO_Pin =  POWER_ON_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_Init( POWER_ON_GPIO, &GPIO_InitStructure );
+    /* Configure POWER_OK_PIN as INPUT PULLUP */
+    GPIO_InitStructure.GPIO_Pin =  POWER_OK_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+    GPIO_Init( POWER_OK_GPIO, &GPIO_InitStructure );
 
     //ROW_1_ON();
     // Leds
@@ -406,4 +503,46 @@ void GeneralInit(void) {
 //    ERock.ChooseType();
 
     //ESnd.Play("magnet.wav");
+}
+
+uint32_t PowerSupplyOn(void)
+{
+	uint32_t iTimeToWateAtxSupply;
+	PowAtxOn();
+	iTimeToWateAtxSupply=0;
+	while ((!(PowAtxIsOk())) & (iTimeToWateAtxSupply!=ATX_ON_TIMEOUT))
+	{
+		iTimeToWateAtxSupply++;
+	}
+	if (PowAtxIsOk())
+	{
+		DbgUART.SendPrintF("ATX power supply ON SUCSESS  \n");
+		return 1;
+	}
+	else
+	{
+		DbgUART.SendPrintF("ATX power supply ON ERROR  \n");
+		return 0;
+	}
+}
+
+uint32_t PowerSupplyOff(void)
+{
+	uint32_t iTimeToWateAtxSupply;
+	PowAtxOff();
+	iTimeToWateAtxSupply=0;
+	while ((PowAtxIsOk()) & (iTimeToWateAtxSupply!=ATX_ON_TIMEOUT))
+	{
+		iTimeToWateAtxSupply++;
+	}
+	if (!(PowAtxIsOk()))
+	{
+		DbgUART.SendPrintF("ATX power supply OFF SUCSESS  \n");
+		return 1;
+	}
+	else
+	{
+		DbgUART.SendPrintF("ATX power supply OFF ERROR  \n");
+		return 0;
+	}
 }

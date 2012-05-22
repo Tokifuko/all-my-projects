@@ -44,10 +44,30 @@ void MotorClass::Init(void)
     GPIO_SetBits(MOTOR_B2_GPIO,MOTOR_B2_PIN);		//P-канал выключается VCC
 
     chState=MOTOR_STOP;
+
+    CurrentAdc.Init();
 }
 
 void MotorClass::Task(void)
 {
+	bOverloadFlag=0;
+	if (iOverloadDelay==OVERLOAD_DELAY)
+	{
+		iCurrentConsumption=CurrentAdc.GetValue();
+		switch (chState)
+		{
+		case MOTOR_UPWARD:
+			if (iCurrentConsumption>OVERLOAD_LEVEL_UP) bOverloadFlag=1;
+			break;
+		case MOTOR_DOWNWARD:
+			if (iCurrentConsumption>OVERLOAD_LEVEL_DOWN) bOverloadFlag=1;
+			break;
+		}
+	}
+	else iOverloadDelay++;
+
+	if (bOverloadFlag) Led4On();
+	else Led4Off();
 	return;
 }
 
@@ -57,6 +77,7 @@ void MotorClass::Stop(void)
 	GPIO_ResetBits(MOTOR_A2_GPIO,MOTOR_A2_PIN);
 	GPIO_SetBits(MOTOR_B1_GPIO,MOTOR_B1_PIN);
 	GPIO_SetBits(MOTOR_B2_GPIO,MOTOR_B2_PIN);
+	iOverloadDelay=0;
 	Led2Off();
 	Led3Off();
 	chState=MOTOR_STOP;
@@ -72,6 +93,7 @@ void MotorClass::Upward(void) // A1, B2 - вверх
 	// включаем A1 и B2
 	GPIO_SetBits(MOTOR_A1_GPIO,MOTOR_A1_PIN);
 	GPIO_ResetBits(MOTOR_B2_GPIO,MOTOR_B2_PIN);
+	iOverloadDelay=0;
 	chState=MOTOR_UPWARD;
 	Led3On();
 }
@@ -87,6 +109,7 @@ void MotorClass::Downward(void)	// A2, B1 - вниз
 	// включаем A2 и B1
 	GPIO_SetBits(MOTOR_A2_GPIO,MOTOR_A2_PIN);
 	GPIO_ResetBits(MOTOR_B1_GPIO,MOTOR_B1_PIN);
-	Led2On();
+	iOverloadDelay=0;
 	chState=MOTOR_DOWNWARD;
+	Led2On();
 }

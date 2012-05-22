@@ -4,7 +4,7 @@
 #define MOTOR_CLASS_H
 
 #include "stm32f10x_conf.h"
-
+#include "AdcClass.h"
 
 #define MOTOR_A1_PIN  		GPIO_Pin_12
 #define MOTOR_A1_GPIO     	GPIOB
@@ -26,18 +26,26 @@
 #define MOTOR_UPWARD		2
 #define MOTOR_DOWNWARD		3
 
+#define OVERLOAD_DELAY		300  // задержка, чтоб не измерять пусковой ток +-50
+#define OVERLOAD_LEVEL_UP		1100	// уровень тока, при котором фиксируем перегрузку  +-50 (при движении вверх)
+#define OVERLOAD_LEVEL_DOWN		950	// уровень тока, при котором фиксируем перегрузку  +-50 (при движении вниз)
+
+
 #define SWITCH_DELAY		20 //ms
 
 class MotorClass {
 private:
-	uint32_t iTimeoutDelay;
+	AdcClass CurrentAdc;
+	uint32_t iOverloadDelay;   // задержка, чтоб не измерять пусковой ток
+	uint32_t iCurrentConsumption;
 	uint8_t chState;
-	uint16_t  iCurrentConsumption;
+	bool bOverloadFlag;
 public:
 	void Init(void);
 	void Task (void);
-	uint16_t  GetCurrentConsumption(void){ return iCurrentConsumption; };
+	uint32_t  GetCurrentConsumption(void){ return iCurrentConsumption; };
 	uint8_t  GetMotorState(void){ return chState; };
+	bool GetOverloadFlag (void){return bOverloadFlag;}
 	void Stop(void);
 	void Upward (void);
 	void Downward (void);
