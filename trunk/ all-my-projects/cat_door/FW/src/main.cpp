@@ -169,7 +169,7 @@ void MainControl ()
 			Motor.Stop();
 			DbgUART.SendPrintF("key_Down RELISE \n");
 			if (PowerSupplyOff()==1)	chManualControlState=MC_IDLE;
-			//chAutoControlState=AC_OPEN;  // запоминаем положение двери
+			chAutoControlState=AC_OPEN;  // запоминаем положение двери
 		}
 		if (StopDown1Pressed()) // сработал концевой выключатель
 		{
@@ -193,6 +193,7 @@ void MainControl ()
 			Motor.Stop();
 			DbgUART.SendPrintF("key_Up RELISE \n");
 			if (PowerSupplyOff()==1)	chManualControlState=MC_IDLE;
+			chAutoControlState=AC_OPEN;  // запоминаем положение двери
 		}
 		if (StopUp1Pressed()) // сработал концевой выключатель
 		{
