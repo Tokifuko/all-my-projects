@@ -16,7 +16,7 @@
 
 #define DEBUG_LED_TIMEOUT	100
 #define OPEN_DELAY			1500
-
+#define SENSOR2_IGNOR_DELAY 1300
 // состояния автомата ручного управления
 #define MC_IDLE			0
 #define MC_MOVE_DOWN	1
@@ -29,7 +29,9 @@
 #define AC_OPEN						3
 #define AC_CLOSING					4
 #define AC_CLOSING_TEMP_UP			5
-#define AC_CLOSE					6
+#define AC_CLOSE_INDOOR_SENS_OFF	6
+#define AC_CLOSE_INDOOR_SENS_ON		7
+
 
 #define ATX_ON_TIMEOUT				100000 // время ожидания включения блока питания ATX
 
@@ -53,6 +55,7 @@ uint8_t chSensor1Debug;
 uint8_t chSensor2Debug;
 MotorClass Motor;
 uint32_t iOpenTimer;
+uint32_t iSensor2IgnorTimer;
 
 int main(void) {
 	uint32_t AdcValue;
@@ -176,14 +179,14 @@ void MainControl ()
 			Motor.Stop();
 			DbgUART.SendPrintF("STOP_Down 1  \n");
 			chManualControlState=MC_IDLE;
-			chAutoControlState=AC_CLOSE;  // запоминаем положение двери
+			chAutoControlState=AC_CLOSE_INDOOR_SENS_OFF;  // запоминаем положение двери
 		}
 		if (StopDown2Pressed()) // сработал концевой выключатель
 		{
 			Motor.Stop();
 			DbgUART.SendPrintF("STOP_Down 2  \n");
 			chManualControlState=MC_IDLE;
-			chAutoControlState=AC_CLOSE;  // запоминаем положение двери
+			chAutoControlState=AC_CLOSE_INDOOR_SENS_OFF;  // запоминаем положение двери
 		}
 		if (chManualControlState==MC_MOVE_DOWN) Motor.Downward();
 		break;
@@ -269,7 +272,7 @@ void AutoControl (void)
 		}
 		break;
 	case AC_OPEN: // дверь открыта
-		if ((Sensor1Pressed()) | (Sensor2Pressed()))Delay.Reset(&iOpenTimer); // если сенсор сработал, значит кошка в проходе. сбрасываем таймер
+		if ((Sensor1Pressed()) |(Sensor2Pressed()))Delay.Reset(&iOpenTimer); // если сенсор сработал, значит кошка в проходе. сбрасываем таймер
 		if (Delay.Elapsed(&iOpenTimer,OPEN_DELAY))
 		{
 			if (PowerSupplyOn()==1)
@@ -297,10 +300,11 @@ void AutoControl (void)
 		{
 			Motor.Stop();
 			DbgUART.SendPrintF("Stop Down. new state - CLOSE  \n");
-			chAutoControlState=AC_CLOSE;
-			//Delay.Reset(&iOpenTimer);
+			chAutoControlState=AC_CLOSE_INDOOR_SENS_OFF;
+			Delay.Reset(&iSensor2IgnorTimer);
+			DbgUART.SendPrintF("Close state. indoor sens OFF  \n");
 		}
-		if ((Sensor1Pressed()) | (Sensor2Pressed()))
+		if ((Sensor1Pressed()) /*| (Sensor2Pressed())*/)
 		{
 			chAutoControlState=AC_OPENING;
 			Motor.Upward();
@@ -326,14 +330,32 @@ void AutoControl (void)
 			DbgUART.SendPrintF("stop Up, temp Up complite, move down  \n");
 			chAutoControlState=AC_CLOSING;
 		}
-		if ((Sensor1Pressed()) | (Sensor2Pressed()))
+		if ((Sensor1Pressed()) /*| (Sensor2Pressed())*/)
 		{
 			chAutoControlState=AC_OPENING;
 			Motor.Upward();
 			DbgUART.SendPrintF("Sensor act, open up  \n");
 		}
 		break;
-	case AC_CLOSE: // дверь закрыта
+	case AC_CLOSE_INDOOR_SENS_OFF: // дверь закрыта игнорируем датчик
+		if (PowAtxIsOk())PowerSupplyOff(); // выключаем, если включен
+		if (Delay.Elapsed(&iSensor2IgnorTimer,SENSOR2_IGNOR_DELAY))
+		{
+			chAutoControlState=AC_CLOSE_INDOOR_SENS_ON;
+			DbgUART.SendPrintF("Close state. indoor sens ON  \n");
+		}
+		if (Sensor1Pressed())
+		{
+			if (PowerSupplyOn())
+			{
+				chAutoControlState=AC_OPENING;
+				Motor.Upward();
+				DbgUART.SendPrintF("Sensor act, open up  \n");
+			}
+
+		}
+		break;
+	case AC_CLOSE_INDOOR_SENS_ON: // дверь закрыта и внутриенний датчик активен
 		if (PowAtxIsOk())PowerSupplyOff(); // выключаем, если включен
 		if ((Sensor1Pressed()) | (Sensor2Pressed()))
 		{
