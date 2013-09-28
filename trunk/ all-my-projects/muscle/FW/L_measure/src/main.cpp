@@ -21,12 +21,13 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "stm32l1xx.h"
-#include "stdio.h"
-//#include "discover_board.h"
+#include "discover_board.h"
 #include "stm32l_discovery_lcd.h"
 #include "tiny_sprintf.h"
 #include "delay_util.h"
 #include "UARTClass.h"
+#include "i2c_mgr.h"
+
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
@@ -59,8 +60,19 @@ uint32_t DbgDelay;
 void  RCC_Configuration(void);
 void  Init_GPIOs (void);
 void clearUserButtonFlag(void);
+void MesureCurStop(void);
+void MesureCurUpward(void);
+void MesureCurDownward(void);
+void MesureCurToggle(void);
+void CallBackI2C(void);
+char chMeasureCurFlag;
+#define MEASURE_CUR_STOP	0
+#define MEASURE_CUR_UP		1
+#define MEASURE_CUR_DOWN	2
+#define SWITCH_DELAY		1
 /*******************************************************************************/
-
+I2C_Cmd_t I2C_command;
+uint8_t chflagI2C;
 /**
   * @brief main entry point.
   * @par Parameters None
@@ -78,7 +90,10 @@ int main(void)
 */
   /* Configure Clocks for Application need */
   RCC_Configuration();
-  
+  uint8_t rxBuf[3];
+  uint8_t txBuf[16];
+  uint8_t chByte[2];
+  int16_t* iCurentAdcValue=(int16_t*)chByte; // теперь тут будет лежать последнее измеренное число
   /* Configure RTC Clocks */
 //  RTC_Configuration();
 
@@ -104,9 +119,20 @@ int main(void)
 
   Delay.Init();
   DbgUART.UART_Init(USART3);
+  i2cMgr.SetDbgUART(&DbgUART);
+  i2cMgr.Init();
+
+  // Setup i2cCmd
+
+  I2C_command.Address=0x48;
+  I2C_command.DataToRead.Length = 4;
+  I2C_command.DataToRead.Buf=rxBuf;
+  I2C_command.DataToWrite.Buf = txBuf;
+  I2C_command.DataToWrite.Length = 0;
+  I2C_command.Callback=CallBackI2C;
  // DbgUART.SendPrintF("Hello word %d \n",24);
-  DbgUART.SendByte('a');
-  DbgUART.SendByte('a');
+  //DbgUART.SendByte('a');
+  //DbgUART.SendByte('a');
   /* Display Welcome message */ 
 
 //  LCD_GLASS_ScrollSentence((uint8_t*)" L-measure ",1,SCROLL_SPEED);
@@ -117,14 +143,27 @@ int main(void)
   GPIO_LOW(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
   Delay.Reset(&TimeDelay);
   Delay.Reset(&DbgDelay);
+  MesureCurStop();
+  MesureCurUpward();
   while(1){
+	  i2cMgr.Task();
+	  if (Delay.Elapsed(&TimeDelay,1000))
+		  {
+		  	  GPIO_TOGGLE(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
+		  	MesureCurToggle();
+		  	chByte[0]=rxBuf[1];
+		  	chByte[1]=rxBuf[0];
+		  	DbgUART.SendPrintF("ACD_VAL= %d \n",*iCurentAdcValue);
+		  	i2cMgr.AddCmd(I2C_command);
 
-	  if (Delay.Elapsed(&TimeDelay,1000))   GPIO_TOGGLE(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
-	  if (Delay.Elapsed(&DbgDelay,10))  DbgUART.SendByte('a') ;
+		  }
+	  //if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendByte('a') ;
+
 
     if (flag_UserButton == TRUE){
        clearUserButtonFlag();
        GPIO_TOGGLE(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);
+       MesureCurUpward();
     }
 
     
@@ -287,15 +326,15 @@ void  Init_GPIOs (void)
   /* Configure the MOSFET driver pins */
   GPIO_InitStructure.GPIO_Pin = P_GATE1_GPIO_PIN ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_Init(P_GATE1_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_LOW(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
+  GPIO_HIGH(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
 
   GPIO_InitStructure.GPIO_Pin = P_GATE2_GPIO_PIN ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_Init(P_GATE2_GPIO_PORT, &GPIO_InitStructure);
@@ -307,7 +346,7 @@ void  Init_GPIOs (void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_Init(N_GATE1_GPIO_PORT, &GPIO_InitStructure);
- // GPIO_LOW(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
+  GPIO_LOW(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
 
   GPIO_InitStructure.GPIO_Pin = N_GATE2_GPIO_PIN ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
@@ -315,7 +354,7 @@ void  Init_GPIOs (void)
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
   GPIO_Init(N_GATE2_GPIO_PORT, &GPIO_InitStructure);
- // GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
+  GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
 
 
 
@@ -386,35 +425,55 @@ void assert_failed(uint8_t* file, uint32_t line)
 
 void MesureCurStop(void)
 {
-	GPIO_ResetBits(N_GATE1_GPIO_PORT,N_GATE1_GPIO_PIN);
-	GPIO_ResetBits(N_GATE2_GPIO_PORT,N_GATE2_GPIO_PIN);
-	GPIO_SetBits(P_GATE1_GPIO_PORT,P_GATE1_GPIO_PIN);
-	GPIO_SetBits(P_GATE2_GPIO_PORT,P_GATE2_GPIO_PIN);
+	GPIO_HIGH(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
+	GPIO_HIGH(P_GATE2_GPIO_PORT, P_GATE2_GPIO_PIN);
+	GPIO_LOW(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
+	GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
+	chMeasureCurFlag=MEASURE_CUR_STOP;
 }
 
-void MesureCurUpward(void) // A1, B2 - вверх
+void MesureCurUpward(void)
 {
 		// off R-arm
-	GPIO_ResetBits(N_GATE2_GPIO_PORT,N_GATE2_GPIO_PIN);
-	GPIO_SetBits(P_GATE2_GPIO_PORT,P_GATE2_GPIO_PIN);
+	GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
+	GPIO_HIGH(P_GATE2_GPIO_PORT, P_GATE2_GPIO_PIN);
 	// ждем закрытия транзисторов
 	Delay.ms(SWITCH_DELAY);
 	// on L-arm
-	GPIO_SetBits(N_GATE1_GPIO_PORT,N_GATE1_GPIO_PIN);
-	GPIO_ResetBits(P_GATE1_GPIO_PORT,P_GATE1_GPIO_PIN);
+	GPIO_HIGH(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
+	GPIO_LOW(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
+	chMeasureCurFlag=MEASURE_CUR_UP;
 }
 
-void MesureCurDownward(void)	// A2, B1 - вниз
+void MesureCurDownward(void)
 {
 	// off L-arm
-	GPIO_ResetBits(N_GATE1_GPIO_PORT,N_GATE1_GPIO_PIN);
-	GPIO_SetBits(P_GATE1_GPIO_PORT,P_GATE1_GPIO_PIN);
+	GPIO_LOW(N_GATE1_GPIO_PORT,N_GATE1_GPIO_PIN);
+	GPIO_HIGH(P_GATE1_GPIO_PORT,P_GATE1_GPIO_PIN);
 	// ждем закрытия транзисторов
 	Delay.ms(SWITCH_DELAY);
 	// on R-arm
-	GPIO_SetBits(N_GATE2_GPIO_PORT,N_GATE2_GPIO_PIN);
-	GPIO_ResetBits(P_GATE2_GPIO_PORT,P_GATE2_GPIO_PIN);
+	GPIO_HIGH(N_GATE2_GPIO_PORT,N_GATE2_GPIO_PIN);
+	GPIO_LOW(P_GATE2_GPIO_PORT,P_GATE2_GPIO_PIN);
+	chMeasureCurFlag=MEASURE_CUR_DOWN;
+}
+
+void MesureCurToggle(void)
+{
+	switch  (chMeasureCurFlag)
+	{
+	case MEASURE_CUR_UP:
+		MesureCurDownward();
+		break;
+	case MEASURE_CUR_DOWN:
+		MesureCurUpward();
+	}
 
 }
 
+void CallBackI2C(void)
+{
+	chflagI2C=1;
+	DbgUART.SendPrintF("CALL BACK \n");
+}
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

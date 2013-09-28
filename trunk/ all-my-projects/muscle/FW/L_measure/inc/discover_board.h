@@ -77,7 +77,7 @@
  #define N_GATE2_GPIO_PORT 				GPIOA
  #define N_GATE2_GPIO_PIN 			GPIO_Pin_11
  #define N_GATE2_GPIO_PORT_CLK             RCC_AHBPeriph_GPIOA
- #define SWITCH_DELAY					10
+
 
 
 #ifdef __cplusplus
