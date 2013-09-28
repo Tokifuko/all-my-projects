@@ -58,6 +58,7 @@ uint32_t DbgDelay;
 
 /* Private function prototypes -----------------------------------------------*/
 void  RCC_Configuration(void);
+void  RTC_Configuration(void);
 void  Init_GPIOs (void);
 void clearUserButtonFlag(void);
 void MesureCurStop(void);
@@ -95,7 +96,7 @@ int main(void)
   uint8_t chByte[2];
   int16_t* iCurentAdcValue=(int16_t*)chByte; // теперь тут будет лежать последнее измеренное число
   /* Configure RTC Clocks */
-//  RTC_Configuration();
+  RTC_Configuration();
 
   /* Enable debug features in low power modes (Sleep, STOP and STANDBY) */
 #ifdef  DEBUG_SWD_PIN
@@ -110,8 +111,8 @@ int main(void)
   Init_GPIOs();
   
   /* Initializes the LCD glass */
-  //LCD_GLASS_Configure_GPIO();
-  //LCD_GLASS_Init();
+  LCD_GLASS_Configure_GPIO();
+  LCD_GLASS_Init();
   RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK , ENABLE);
   RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK 		| P_GATE1_GPIO_PORT_CLK |
 		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
@@ -135,7 +136,7 @@ int main(void)
   //DbgUART.SendByte('a');
   /* Display Welcome message */ 
 
-//  LCD_GLASS_ScrollSentence((uint8_t*)" L-measure ",1,SCROLL_SPEED);
+  LCD_GLASS_ScrollSentence((uint8_t*)"  HI ",1,SCROLL_SPEED);
   /* Disable SysTick IRQ and SysTick Timer */
  // SysTick->CTRL  &= ~ ( SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk );
 
@@ -154,6 +155,9 @@ int main(void)
 		  	chByte[0]=rxBuf[1];
 		  	chByte[1]=rxBuf[0];
 		  	DbgUART.SendPrintF("ACD_VAL= %d \n",*iCurentAdcValue);
+		    LCD_GLASS_Clear();
+		    tiny_sprintf(strDisp, " %d ", *iCurentAdcValue );
+		    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
 		  	i2cMgr.AddCmd(I2C_command);
 
 		  }
@@ -367,7 +371,35 @@ void  Init_GPIOs (void)
 		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
 		  	  	  	  N_GATE2_GPIO_PORT_CLK		, ENABLE);
 
-}  /*
+}
+
+
+void RTC_Configuration(void)
+{
+
+/* Allow access to the RTC */
+  PWR_RTCAccessCmd(ENABLE);
+
+  /* Reset Backup Domain */
+  RCC_RTCResetCmd(ENABLE);
+  RCC_RTCResetCmd(DISABLE);
+
+  /* LSE Enable */
+  RCC_LSEConfig(RCC_LSE_ON);
+
+  /* Wait till LSE is ready */
+  while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
+  {}
+
+  RCC_RTCCLKCmd(ENABLE);
+
+  /* LCD Clock Source Selection */
+  RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+
+}
+
+
+/*
 void insertionSort(uint16_t *numbers, uint32_t array_size) 
 {
   

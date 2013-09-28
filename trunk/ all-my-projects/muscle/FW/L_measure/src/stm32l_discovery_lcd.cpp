@@ -23,6 +23,7 @@
 #include "stm32l_discovery_lcd.h"
 #include "discover_board.h"
 #include "stm32l1xx_lcd.h"
+#include "delay_util.h"
 
 
 /* this variable can be used for accelerate the scrolling exit when push user button */
@@ -183,7 +184,7 @@ void LCD_GLASS_Configure_GPIO(void)
 /* Configure Output for LCD */
 /* Port C*/  
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 \
-                                 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 |GPIO_Pin_11 ;                               
+                                 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;// | GPIO_Pin_10 |GPIO_Pin_11 ;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_Init( GPIOC, &GPIO_InitStructure);  
   
@@ -196,8 +197,8 @@ void LCD_GLASS_Configure_GPIO(void)
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource7,GPIO_AF_LCD) ;
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource8,GPIO_AF_LCD) ;
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource9,GPIO_AF_LCD) ;
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource10,GPIO_AF_LCD) ; 
-  GPIO_PinAFConfig(GPIOC, GPIO_PinSource11,GPIO_AF_LCD) ;  
+ // GPIO_PinAFConfig(GPIOC, GPIO_PinSource10,GPIO_AF_LCD) ;
+ // GPIO_PinAFConfig(GPIOC, GPIO_PinSource11,GPIO_AF_LCD) ;
 
 /* Disable GPIOs clock */ 	
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
@@ -225,7 +226,7 @@ void LCD_contrast()
      contrast=LCD_Contrast_Level_0;
   
     LCD_ContrastConfig(contrast);
-  //  Delay(100);			11111111111111111111111111111111111111111111111111111111111111111111
+    Delay.ms(100);
   }
 }
 
@@ -583,7 +584,7 @@ void LCD_GLASS_ScrollSentence(uint8_t* ptr, uint16_t nScroll, uint16_t ScrollSpe
   ptr1 = ptr;
   
   LCD_GLASS_DisplayString(ptr);
-  //Delay(ScrollSpeed);      1111111111111111111111111111111111111111111111111111111111111111
+  Delay.ms(ScrollSpeed);
           
 /* To shift the string for scrolling display*/
   for (Repetition=0; Repetition<nScroll; Repetition++)
@@ -602,7 +603,7 @@ void LCD_GLASS_ScrollSentence(uint8_t* ptr, uint16_t nScroll, uint16_t ScrollSpe
   /* user button pressed stop the scrolling sentence */
       if (KeyPressed)
               return;   		
-     // Delay(ScrollSpeed); 1111111111111111111111111111111111111111111111111
+      Delay.ms(ScrollSpeed);
     }	
   }
 
