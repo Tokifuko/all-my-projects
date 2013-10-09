@@ -27,6 +27,7 @@
 #include "delay_util.h"
 #include "UARTClass.h"
 #include "i2c_mgr.h"
+#include "MeasureCurrentClass.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -50,7 +51,6 @@ UART_Class* pUART4;
 UART_Class* pUART5;
 UART_Class DbgUART;
 
-//__IO FLASH_Status FLASHStatus = FLASH_COMPLETE;
 uint32_t TimeDelay;
 uint32_t DbgDelay;
 
@@ -59,18 +59,11 @@ uint32_t DbgDelay;
 /* Private function prototypes -----------------------------------------------*/
 void  RCC_Configuration(void);
 void  RTC_Configuration(void);
-void  Init_GPIOs (void);
+void  InitButton (void);
 void clearUserButtonFlag(void);
-void MesureCurStop(void);
-void MesureCurUpward(void);
-void MesureCurDownward(void);
-void MesureCurToggle(void);
+void conf_analog_all_GPIOS(void);
 void CallBackI2C(void);
-char chMeasureCurFlag;
-#define MEASURE_CUR_STOP	0
-#define MEASURE_CUR_UP		1
-#define MEASURE_CUR_DOWN	2
-#define SWITCH_DELAY		1
+
 /*******************************************************************************/
 I2C_Cmd_t I2C_command;
 uint8_t chflagI2C;
@@ -108,15 +101,17 @@ int main(void)
   SysTick_Config(RCC_Clocks.HCLK_Frequency / 500);
 
   /* Init I/O ports */
-  Init_GPIOs();
-  
-  /* Initializes the LCD glass */
-  LCD_GLASS_Configure_GPIO();
-  LCD_GLASS_Init();
-  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK , ENABLE);
-  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK 		| P_GATE1_GPIO_PORT_CLK |
-		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
-		  	  	  	  N_GATE2_GPIO_PORT_CLK		, ENABLE);
+  conf_analog_all_GPIOS();   /* configure all GPIOs as analog input */
+
+  InitButton();
+  MesureCurInit();
+
+  LCD_GLASS_Init();/* Initializes the LCD glass */
+
+//  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK , ENABLE);
+  //RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK 		| P_GATE1_GPIO_PORT_CLK |
+///		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
+//		  	  	  	  N_GATE2_GPIO_PORT_CLK		, ENABLE);
 
   Delay.Init();
   DbgUART.UART_Init(USART3);
@@ -124,24 +119,16 @@ int main(void)
   i2cMgr.Init();
 
   // Setup i2cCmd
-
   I2C_command.Address=0x48;
   I2C_command.DataToRead.Length = 4;
   I2C_command.DataToRead.Buf=rxBuf;
   I2C_command.DataToWrite.Buf = txBuf;
   I2C_command.DataToWrite.Length = 0;
   I2C_command.Callback=CallBackI2C;
- // DbgUART.SendPrintF("Hello word %d \n",24);
-  //DbgUART.SendByte('a');
-  //DbgUART.SendByte('a');
+
   /* Display Welcome message */ 
+  LCD_GLASS_ScrollSentence((uint8_t*)"      CELESTIA ONLINE ",1,SCROLL_SPEED);
 
-  LCD_GLASS_ScrollSentence((uint8_t*)"  HI ",1,SCROLL_SPEED);
-  /* Disable SysTick IRQ and SysTick Timer */
- // SysTick->CTRL  &= ~ ( SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk );
-
-  GPIO_HIGH(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);
-  GPIO_LOW(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
   Delay.Reset(&TimeDelay);
   Delay.Reset(&DbgDelay);
   MesureCurStop();
@@ -154,7 +141,7 @@ int main(void)
 		  	MesureCurToggle();
 		  	chByte[0]=rxBuf[1];
 		  	chByte[1]=rxBuf[0];
-		  	DbgUART.SendPrintF("ACD_VAL= %d \n",*iCurentAdcValue);
+		  	DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
 		    LCD_GLASS_Clear();
 		    tiny_sprintf(strDisp, " %d ", *iCurentAdcValue );
 		    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
@@ -164,25 +151,12 @@ int main(void)
 	  //if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendByte('a') ;
 
 
-    if (flag_UserButton == TRUE){
+    if (flag_UserButton == TRUE)
+    {
        clearUserButtonFlag();
        GPIO_TOGGLE(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);
        MesureCurUpward();
     }
-
-    
-  //  if (CurrentlyDisplayed == Display_TemperatureDegC) {
-      /* print average temperature value in °C  */
-//      tiny_sprintf(strDisp, "%d °C", temperature_C );
- //   } else {
- //     /* print result of ADC conversion  */
-  //    tiny_sprintf(strDisp, "> %d", tempAVG );
-
- //   }
-
-   // LCD_GLASS_Clear();
-   //LCD_GLASS_DisplayString( (unsigned char *) strDisp );
-
   }
 
 }
@@ -274,20 +248,17 @@ void conf_analog_all_GPIOS(void)
                         RCC_AHBPeriph_GPIOE | RCC_AHBPeriph_GPIOH, DISABLE);
 }
 
-void  Init_GPIOs (void)
+void  InitButton (void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   
   EXTI_InitTypeDef EXTI_InitStructure;
   NVIC_InitTypeDef NVIC_InitStructure;
 
-  conf_analog_all_GPIOS();   /* configure all GPIOs as analog input */
+
   
   /* Enable GPIOs clock */ 	
-  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK | USERBUTTON_GPIO_CLK, ENABLE);
-  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK 		| P_GATE1_GPIO_PORT_CLK |
-		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
-		  	  	  	  N_GATE2_GPIO_PORT_CLK		, ENABLE);
+  RCC_AHBPeriphClockCmd(USERBUTTON_GPIO_CLK, ENABLE);
   /* USER button and WakeUP button init: GPIO set in input interrupt active mode */
   
   /* Configure User Button pin as input */
@@ -312,65 +283,7 @@ void  Init_GPIOs (void)
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-
   NVIC_Init(&NVIC_InitStructure); 
-
-/* Configure the GPIO_LED pins  LD3 & LD4*/
-  GPIO_InitStructure.GPIO_Pin = LD_GREEN_GPIO_PIN | LD_BLUE_GPIO_PIN;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_Init(LD_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_LOW(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);	
-  GPIO_LOW(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
-
-
-
-  /* Configure the MOSFET driver pins */
-  GPIO_InitStructure.GPIO_Pin = P_GATE1_GPIO_PIN ;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_Init(P_GATE1_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_HIGH(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
-
-  GPIO_InitStructure.GPIO_Pin = P_GATE2_GPIO_PIN ;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_Init(P_GATE2_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_HIGH(P_GATE2_GPIO_PORT, P_GATE2_GPIO_PIN);
-
-  GPIO_InitStructure.GPIO_Pin = N_GATE1_GPIO_PIN ;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_Init(N_GATE1_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_LOW(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
-
-  GPIO_InitStructure.GPIO_Pin = N_GATE2_GPIO_PIN ;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-  GPIO_Init(N_GATE2_GPIO_PORT, &GPIO_InitStructure);
-  GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
-
-
-
-/* Disable all GPIOs clock */ 	
- /** RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB |
-                        RCC_AHBPeriph_GPIOC | RCC_AHBPeriph_GPIOD | 
-                        RCC_AHBPeriph_GPIOE | RCC_AHBPeriph_GPIOH, DISABLE);
-*/
-  RCC_AHBPeriphClockCmd(LD_GPIO_PORT_CLK 		| P_GATE1_GPIO_PORT_CLK |
-		  	  	  	  P_GATE2_GPIO_PORT_CLK 	| N_GATE1_GPIO_PORT_CLK |
-		  	  	  	  N_GATE2_GPIO_PORT_CLK		, ENABLE);
-
 }
 
 
@@ -398,40 +311,6 @@ void RTC_Configuration(void)
 
 }
 
-
-/*
-void insertionSort(uint16_t *numbers, uint32_t array_size) 
-{
-  
-	uint32_t i, j;
-	uint32_t index;
-
-  for (i=1; i < array_size; i++) {
-    index = numbers[i];
-    j = i;
-    while ((j > 0) && (numbers[j-1] > index)) {
-      numbers[j] = numbers[j-1];
-      j = j - 1;
-    }
-    numbers[j] = index;
-  }
-}
-//*/
-//uint32_t interquartileMean(uint16_t *array, uint32_t numOfSamples)
-//{
-//    uint32_t sum=0;
-//    uint32_t  index, maxindex;
-//    /* discard  the lowest and the highest data samples */
-//	maxindex = 3 * numOfSamples / 4;
-//    for (index = (numOfSamples / 4); index < maxindex; index++){
-//            sum += array[index];
-//    }
-//	/* return the mean value of the remaining samples value*/
-//    return ( sum / (numOfSamples / 2) );
-//}
-
-
-
 #ifdef  USE_FULL_ASSERT
 
 /**
@@ -455,57 +334,8 @@ void assert_failed(uint8_t* file, uint32_t line)
 #endif
 
 
-void MesureCurStop(void)
-{
-	GPIO_HIGH(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
-	GPIO_HIGH(P_GATE2_GPIO_PORT, P_GATE2_GPIO_PIN);
-	GPIO_LOW(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
-	GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
-	chMeasureCurFlag=MEASURE_CUR_STOP;
-}
-
-void MesureCurUpward(void)
-{
-		// off R-arm
-	GPIO_LOW(N_GATE2_GPIO_PORT, N_GATE2_GPIO_PIN);
-	GPIO_HIGH(P_GATE2_GPIO_PORT, P_GATE2_GPIO_PIN);
-	// ждем закрытия транзисторов
-	Delay.ms(SWITCH_DELAY);
-	// on L-arm
-	GPIO_HIGH(N_GATE1_GPIO_PORT, N_GATE1_GPIO_PIN);
-	GPIO_LOW(P_GATE1_GPIO_PORT, P_GATE1_GPIO_PIN);
-	chMeasureCurFlag=MEASURE_CUR_UP;
-}
-
-void MesureCurDownward(void)
-{
-	// off L-arm
-	GPIO_LOW(N_GATE1_GPIO_PORT,N_GATE1_GPIO_PIN);
-	GPIO_HIGH(P_GATE1_GPIO_PORT,P_GATE1_GPIO_PIN);
-	// ждем закрытия транзисторов
-	Delay.ms(SWITCH_DELAY);
-	// on R-arm
-	GPIO_HIGH(N_GATE2_GPIO_PORT,N_GATE2_GPIO_PIN);
-	GPIO_LOW(P_GATE2_GPIO_PORT,P_GATE2_GPIO_PIN);
-	chMeasureCurFlag=MEASURE_CUR_DOWN;
-}
-
-void MesureCurToggle(void)
-{
-	switch  (chMeasureCurFlag)
-	{
-	case MEASURE_CUR_UP:
-		MesureCurDownward();
-		break;
-	case MEASURE_CUR_DOWN:
-		MesureCurUpward();
-	}
-
-}
-
 void CallBackI2C(void)
 {
 	chflagI2C=1;
-	DbgUART.SendPrintF("CALL BACK \n");
 }
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -91,6 +91,8 @@ static void LCD_Conv_Char_Seg(uint8_t* c,bool point,bool column,uint8_t* digit);
   */
 void LCD_GLASS_Init(void)
 {
+	LCD_GLASS_Configure_GPIO();
+
   LCD_InitTypeDef LCD_InitStruct;
 
  
@@ -184,7 +186,7 @@ void LCD_GLASS_Configure_GPIO(void)
 /* Configure Output for LCD */
 /* Port C*/  
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 \
-                                 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;// | GPIO_Pin_10 |GPIO_Pin_11 ;
+                                 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9;// | GPIO_Pin_10 |GPIO_Pin_11 ; //used as I2C pins
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
   GPIO_Init( GPIOC, &GPIO_InitStructure);  
   
@@ -197,13 +199,13 @@ void LCD_GLASS_Configure_GPIO(void)
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource7,GPIO_AF_LCD) ;
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource8,GPIO_AF_LCD) ;
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource9,GPIO_AF_LCD) ;
- // GPIO_PinAFConfig(GPIOC, GPIO_PinSource10,GPIO_AF_LCD) ;
- // GPIO_PinAFConfig(GPIOC, GPIO_PinSource11,GPIO_AF_LCD) ;
+ // GPIO_PinAFConfig(GPIOC, GPIO_PinSource10,GPIO_AF_LCD) ;  //used as I2C pins
+ // GPIO_PinAFConfig(GPIOC, GPIO_PinSource11,GPIO_AF_LCD) ;	//used as I2C pins
 
 /* Disable GPIOs clock */ 	
-  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
-                        RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOE | RCC_AHBPeriph_GPIOH, DISABLE);
-  
+//  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB | RCC_AHBPeriph_GPIOC |
+//                        RCC_AHBPeriph_GPIOD | RCC_AHBPeriph_GPIOE | RCC_AHBPeriph_GPIOH, DISABLE);
+//
 }
 
 /**
