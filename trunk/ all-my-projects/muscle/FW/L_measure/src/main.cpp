@@ -28,6 +28,7 @@
 #include "UARTClass.h"
 #include "i2c_mgr.h"
 #include "MeasureCurrentClass.h"
+#include "CalipersClass.h"
 
 /* Private typedef -----------------------------------------------------------*/
 
@@ -50,6 +51,7 @@ UART_Class* pUART3;
 UART_Class* pUART4;
 UART_Class* pUART5;
 UART_Class DbgUART;
+calipers_t calipers;
 
 uint32_t TimeDelay;
 uint32_t DbgDelay;
@@ -63,6 +65,7 @@ void  InitButton (void);
 void clearUserButtonFlag(void);
 void conf_analog_all_GPIOS(void);
 void CallBackI2C(void);
+void CallBackCalipers(void);
 
 /*******************************************************************************/
 I2C_Cmd_t I2C_command;
@@ -117,6 +120,8 @@ int main(void)
   DbgUART.UART_Init(USART3);
   i2cMgr.SetDbgUART(&DbgUART);
   i2cMgr.Init();
+  calipers.Init();
+  calipers.Callback=CallBackCalipers;
 
   // Setup i2cCmd
   I2C_command.Address=0x48;
@@ -127,7 +132,7 @@ int main(void)
   I2C_command.Callback=CallBackI2C;
 
   /* Display Welcome message */ 
-  LCD_GLASS_ScrollSentence((uint8_t*)"      CELESTIA ONLINE ",1,SCROLL_SPEED);
+ // LCD_GLASS_ScrollSentence((uint8_t*)"      CELESTIA ONLINE ",1,SCROLL_SPEED);
 
   Delay.Reset(&TimeDelay);
   Delay.Reset(&DbgDelay);
@@ -138,14 +143,14 @@ int main(void)
 	  if (Delay.Elapsed(&TimeDelay,1000))
 		  {
 		  	  GPIO_TOGGLE(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
-		  	MesureCurToggle();
+		  	//MesureCurToggle();
 		  	chByte[0]=rxBuf[1];
 		  	chByte[1]=rxBuf[0];
 		  	DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
-		    LCD_GLASS_Clear();
+		/*    LCD_GLASS_Clear();
 		    tiny_sprintf(strDisp, " %d ", *iCurentAdcValue );
 		    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
-		  	i2cMgr.AddCmd(I2C_command);
+		  */	i2cMgr.AddCmd(I2C_command);
 
 		  }
 	  //if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendByte('a') ;
@@ -155,7 +160,7 @@ int main(void)
     {
        clearUserButtonFlag();
        GPIO_TOGGLE(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);
-       MesureCurUpward();
+       //MesureCurUpward();
     }
   }
 
@@ -337,5 +342,14 @@ void assert_failed(uint8_t* file, uint32_t line)
 void CallBackI2C(void)
 {
 	chflagI2C=1;
+}
+
+void CallBackCalipers(void)
+{
+	MesureCurToggle();
+    LCD_GLASS_Clear();
+    tiny_sprintf(strDisp, " %d ", calipers.iSpiDataRx );
+    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
+    DbgUART.SendPrintF("CALIPERS_VAL=%d  \n",calipers.iSpiDataRx);
 }
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
