@@ -21,19 +21,13 @@
 #define CALIPERS_SDA_PORT			GPIOA
 #define CALIPERS_SDA_CLK			RCC_AHBPeriph_GPIOA
 
-
-
-
-
 typedef void(*ftVoid_Void)(void);
 
 // ================================= Constants =================================
 
-
-#define SPI_DATA_IDLE					1
-#define SPI_DATA_GET_NEW_BYTE			2
-#define SPI_DATA_GET_NEW_POKET			3
-#define SPI_DATA_GET_NEW_POKET			3
+#define SPI_IDLE					0
+#define SPI_START_RX					1
+#define SPI_END_RX						2
 
 // ================================ Data types =================================
 
@@ -41,22 +35,17 @@ class calipers_t {
 private:
 
 	uint32_t dwPoketTimer;
-	uint32_t dwByteTimer;
-	char chBitCount, chByteCount;
-
-    bool IsError;
-    char chRxDta;
-   // I2C_Cmd_t *CmdToWrite, *CmdToRead;
-   // I2C_Cmd_t Commands[I2C_CMD_QUEUE_LENGTH];
-    // Task-based functions
+	uint32_t dwIdleTimer;
+	char chBitCount;
+	uint8_t chSpiState;
 
 public:
     uint32_t iSpiDataRx;
-    char chSpiDataRxSign;
     ftVoid_Void Callback;
     void Init(void);
     void Task(void);
     void SCL_IRQ(void);
+    uint8_t GetState(void);
 };
 
 extern calipers_t calipers;

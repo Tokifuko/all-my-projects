@@ -30,14 +30,14 @@
 #include "MeasureCurrentClass.h"
 #include "CalipersClass.h"
 
-/* Private typedef -----------------------------------------------------------*/
-
-/* Private define ------------------------------------------------------------*/
-
 #define DEBUG_SWD_PIN  1  /* needs to be set to 1 to enable SWD debug pins, set to 0 for power consumption measurement*/
 
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
+#define MAIN_STEP_IDLE						5
+#define MAIN_STEP_WAIT_CALIPERS_START		6
+#define MAIN_STEP_WAIT_I2C					7
+#define MAIN_STEP_WAIT_CALIPERS_END			8
+
+
 
 char strDisp[20] ;
 
@@ -56,9 +56,6 @@ calipers_t calipers;
 uint32_t TimeDelay;
 uint32_t DbgDelay;
 
-
-
-/* Private function prototypes -----------------------------------------------*/
 void  RCC_Configuration(void);
 void  RTC_Configuration(void);
 void  InitButton (void);
@@ -67,7 +64,6 @@ void conf_analog_all_GPIOS(void);
 void CallBackI2C(void);
 void CallBackCalipers(void);
 
-/*******************************************************************************/
 I2C_Cmd_t I2C_command;
 uint8_t chflagI2C;
 /**
@@ -87,9 +83,10 @@ int main(void)
 */
   /* Configure Clocks for Application need */
   RCC_Configuration();
-  uint8_t rxBuf[3];
+  uint8_t rxBuf[4];
   uint8_t txBuf[16];
   uint8_t chByte[2];
+  uint8_t chMainStep=MAIN_STEP_IDLE;
   int16_t* iCurentAdcValue=(int16_t*)chByte; // теперь тут будет лежать последнее измеренное число
   /* Configure RTC Clocks */
   RTC_Configuration();
@@ -137,44 +134,71 @@ int main(void)
   Delay.Reset(&TimeDelay);
   Delay.Reset(&DbgDelay);
   MesureCurStop();
-  MesureCurUpward();
+ // MesureCurUpward();
   while(1){
 	  i2cMgr.Task();
-	  if (Delay.Elapsed(&TimeDelay,1000))
+	  calipers.Task();
+	  switch (chMainStep)
+	  {
+	  case MAIN_STEP_IDLE:
+		  if (calipers.GetState()==SPI_END_RX)  //при выходе из холостго режима пропускаем первый отсчет со штангена, чтобы ток в датчике
 		  {
-		  	  GPIO_TOGGLE(LD_GPIO_PORT, LD_BLUE_GPIO_PIN);
-		  	//MesureCurToggle();
-		  	chByte[0]=rxBuf[1];
-		  	chByte[1]=rxBuf[0];
-		  	DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
-		/*    LCD_GLASS_Clear();
-		    tiny_sprintf(strDisp, " %d ", *iCurentAdcValue );
-		    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
-		  */	i2cMgr.AddCmd(I2C_command);
-
+			  chMainStep=MAIN_STEP_WAIT_CALIPERS_START;
+			  DbgUART.SendPrintF("OUT IDLE  \n");
+			  MesureCurUpward();					// включаем ток
+			  chflagI2C=0;
 		  }
-	  //if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendByte('a') ;
+		  break;
+	  case MAIN_STEP_WAIT_CALIPERS_START:
+		  if (calipers.GetState()==SPI_IDLE) // давно небыло посылок с штангена,
+		  {
+			  DbgUART.SendPrintF("IN IDLE  \n");
+			  chMainStep=MAIN_STEP_IDLE;   // переходим в холостой режим
+			  MesureCurStop();				//отключаем ток в датчике.
+		  }
+		  if (calipers.GetState()==SPI_START_RX)  // начало приема данных со штангена
+		  {
+			  //DbgUART.SendPrintF("IN I2C  \n");
+			  chMainStep=MAIN_STEP_WAIT_I2C;
+			  i2cMgr.AddCmd(I2C_command);
+		  }
+		  break;
+	  case MAIN_STEP_WAIT_I2C:
+		  if (chflagI2C==1) // закончилась работа с I2C
+		  {
+			    chMainStep=MAIN_STEP_WAIT_CALIPERS_END;
+		  }
+		  break;
+	  case MAIN_STEP_WAIT_CALIPERS_END:
+		  if (calipers.GetState()==SPI_END_RX) // закончилcz прием данных о штангена
+		  {
+			  	//MesureCurToggle();				// переключаем направление тока
+			  	chByte[0]=rxBuf[1];
+			  	chByte[1]=rxBuf[0];
+			  	DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
+			    LCD_GLASS_Clear();
+			    tiny_sprintf(strDisp, " %d ", calipers.iSpiDataRx );
+			    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
+			    DbgUART.SendPrintF("CALIPERS_VAL=%d  \n",calipers.iSpiDataRx);
+			    DbgUART.SendPrintF("OUT I2CE  \n");
+			  chMainStep=MAIN_STEP_WAIT_CALIPERS_START;
+		  }
+		  break;
+	  } //switch
+
+	 // if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendPrintF("i2c flag=%d  main_state=%d \n ",chflagI2C, chMainStep) ;
 
 
     if (flag_UserButton == TRUE)
     {
        clearUserButtonFlag();
-       GPIO_TOGGLE(LD_GPIO_PORT, LD_GREEN_GPIO_PIN);
-       //MesureCurUpward();
     }
   }
 
 }
 
-void setUserButtonFlag(void)
-{
-  flag_UserButton = TRUE;
-}
-
-void clearUserButtonFlag(void)
-{
-  flag_UserButton = FALSE;
-}
+void setUserButtonFlag(void) 	{ flag_UserButton = TRUE;	}
+void clearUserButtonFlag(void) 	{ flag_UserButton = FALSE;	}
 
 		
 
@@ -339,17 +363,13 @@ void assert_failed(uint8_t* file, uint32_t line)
 #endif
 
 
-void CallBackI2C(void)
+void CallBackI2C(void)  // вызывается при окончании работы с I2C командой
 {
 	chflagI2C=1;
 }
 
-void CallBackCalipers(void)
+void CallBackCalipers(void) // вызывается при окончании работы с I2C командой
 {
-	MesureCurToggle();
-    LCD_GLASS_Clear();
-    tiny_sprintf(strDisp, " %d ", calipers.iSpiDataRx );
-    LCD_GLASS_DisplayString( (unsigned char *) strDisp );
-    DbgUART.SendPrintF("CALIPERS_VAL=%d  \n",calipers.iSpiDataRx);
+
 }
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
