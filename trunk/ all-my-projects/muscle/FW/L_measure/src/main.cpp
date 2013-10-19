@@ -85,6 +85,7 @@ int main(void)
   RCC_Configuration();
   uint8_t rxBuf[4];
   uint8_t txBuf[16];
+
   uint8_t chByte[2];
   uint8_t chMainStep=MAIN_STEP_IDLE;
   int16_t* iCurentAdcValue=(int16_t*)chByte; // теперь тут будет лежать последнее измеренное число
@@ -120,7 +121,19 @@ int main(void)
   calipers.Init();
   calipers.Callback=CallBackCalipers;
 
-  // Setup i2cCmd
+
+
+  // Setup i2cCmd  to write config data to ADC
+  txBuf[0]=0x88; //Bits 3 and 2 control the ADS1100Тs data rate "1 0"= 16SPS
+  I2C_command.Address=0x48;
+  I2C_command.DataToRead.Length = 0;
+  I2C_command.DataToRead.Buf=rxBuf;
+  I2C_command.DataToWrite.Buf = txBuf;
+  I2C_command.DataToWrite.Length = 1;
+  I2C_command.Callback=CallBackI2C;
+  i2cMgr.AddCmd(I2C_command);
+
+  // Setup i2cCmd  to read data from ADC
   I2C_command.Address=0x48;
   I2C_command.DataToRead.Length = 4;
   I2C_command.DataToRead.Buf=rxBuf;
@@ -134,7 +147,9 @@ int main(void)
   Delay.Reset(&TimeDelay);
   Delay.Reset(&DbgDelay);
   MesureCurStop();
- // MesureCurUpward();
+  char chI2cCounter=0;
+  MesureCurUpward();
+  chflagI2C=1;
   while(1){
 	  i2cMgr.Task();
 	  calipers.Task();
@@ -167,12 +182,12 @@ int main(void)
 		  if (chflagI2C==1) // закончилась работа с I2C
 		  {
 			    chMainStep=MAIN_STEP_WAIT_CALIPERS_END;
+			    MesureCurToggle();				// переключаем направление тока
 		  }
 		  break;
 	  case MAIN_STEP_WAIT_CALIPERS_END:
 		  if (calipers.GetState()==SPI_END_RX) // закончилcz прием данных о штангена
 		  {
-			  	//MesureCurToggle();				// переключаем направление тока
 			  	chByte[0]=rxBuf[1];
 			  	chByte[1]=rxBuf[0];
 			  	DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
@@ -187,11 +202,34 @@ int main(void)
 	  } //switch
 
 	 // if (Delay.Elapsed(&DbgDelay,100))  DbgUART.SendPrintF("i2c flag=%d  main_state=%d \n ",chflagI2C, chMainStep) ;
-
+	/*  if (chflagI2C==1) // закончилась работа с I2C
+	  {
+		  MesureCurToggle();
+		  chflagI2C=0;
+	  }
+	  if (Delay.Elapsed(&DbgDelay,250))
+	  {
+		  if (chI2cCounter<=10)
+		  {
+			  //MesureCurToggle();
+			  chByte[0]=rxBuf[1];
+		  	  chByte[1]=rxBuf[0];
+			  DbgUART.SendPrintF("ACD_VAL=%d  \n",*iCurentAdcValue);
+			  rxBuf[0]=0;
+			  rxBuf[1]=0;
+			  chI2cCounter++;
+			  //chflagI2C=0;
+			  i2cMgr.AddCmd(I2C_command);
+		  }
+	  }
+*/
 
     if (flag_UserButton == TRUE)
     {
        clearUserButtonFlag();
+
+       chI2cCounter=0;
+
     }
   }
 

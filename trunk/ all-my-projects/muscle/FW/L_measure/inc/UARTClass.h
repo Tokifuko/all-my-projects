@@ -34,7 +34,7 @@
 #define USART3_GPIO     	GPIOC
 #define USART3_GPIO_CLK 	RCC_AHBPeriph_GPIOC
 
-#define UART3_BUF_SIZE 				64
+#define UART3_BUF_SIZE 				128
 #define UART3_BAUD_RATE             115200
 #define UART3_PARITY                USART_Parity_No
 #define UART3_BITS                  USART_StopBits_2
