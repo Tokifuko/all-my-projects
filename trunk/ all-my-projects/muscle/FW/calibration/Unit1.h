@@ -41,13 +41,11 @@ __published:	// IDE-managed Components
         TLabel *Label6;
 	TButton *Button3;
         TChart *Chart1;
-        TButton *Button2;
         TLineSeries *Series1;
         TPointSeries *Series2;
         TPointSeries *Series3;
         TLabel *lCalipersData;
-        TLabel *Label7;
-        TLabel *Label8;
+        TButton *Button2;
         void __fastcall SpeedButton1Click(TObject *Sender);
         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
         void __fastcall CheckBox3Click(TObject *Sender);

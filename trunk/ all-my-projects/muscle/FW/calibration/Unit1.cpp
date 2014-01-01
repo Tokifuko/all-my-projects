@@ -159,6 +159,7 @@ void __fastcall ReadThread::Printing()
  int iPosStr;
  int iSign;
  DWORD  i;
+ long lTemp;
  float fTemp;
  int iPosChar;
  char* pch;
@@ -193,13 +194,13 @@ void __fastcall ReadThread::Printing()
         if (iPosChar!=0)
         {
                 sBuf=sBuf.SubString(iPosChar+sHead.Length(),sBuf.Length()-iPosChar-sHead.Length()-1);
-                i=sBuf.ToDouble();
-                fTemp=i;
+                lTemp=sBuf.ToDouble();
+                fTemp=lTemp;
                 fTemp=fTemp/100;
 
-               // Form1->Series3->AddXY(iChartCounter_2++,i/100 ,"",clGreen);
-               // sBuf.printf(" %f \n", fTemp);
-              //  Form1->Memo1->Lines->Add(sBuf); //выводим принятую строку в Memo
+                Form1->Series3->AddXY(iChartCounter_2++,fTemp ,"",clGreen);
+                sBuf.printf(" %f \n", fTemp);
+                Form1->Memo1->Lines->Add(sBuf); //выводим принятую строку в Memo
                  Form1->lCalipersData->Caption=sBuf;
         }  // if (iPosChar!=0)
 
@@ -522,26 +523,11 @@ void COMClose()
 
 //---------------------------------------------------------------------------
 
+
 void __fastcall TForm1::Button2Click(TObject *Sender)
 {
-float f1=-1.56;
-float f2=2.76;
-AnsiString s;
-s="-567978";
-long   i;
-i=s.ToDouble();
-f1=i;
-f1=f1/100;
-AnsiString stBuf;
-
-Form1->Memo1->Lines->Add("пара линий");
-Form1->Memo1->Lines->Add("пара линий");
-Form1->Memo1->Lines->Add("пара линий");
-
-stBuf.printf("%4.2f   \n",f1);
-Form1->Label7->Caption=stBuf ;
-stBuf.printf("%4.2f  \n",f2) ;
-Form1->Label8->Caption=stBuf;
+Form1->Series3->Clear();
+Form1->Series2->Clear();
 }
 //---------------------------------------------------------------------------
 

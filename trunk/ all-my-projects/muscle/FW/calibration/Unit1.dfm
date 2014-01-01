@@ -31,32 +31,6 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
   end
-  object Label7: TLabel
-    Left = 192
-    Top = 416
-    Width = 112
-    Height = 48
-    Caption = 'Label7'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = 50
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
-  object Label8: TLabel
-    Left = 368
-    Top = 416
-    Width = 112
-    Height = 48
-    Caption = 'Label7'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = 50
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-  end
   object GroupBox1: TGroupBox
     Left = 8
     Top = 8
@@ -439,8 +413,8 @@ object Form1: TForm1
     end
   end
   object Button2: TButton
-    Left = 56
-    Top = 408
+    Left = 464
+    Top = 424
     Width = 75
     Height = 25
     Caption = 'Button2'
