@@ -19,6 +19,7 @@ void AD7799_Class :: Init(void)
 	SPI_InitTypeDef  SPI_InitStructure;
 	GPIO_InitTypeDef GPIO_InitStructure;
 
+
 	SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_PSW_ON;
 
 	/* Enable SPI_MASTER DMA clock */
@@ -106,6 +107,7 @@ void AD7799_Class :: Init(void)
 }
 void AD7799_Class :: Task(void)
 {
+	uint32_t iData;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
 		switch (AD7799_state)
@@ -136,6 +138,12 @@ void AD7799_Class :: Task(void)
 			break;
 		case RECEIVE_DATA_STEP: //data process
 				AD7799_state=IDLE_STEP;
+				//iData=*(uint32_t*) SPI_MASTER_Buffer_Rx;
+				//iData=SPI_MASTER_Buffer_Rx[4];
+				iData=SPI_MASTER_Buffer_Rx[3];
+				iData+=SPI_MASTER_Buffer_Rx[2]<<8;
+				iData+=SPI_MASTER_Buffer_Rx[1]<<16;
+				if(Callback != 0) Callback(iData);
 				if (bChangeModeFlag)   // change mode request
 				{
 					AD7799_state=MODE_SET_STEP;

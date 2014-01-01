@@ -7,63 +7,63 @@ object ComForm: TComForm
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
   OnClose = FormClose
-  PixelsPerInch = 96
-  TextHeight = 13
+  PixelsPerInch = 120
+  TextHeight = 16
   object GroupBox1: TGroupBox
     Left = 0
     Top = 0
-    Width = 201
-    Height = 169
+    Width = 247
+    Height = 208
     Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1087#1086#1088#1090#1072
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -15
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 0
     object Label1: TLabel
-      Left = 16
-      Top = 24
-      Width = 66
-      Height = 13
+      Left = 20
+      Top = 30
+      Width = 85
+      Height = 16
       Caption = #1053#1086#1084#1077#1088' '#1087#1086#1088#1090#1072
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object Label2: TLabel
-      Left = 16
-      Top = 72
-      Width = 98
-      Height = 13
+      Left = 20
+      Top = 89
+      Width = 128
+      Height = 16
       Caption = #1057#1082#1086#1088#1086#1089#1090#1100' '#1087#1077#1088#1077#1076#1072#1095#1080
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object SpeedButton1: TSpeedButton
-      Left = 16
-      Top = 128
-      Width = 105
-      Height = 25
+      Left = 20
+      Top = 158
+      Width = 129
+      Height = 30
       AllowAllUp = True
       GroupIndex = 1
       Caption = #1054#1090#1082#1088#1099#1090#1100' '#1087#1086#1088#1090
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       Glyph.Data = {
@@ -79,18 +79,18 @@ object ComForm: TComForm
       OnClick = SpeedButton1Click
     end
     object ComboBox1: TComboBox
-      Left = 16
-      Top = 40
-      Width = 97
-      Height = 21
+      Left = 20
+      Top = 49
+      Width = 119
+      Height = 24
       Style = csDropDownList
       Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
-      ItemHeight = 13
+      ItemHeight = 16
       ItemIndex = 0
       ParentFont = False
       TabOrder = 0
@@ -100,17 +100,17 @@ object ComForm: TComForm
         'COM2')
     end
     object ComboBox2: TComboBox
-      Left = 16
-      Top = 88
-      Width = 97
-      Height = 21
+      Left = 20
+      Top = 108
+      Width = 119
+      Height = 24
       Style = csDropDownList
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
-      ItemHeight = 13
+      ItemHeight = 16
       ItemIndex = 12
       ParentFont = False
       TabOrder = 1
@@ -131,14 +131,14 @@ object ComForm: TComForm
         '115200')
     end
     object CheckBox1: TCheckBox
-      Left = 144
-      Top = 40
-      Width = 49
-      Height = 17
+      Left = 177
+      Top = 49
+      Width = 61
+      Height = 21
       Caption = 'DTR'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -146,14 +146,14 @@ object ComForm: TComForm
       OnClick = CheckBox1Click
     end
     object CheckBox2: TCheckBox
-      Left = 144
-      Top = 80
-      Width = 49
-      Height = 17
+      Left = 177
+      Top = 98
+      Width = 61
+      Height = 21
       Caption = 'RTS'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -163,51 +163,51 @@ object ComForm: TComForm
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 168
-    Width = 353
-    Height = 201
+    Top = 207
+    Width = 434
+    Height = 247
     Caption = #1055#1077#1088#1077#1076#1072#1095#1072' '#1076#1072#1085#1085#1099#1093
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -15
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 1
     object Label3: TLabel
-      Left = 16
-      Top = 24
-      Width = 154
-      Height = 13
+      Left = 20
+      Top = 30
+      Width = 201
+      Height = 16
       Caption = #1042#1074#1077#1076#1080#1090#1077' '#1076#1072#1085#1085#1099#1077' '#1076#1083#1103' '#1087#1077#1088#1077#1076#1072#1095#1080
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object Label4: TLabel
-      Left = 16
-      Top = 72
-      Width = 95
-      Height = 13
+      Left = 20
+      Top = 89
+      Width = 120
+      Height = 16
       Caption = #1055#1088#1080#1085#1103#1090#1099#1077' '#1076#1072#1085#1085#1099#1077':'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
     end
     object Edit1: TEdit
-      Left = 16
-      Top = 40
-      Width = 209
-      Height = 21
+      Left = 20
+      Top = 49
+      Width = 257
+      Height = 24
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       MaxLength = 254
@@ -215,13 +215,13 @@ object ComForm: TComForm
       TabOrder = 0
     end
     object Memo1: TMemo
-      Left = 16
-      Top = 88
-      Width = 209
-      Height = 97
+      Left = 20
+      Top = 108
+      Width = 257
+      Height = 120
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       Lines.Strings = (
@@ -232,28 +232,28 @@ object ComForm: TComForm
       TabOrder = 1
     end
     object Button1: TButton
-      Left = 240
-      Top = 40
-      Width = 89
-      Height = 25
+      Left = 295
+      Top = 49
+      Width = 110
+      Height = 31
       Caption = #1055#1077#1088#1077#1076#1072#1090#1100
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       TabOrder = 2
     end
     object Button3: TButton
-      Left = 240
-      Top = 88
-      Width = 89
-      Height = 25
+      Left = 295
+      Top = 108
+      Width = 110
+      Height = 31
       Caption = #1054#1095#1080#1089#1090#1082#1072' '#1087#1086#1083#1103
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -15
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
@@ -262,8 +262,8 @@ object ComForm: TComForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 393
-    Width = 376
+    Top = 454
+    Width = 434
     Height = 19
     Panels = <
       item

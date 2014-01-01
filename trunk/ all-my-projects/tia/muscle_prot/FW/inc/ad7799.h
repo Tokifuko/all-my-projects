@@ -42,6 +42,8 @@
 #define BufferSize         5
 #define CRCPolynomial      7
 
+typedef void(*ftVoid_Void)(uint32_t);
+
 class AD7799_Class {
 private:
 	uint8_t cChar;
@@ -54,7 +56,9 @@ private:
     bool bChangeModeFlag;
     bool bChangeConfigFlag;
 
+
 public:
+    ftVoid_Void Callback;
     void Init(void);
     void Task (void);
     void StartTxRx(uint8_t chDataSize);

@@ -129,6 +129,7 @@ void UART_Class :: UART_InterruptHandler(void)
 		if (FIFO_TxData.IsEmpty())
 		{
 			USART_ITConfig( pUART, USART_IT_TXE, DISABLE );
+
 		}
 		else
 		{

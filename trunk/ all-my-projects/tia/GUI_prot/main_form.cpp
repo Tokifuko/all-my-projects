@@ -14,19 +14,20 @@
 #define  BUF_SIZE 255
 TMainForm *MainForm;
 unsigned int i;
-float fTenzoBuf[BUF_SIZE];
+DWORD fTenzoBuf[BUF_SIZE];
 unsigned int iTenzoCounter=0;
 DWORD   dTenzoSpeed =0;
+DWORD dUartSpeed=0;
 
-void WriteNewTenzoData (float fTenzo);
+void WriteNewTenzoData (DWORD fTenzo);
 
-
-void WriteNewTenzoData (float fTenzo)
+void WriteNewTenzoData (DWORD fTenzo)
 {
         fTenzoBuf[iTenzoCounter]=fTenzo;
         iTenzoCounter++;
-        if (iTenzoCounter==BUF_SIZE) iTenzoCounter=0;
+        if (iTenzoCounter==(BUF_SIZE-1)) iTenzoCounter=0;
         dTenzoSpeed++;
+        dUartSpeed+=fTenzo;
 }
 
 //---------------------------------------------------------------------------
@@ -40,11 +41,12 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 void __fastcall TMainForm::Button1Click(TObject *Sender)
 {
         ComForm->Show();
+        ComForm->CallBack=WriteNewTenzoData;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::TestTimerTimer(TObject *Sender)
 {
-    WriteNewTenzoData( sin(M_PI/10*i) );
+    //WriteNewTenzoData( sin(M_PI/10*i) );
 }
 //---------------------------------------------------------------------------
 
@@ -54,9 +56,12 @@ void __fastcall TMainForm::SpeedMeterTimerTimer(TObject *Sender)
 {
         AnsiString s;
         s.sprintf("%d",dTenzoSpeed);
-     LTenzoSpeed->Caption.sprintf("%d",dTenzoSpeed);
+        //s.sprintf("%d",dUartSpeed);
+     //LTenzoSpeed->Caption.sprintf("%d",dTenzoSpeed);
+     //LTenzoSpeed->Caption.sprintf("%d",dTenzoSpeed);
      LTenzoSpeed->Caption=s;
    dTenzoSpeed=0;
+   dUartSpeed=0;
 }
 //---------------------------------------------------------------------------
 

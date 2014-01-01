@@ -9,6 +9,7 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
+typedef void(*ftVoid_Void)(DWORD);
 //---------------------------------------------------------------------------
 class TComForm : public TForm
 {
@@ -35,6 +36,7 @@ __published:	// IDE-managed Components
         void __fastcall CheckBox2Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
+        ftVoid_Void CallBack;
         __fastcall TComForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

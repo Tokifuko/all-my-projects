@@ -30,9 +30,10 @@ TComForm *ComForm;
 //..................... объявления глобальных переменных ......................
 //=============================================================================
 
-#define BUFSIZE 255     //ёмкость буфера
+#define BUFSIZE 12800     //ёмкость буфера
 
-unsigned char bufrd[BUFSIZE], bufwr[BUFSIZE]; //приёмный и передающий буферы
+char bufrd[BUFSIZE], bufwr[BUFSIZE]; //приёмный и передающий буферы
+char chBuf[BUFSIZE]; // для обработки принятых строк
 
 //---------------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ unsigned int iChartCounter_1=0;
 unsigned int iChartCounter_2=0;
 
 unsigned long counter;	//счётчик принятых байтов, обнуляется при каждом открытии порта
-
+AnsiString sGlobal;
 
 //=============================================================================
 //.............................. объявления функций ...........................
@@ -116,7 +117,10 @@ __fastcall ReadThread::ReadThread(bool CreateSuspended) : TThread(CreateSuspende
 void __fastcall ReadThread::Execute()
 {
  COMSTAT comstat;		//структура текущего состояния порта, в данной программе используется для определения количества принятых в порт байтов
- DWORD btr, temp, mask, signal;	//переменная temp используется в качестве заглушки
+ DWORD i,btr, temp, mask, signal;	//переменная temp используется в качестве заглушки
+ char chThreadBuf[ BUFSIZE] ;
+ unsigned int chThreadBufCounter=0;
+
 
  overlapped.hEvent = CreateEvent(NULL, true, true, NULL);	//создать сигнальный объект-событие для асинхронных операций
  SetCommMask(COMport, EV_RXCHAR);                   	        //установить маску на срабатывание по событию приёма байта в порт
@@ -136,10 +140,30 @@ void __fastcall ReadThread::Execute()
           btr = comstat.cbInQue;                          	//и получить из неё количество принятых байтов
           if(btr)                         			//если действительно есть байты для чтения
           {
+           if (btr>BUFSIZE)btr=BUFSIZE;
            ReadFile(COMport, bufrd, btr, &temp, &overlapped);     //прочитать байты из порта в буфер программы
+
            counter+=btr;                                          //увеличиваем счётчик байтов
-           Synchronize(Printing);                      		//вызываем функцию для вывода данных на экран и в файл
-          }
+
+
+ //*************** вытаскиваем строки из принятых данных ************
+           i=0;
+           while (i<btr)  // работаем с буфером посимвольно, чтоб отследить конец строки
+           {              // так как \n может придти в следующем пакете, а не в этом
+                chThreadBuf[chThreadBufCounter]=bufrd[i];
+                if (chThreadBufCounter>=BUFSIZE)chThreadBufCounter=0;
+                i++;
+                if (chThreadBuf[chThreadBufCounter]=='\n')      // пришел конец строки
+                {
+                        memcpy(chBuf,chThreadBuf,chThreadBufCounter+1);
+                        chThreadBufCounter=0;
+                        Synchronize(Printing);	//вызываем функцию для вывода данных на экран и в файл
+                }
+                else chThreadBufCounter++;
+
+
+           }//while (i<btr)
+          }//if(btr)
        }
        }
     }
@@ -159,33 +183,25 @@ void __fastcall ReadThread::Printing()
  float fTemp;
  int iPosChar;
  char* pch;
- AnsiString sOld, sNew, sBuf, sHead;
+ AnsiString sBuf, sHead;
 
  pch=bufrd;
- while (*pch) // работаем с буфером посимвольно, чтоб отследить конец строки
-                // так как \n может придти в следующем пакете, а не в этом
- {
-      iPosStr=ComForm->Memo1->Lines->Count;
-      iPosStr--;
-      sOld=ComForm->Memo1->Lines->Strings[iPosStr];
-      ComForm->Memo1->Lines->Strings[iPosStr]=sOld+*pch;
-      if (*pch=='\n')
-      {
-        sBuf=ComForm->Memo1->Lines->Strings[iPosStr];
- // **************** парсим показания с АЦП   **********************************
-        sHead="ACD_VAL=";        // это начало сообщения со значением АЦП
+
+ sBuf=chBuf;
+ i=0;
+
+ // **************** парсим показания с АЦП Тензодатчика  **********************************
+        sHead="Tenzo=";        // это начало сообщения со значением АЦП  Тензодатчика
         iPosChar=sBuf.Pos(sHead);
         if (iPosChar!=0)
         {
                 sBuf=sBuf.SubString(iPosChar+sHead.Length(),sBuf.Length()-iPosChar-sHead.Length()-1);
                 i=sBuf.ToDouble();
-                //ComForm->Series2->AddXY(iChartCounter++,i/100 ,"",clRed);
-                sBuf.printf("%d \n", i);
-                ComForm->Memo1->Lines->Add(sBuf); //выводим принятую строку в Memo
+                if (ComForm->CallBack != NULL)ComForm->CallBack(i);
         }  // if (iPosChar!=0)
-
+         else  ComForm->Memo1->Lines->Add(sBuf);
  // **************** парсим показания со штангени   **********************************
-        sHead="CALIPERS_VAL=";        // это начало сообщения
+     /*   sHead="CALIPERS_VAL=";        // это начало сообщения
         iPosChar=sBuf.Pos(sHead);
         if (iPosChar!=0)
         {
@@ -197,18 +213,24 @@ void __fastcall ReadThread::Printing()
                 //ComForm->Series3->AddXY(iChartCounter_2++,fTemp ,"",clGreen);
                 sBuf.printf(" %f \n", fTemp);
                 ComForm->Memo1->Lines->Add(sBuf); //выводим принятую строку в Memo
+                sGlobal=""; // отчищаем буфер
                  //ComForm->lCalipersData->Caption=sBuf;
         }  // if (iPosChar!=0)
-
-        ComForm->Memo1->Lines->Add("");   // пришел конец строки
+ *///************** пришло что-то нераспарсенное *********************************
+ /*       if ( sGlobal.Length()>0)
+        {
+        // ComForm->Memo1->Lines->Add(sGlobal);   // пришел конец строки
+         sGlobal="";
+        }
       } //if (*pch=='\n')
       pch++;
 
  }
+  */
+ //ComForm->StatusBar1->Panels->Items[2]->Text = "Всего принято " + IntToStr(counter) + " байт";	//выводим счётчик в строке состояния
 
- ComForm->StatusBar1->Panels->Items[2]->Text = "Всего принято " + IntToStr(counter) + " байт";	//выводим счётчик в строке состояния
-
- memset(bufrd, 0, BUFSIZE);	        //очистить буфер (чтобы данные не накладывались друг на друга)
+ //memset(bufrd, 0, BUFSIZE);	       
+ memset(chBuf, 0, BUFSIZE);             //очистить буфер (чтобы данные не накладывались друг на друга)
 }
 
 //---------------------------------------------------------------------------
@@ -426,11 +448,13 @@ void COMOpen()
   }
 
  //установить размеры очередей приёма и передачи
- SetupComm(COMport,2000,2000);
+ SetupComm(COMport,200000,200000);
  PurgeComm(COMport, PURGE_RXCLEAR);	//очистить принимающий буфер порта
 
  reader = new ReadThread(false);	//создать и запустить поток чтения байтов
  reader->FreeOnTerminate = true;        //установить это свойство потока, чтобы он автоматически уничтожался после завершения
+ SetThreadPriority(reader,THREAD_PRIORITY_HIGHEST);
+
 
 }
 

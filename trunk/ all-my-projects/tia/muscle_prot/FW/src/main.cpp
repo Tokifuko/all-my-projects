@@ -18,6 +18,7 @@
 #define DEBUG_LED_TIMEOUT	1000
 
 void GeneralInit(void);
+void Ad7799Callback(uint32_t iData);
 
 UART_Class DbgUART;
 UART_Class* pUART1;
@@ -27,6 +28,7 @@ UART_Class* pUART4;
 UART_Class* pUART5;
 
 AD7799_Class ad7799;
+uint32_t iTemp;
 
 int main(void)
 {
@@ -37,6 +39,7 @@ int main(void)
 	GeneralInit();
 	DbgUART.UART_Init(USART1);
 	ad7799.Init();
+	ad7799.Callback=Ad7799Callback;
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
 	Delay.Reset(&iDebugLedTimer);
@@ -55,25 +58,20 @@ int main(void)
     			{
     				BLedDiscOn();
     				flag=1;
-    				ad7799.PswPinOn();
+    				//ad7799.PswPinOn();
     			}
     			else
     			{
     				BLedDiscOff();
     				flag=0;
-    				ad7799.PswPinOff();
+    				//ad7799.PswPinOff();
     			}
     	}
     }
 }
 
 void GeneralInit(void) {
-
-
-
-
     //Delay.Init();
-
     RCC_APB2PeriphClockCmd(
     		LED_2_CLK |
     		G_LED_DISC_CLK |
@@ -81,15 +79,10 @@ void GeneralInit(void) {
     		USER_BUTTON_CLK,
       //  RCC_APB2Periph_AFIO,  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ENABLE );
-
-
-
     // Disable JTAG
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 
-
     GPIO_InitTypeDef GPIO_InitStructure;
-
     // светодиоды
     /* Configure LED_2_PIN as Output */
     GPIO_InitStructure.GPIO_Pin =  LED_2_PIN;
@@ -114,5 +107,17 @@ void GeneralInit(void) {
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( USER_BUTTON_PORT, &GPIO_InitStructure );
+}
 
+void Ad7799Callback(uint32_t iData)
+{
+	iTemp++;
+	if (iTemp>1)
+	{
+		DbgUART.SendPrintF("Tenzo=%d \n",iData);
+
+	iTemp=0;
+	}
+
+	//DbgUART.SendPrintF("Tenzo=%d \n",iData);
 }
