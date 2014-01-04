@@ -5,6 +5,7 @@
 
 #include "main_form.h"
 #include "com_form.h"
+#include "chart_form.h"
 #include "math.h"
 
 //---------------------------------------------------------------------------
@@ -23,9 +24,16 @@ void WriteNewTenzoData (DWORD fTenzo);
 
 void WriteNewTenzoData (DWORD fTenzo)
 {
-        fTenzoBuf[iTenzoCounter]=fTenzo;
-        iTenzoCounter++;
-        if (iTenzoCounter==(BUF_SIZE-1)) iTenzoCounter=0;
+        if (iTenzoCounter<BUF_SIZE)  // не закольцованный
+        {
+                fTenzoBuf[iTenzoCounter]=fTenzo;
+                iTenzoCounter++;
+        }
+
+       // fTenzoBuf[iTenzoCounter]=fTenzo;
+       // if (iTenzoCounter==BUF_SIZE) iTenzoCounter=0;        // закольцованный
+       // else  iTenzoCounter++;
+        
         dTenzoSpeed++;
         dUartSpeed+=fTenzo;
 }
@@ -46,7 +54,15 @@ void __fastcall TMainForm::Button1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::TestTimerTimer(TObject *Sender)
 {
-    //WriteNewTenzoData( sin(M_PI/10*i) );
+
+    float f;
+    DWORD d;
+    f= i;
+    f=(f/100);
+    f=(sin(f)*100);
+    d=f+65000;
+    WriteNewTenzoData( d);
+    i++;
 }
 //---------------------------------------------------------------------------
 
@@ -67,7 +83,27 @@ void __fastcall TMainForm::SpeedMeterTimerTimer(TObject *Sender)
 
 void __fastcall TMainForm::TrackBar1Change(TObject *Sender)
 {
-TestTimer->Interval=TrackBar1->Position;
+  TestTimer->Interval=TrackBar1->Position;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Button2Click(TObject *Sender)
+{
+   ChartForm->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::ProcessTimerTimer(TObject *Sender)
+{
+        unsigned int i=0;
+
+        while (i!=iTenzoCounter)
+        {
+            ChartForm->DataChart(fTenzoBuf[i]);
+            i++;
+        }
+        iTenzoCounter-=i;
+}
+//---------------------------------------------------------------------------
+
 

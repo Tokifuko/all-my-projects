@@ -4,19 +4,20 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="GUI_prot.exe"/>
-    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj"/>
+    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj"/>
     <RESFILES value="GUI_prot.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm"/>
+    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm chart_form.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value=""/>
-    <SPARELIBS value="vcl.lib rtl.lib tee.lib bcbsmp.lib vclx.lib"/>
+    <LIBRARIES value="tee.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib tee.lib bcbsmp.lib vclx.lib Tee8C6.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
-      vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi teeui.bpi 
-      teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
-      dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi"/>
+      vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi 
+      visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
+      TeeImage8C6.bpi Tee8C6.bpi TeeUI8C6.bpi TeeWorld8C6.bpi TeePro8C6.bpi 
+      TeeDB8C6.bpi TeeLanguage8C6.bpi TeeGL8C6.bpi TeeQR8C6.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -27,14 +28,15 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="GUI_prot.cpp"/>
-    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;C:\eclipse\all-my-projects\tia\GUI_prot;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\eclipse\all-my-projects\tia\GUI_prot&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;C:\eclipse\all-my-projects\tia\GUI_prot;C:\TeeChart\Sources\Compiled\Builder6\Include;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="C:\TeeChart\Sources\Compiled\Builder6\Lib;&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\eclipse\all-my-projects\tia\GUI_prot&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-I&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot; 
-      -IC:\eclipse\all-my-projects\tia\GUI_prot -I$(BCB)\include 
+      -IC:\eclipse\all-my-projects\tia\GUI_prot 
+      -IC:\TeeChart\Sources\Compiled\Builder6\Include -I$(BCB)\include 
       -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
@@ -55,6 +57,7 @@
       <FILE FILENAME="GUI_prot.cpp" FORMNAME="" UNITNAME="GUI_prot" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main_form.cpp" FORMNAME="MainForm" UNITNAME="main_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="com_form.cpp" FORMNAME="ComForm" UNITNAME="com_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="chart_form.cpp" FORMNAME="ChartForm" UNITNAME="chart_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -86,6 +89,26 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
+
+[Excluded Packages]
+c:\program files (x86)\borland\cbuilder6\Bin\dcldss60.bpl=Borland Decision Cube Components
+
+[HistoryLists\hlIncludePath]
+Count=2
+Item0=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\eclipse\all-my-projects\tia\GUI_prot;C:\TeeChart\Sources\Compiled\Builder6\Include;$(BCB)\include;$(BCB)\include\vcl
+Item1=C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\eclipse\all-my-projects\tia\GUI_prot;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=1
+Item0=C:\TeeChart\Sources\Compiled\Builder6\Lib;C:\Program Files (x86)\Borland\CBuilder6\Projects;C:\eclipse\all-my-projects\tia\GUI_prot;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl

@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------
 USEFORM("main_form.cpp", MainForm);
 USEFORM("com_form.cpp", ComForm);
+USEFORM("chart_form.cpp", ChartForm);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -13,6 +14,7 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
                  Application->Initialize();
                  Application->CreateForm(__classid(TMainForm), &MainForm);
                  Application->CreateForm(__classid(TComForm), &ComForm);
+                 Application->CreateForm(__classid(TChartForm), &ChartForm);
                  Application->Run();
         }
         catch (Exception &exception)

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 210
-  Top = 129
+  Left = 529
+  Top = 280
   Width = 631
   Height = 345
   Caption = 'MainForm'
@@ -44,7 +44,7 @@ object MainForm: TMainForm
     Max = 100
     Orientation = trHorizontal
     Frequency = 1
-    Position = 0
+    Position = 50
     SelEnd = 0
     SelStart = 0
     TabOrder = 1
@@ -52,9 +52,17 @@ object MainForm: TMainForm
     TickStyle = tsAuto
     OnChange = TrackBar1Change
   end
+  object Button2: TButton
+    Left = 488
+    Top = 72
+    Width = 75
+    Height = 25
+    Caption = #1043#1088#1072#1092#1080#1082#1080
+    TabOrder = 2
+    OnClick = Button2Click
+  end
   object TestTimer: TTimer
-    Enabled = False
-    Interval = 10
+    Interval = 50
     OnTimer = TestTimerTimer
     Left = 296
     Top = 40
@@ -63,5 +71,11 @@ object MainForm: TMainForm
     OnTimer = SpeedMeterTimerTimer
     Left = 536
     Top = 40
+  end
+  object ProcessTimer: TTimer
+    Interval = 100
+    OnTimer = ProcessTimerTimer
+    Left = 416
+    Top = 32
   end
 end
