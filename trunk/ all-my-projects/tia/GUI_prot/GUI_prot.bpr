@@ -16,8 +16,8 @@
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi 
       visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
-      TeeImage8C6.bpi Tee8C6.bpi TeeUI8C6.bpi TeeWorld8C6.bpi TeePro8C6.bpi 
-      TeeDB8C6.bpi TeeLanguage8C6.bpi TeeGL8C6.bpi TeeQR8C6.bpi"/>
+      TeeImage8C6.bpi TeeDB8C6.bpi TeeLanguage8C6.bpi TeeQR8C6.bpi Tee8C6.bpi 
+      TeeUI8C6.bpi TeePro8C6.bpi TeeWorld8C6.bpi TeeGL8C6.bpi"/>
     <PATHCPP value=".;"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>

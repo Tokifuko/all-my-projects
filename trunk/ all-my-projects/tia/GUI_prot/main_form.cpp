@@ -61,6 +61,7 @@ void __fastcall TMainForm::TestTimerTimer(TObject *Sender)
     f=(f/100);
     f=(sin(f)*100);
     d=f+65000;
+
     WriteNewTenzoData( d);
     i++;
 }

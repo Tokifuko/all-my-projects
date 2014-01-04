@@ -42,6 +42,7 @@ object MainForm: TMainForm
     Width = 184
     Height = 55
     Max = 100
+    Min = 1
     Orientation = trHorizontal
     Frequency = 1
     Position = 50

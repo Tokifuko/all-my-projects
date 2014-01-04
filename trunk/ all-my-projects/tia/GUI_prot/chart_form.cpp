@@ -24,11 +24,10 @@ void TChartForm::DataChart (DWORD dData)
         //Series1->Depth=5;
       //  }
               AnsiString s;
-        s.sprintf("%d",Series1->MandatoryValueList->Count);
         s.sprintf("%d",Series1->Count());
         //
       Label1->Caption=s;
      // Series1->MandatoryValueList->TotalABS=10;
-      if (Series1->Count()>10) Series1->MandatoryValueList->Delete(0);
+      if (Series1->Count()>100) Series1->Delete(0,1,true);
         Series1->AddY(dData,"lable") ;
 }
