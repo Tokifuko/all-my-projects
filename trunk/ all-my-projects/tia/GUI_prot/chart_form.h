@@ -19,6 +19,10 @@ __published:	// IDE-managed Components
         TChart *Chart1;
         TFastLineSeries *Series1;
         TLabel *Label1;
+        TFastLineSeries *SlideMedSeries;
+        TButton *btClear;
+        TFastLineSeries *PseudoSlideMedSeries;
+        void __fastcall btClearClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         void DataChart (DWORD dData);

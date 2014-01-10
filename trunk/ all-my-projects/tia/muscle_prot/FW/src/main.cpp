@@ -111,13 +111,13 @@ void GeneralInit(void) {
 
 void Ad7799Callback(uint32_t iData)
 {
-	iTemp++;
+/*	iTemp++;
 	if (iTemp>1)
 	{
 		DbgUART.SendPrintF("Tenzo=%d \n",iData);
 
 	iTemp=0;
 	}
-
-	//DbgUART.SendPrintF("Tenzo=%d \n",iData);
+*/
+	DbgUART.SendPrintF("Tenzo=%d \n",iData);
 }

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 529
-  Top = 280
+  Left = 441
+  Top = 299
   Width = 631
   Height = 345
   Caption = 'MainForm'
@@ -63,6 +63,7 @@ object MainForm: TMainForm
     OnClick = Button2Click
   end
   object TestTimer: TTimer
+    Enabled = False
     Interval = 50
     OnTimer = TestTimerTimer
     Left = 296

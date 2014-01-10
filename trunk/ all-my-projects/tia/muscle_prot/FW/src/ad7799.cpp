@@ -143,6 +143,7 @@ void AD7799_Class :: Task(void)
 				iData=SPI_MASTER_Buffer_Rx[3];
 				iData+=SPI_MASTER_Buffer_Rx[2]<<8;
 				iData+=SPI_MASTER_Buffer_Rx[1]<<16;
+
 				if(Callback != 0) Callback(iData);
 				if (bChangeModeFlag)   // change mode request
 				{

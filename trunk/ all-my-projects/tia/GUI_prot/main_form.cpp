@@ -12,7 +12,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 
-#define  BUF_SIZE 255
+#define  BUF_SIZE 512
 TMainForm *MainForm;
 unsigned int i;
 DWORD fTenzoBuf[BUF_SIZE];
