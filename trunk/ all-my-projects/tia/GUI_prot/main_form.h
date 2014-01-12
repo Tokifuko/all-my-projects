@@ -21,12 +21,14 @@ __published:	// IDE-managed Components
         TTrackBar *TrackBar1;
         TButton *Button2;
         TTimer *ProcessTimer;
+        TButton *Button3;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall TestTimerTimer(TObject *Sender);
         void __fastcall SpeedMeterTimerTimer(TObject *Sender);
         void __fastcall TrackBar1Change(TObject *Sender);
         void __fastcall Button2Click(TObject *Sender);
         void __fastcall ProcessTimerTimer(TObject *Sender);
+        void __fastcall Button3Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TMainForm(TComponent* Owner);

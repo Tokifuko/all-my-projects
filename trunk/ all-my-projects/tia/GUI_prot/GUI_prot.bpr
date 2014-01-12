@@ -4,15 +4,16 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="GUI_prot.exe"/>
-    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj"/>
+    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj weigth_form.obj"/>
     <RESFILES value="GUI_prot.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm chart_form.dfm"/>
+    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm chart_form.dfm weigth_form.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="tee.lib"/>
-    <SPARELIBS value="vcl.lib rtl.lib tee.lib bcbsmp.lib vclx.lib Tee8C6.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib tee.lib bcbsmp.lib vclx.lib Tee8C6.lib TeePro8C6.lib 
+      TeeUI8C6.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi cds.bpi dsnap.bpi bdecds.bpi qrpt.bpi 
       visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi bcbsmp.bpi 
@@ -58,6 +59,7 @@
       <FILE FILENAME="main_form.cpp" FORMNAME="MainForm" UNITNAME="main_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="com_form.cpp" FORMNAME="ComForm" UNITNAME="com_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="chart_form.cpp" FORMNAME="ChartForm" UNITNAME="chart_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="weigth_form.cpp" FORMNAME="WeightForm" UNITNAME="weigth_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

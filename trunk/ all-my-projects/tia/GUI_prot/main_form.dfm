@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 441
-  Top = 299
+  Left = 247
+  Top = 290
   Width = 631
   Height = 345
   Caption = 'MainForm'
@@ -62,8 +62,16 @@ object MainForm: TMainForm
     TabOrder = 2
     OnClick = Button2Click
   end
+  object Button3: TButton
+    Left = 440
+    Top = 144
+    Width = 147
+    Height = 25
+    Caption = #1050#1072#1083#1080#1073#1088#1086#1074#1082#1072' '#1074#1077#1089#1072
+    TabOrder = 3
+    OnClick = Button3Click
+  end
   object TestTimer: TTimer
-    Enabled = False
     Interval = 50
     OnTimer = TestTimerTimer
     Left = 296

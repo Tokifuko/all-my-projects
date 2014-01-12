@@ -7,6 +7,7 @@
 #include "com_form.h"
 #include "chart_form.h"
 #include "math.h"
+#include "weigth_form.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -101,10 +102,17 @@ void __fastcall TMainForm::ProcessTimerTimer(TObject *Sender)
         while (i!=iTenzoCounter)
         {
             ChartForm->DataChart(fTenzoBuf[i]);
+            WeightForm->PushData(fTenzoBuf[i]);
             i++;
         }
         iTenzoCounter-=i;
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMainForm::Button3Click(TObject *Sender)
+{
+    WeightForm->Show();
+}
+//---------------------------------------------------------------------------
 
