@@ -20,9 +20,7 @@ class TWeightForm : public TForm
 {
 __published:	// IDE-managed Components
         TChart *Chart1;
-        TFastLineSeries *CalibrSeries;
         TMyPointSeries *CurrentPointSeries;
-        TCustomTeeFunction *TeeFunction1;
         TLabel *Label1;
         TLabel *Label2;
         TButton *btChWeigth;
@@ -33,13 +31,17 @@ __published:	// IDE-managed Components
         TButton *Button1;
         TEdit *Edit1;
         TLabel *Label5;
-        TFastLineSeries *CurrentDataSeries;
         TLabel *Label6;
         TLabel *Label7;
         TLabel *Label8;
         TLabel *Label9;
+        TFastLineSeries *CurrentDataSeries;
+        THorizLineSeries *CalibrSeries;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall btChWeigthClick(TObject *Sender);
+        void __fastcall TrackBar1Change(TObject *Sender);
+        void __fastcall TrackBar2Change(TObject *Sender);
+        void __fastcall Edit1Exit(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         void PushData (DWORD dData);

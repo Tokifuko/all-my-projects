@@ -91,17 +91,28 @@ object WeightForm: TWeightForm
       #1044#1072#1085#1085#1099#1077' '#1089' '#1040#1062#1055' / '#1042#1077#1089)
     View3D = False
     TabOrder = 0
-    object CalibrSeries: TFastLineSeries
+    PrintMargins = (
+      15
+      29
+      15
+      29)
+    object CalibrSeries: THorizLineSeries
       Marks.Arrow.Visible = True
       Marks.Callout.Brush.Color = clBlack
       Marks.Callout.Arrow.Visible = True
-      Marks.Visible = False
+      Marks.Shadow.Color = 8487297
+      Marks.Style = smsPointIndex
+      Marks.Visible = True
       Title = 'CalibrSeries'
       LinePen.Color = clRed
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      Pointer.Visible = False
+      TreatNulls = tnIgnore
       XValues.Name = 'X'
-      XValues.Order = loAscending
+      XValues.Order = loNone
       YValues.Name = 'Y'
-      YValues.Order = loNone
+      YValues.Order = loAscending
     end
     object CurrentPointSeries: TMyPointSeries
       Marks.Arrow.Visible = True
@@ -118,7 +129,7 @@ object WeightForm: TWeightForm
       XValues.Order = loAscending
       YValues.Name = 'Y'
       YValues.Order = loNone
-      LinesPen.Color = clRed
+      LinesPen.Color = 4227072
     end
     object CurrentDataSeries: TFastLineSeries
       Marks.Arrow.Visible = True
@@ -133,10 +144,6 @@ object WeightForm: TWeightForm
       XValues.Order = loAscending
       YValues.Name = 'Y'
       YValues.Order = loNone
-      object TeeFunction1: TCustomTeeFunction
-        Period = 1
-        NumPoints = 100
-      end
     end
   end
   object btChWeigth: TButton
@@ -162,13 +169,14 @@ object WeightForm: TWeightForm
     TabOrder = 2
     TickMarks = tmBottomRight
     TickStyle = tsAuto
+    OnChange = TrackBar1Change
   end
   object TrackBar2: TTrackBar
     Left = 664
     Top = 360
     Width = 45
     Height = 217
-    Max = 100
+    Max = 20
     Orientation = trVertical
     Frequency = 1
     Position = 0
@@ -177,6 +185,7 @@ object WeightForm: TWeightForm
     TabOrder = 3
     TickMarks = tmBottomRight
     TickStyle = tsAuto
+    OnChange = TrackBar2Change
   end
   object Button1: TButton
     Left = 424
@@ -200,5 +209,6 @@ object WeightForm: TWeightForm
     ParentFont = False
     TabOrder = 5
     Text = '0'
+    OnExit = Edit1Exit
   end
 end
