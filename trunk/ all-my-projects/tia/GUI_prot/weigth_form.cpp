@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <deque>
+#include <stdio>
 //#include <cstdlib>
 #pragma hdrstop
 
@@ -11,6 +12,8 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "MyPoint"
+#pragma link "TeeSeriesTextEd"
+#pragma link "TeeURL"
 #pragma resource "*.dfm"
 TWeightForm *WeightForm;
 
@@ -32,7 +35,7 @@ struct tCalibrPoint
 
 long double CalcWeight(DWORD dData);
 bool PointCompare(tCalibrPoint a,tCalibrPoint b);
-
+bool ConvertStringToPoint (AnsiString* s,tCalibrPoint* p);
 
 deque <DWORD> stdAverageArray;
 vector<tCalibrPoint> vCalibr;
@@ -40,6 +43,11 @@ vector<tCalibrPoint> vCalibr;
 __fastcall TWeightForm::TWeightForm(TComponent* Owner)
         : TForm(Owner)
 {
+        AnsiString s;
+        s=Application->ExeName;
+        s.Delete(s.Length()-3,4);
+        eFileNameEdit->Text=s+".txt";
+        Memo1->Lines->LoadFromFile(eFileNameEdit->Text);
 }
 //---------------------------------------------------------------------------
 //----------- вычисление среднего арифмитического  двунаправленной очереди --
@@ -47,10 +55,7 @@ DWORD CalcAverage ( deque <DWORD> &d)
 {
         DWORD dAverage=0;
         std::deque<DWORD>::iterator MyIt = d.begin();
-        while (MyIt != d.end())
-       {
-         dAverage+=(*MyIt++)/d.size();
-       }
+        while (MyIt != d.end()) dAverage+=(*MyIt++)/d.size();
        return dAverage;
 }
 //--------------- сюда поступают данные от АЦП   ----------------------
@@ -86,21 +91,30 @@ void __fastcall TWeightForm::Button1Click(TObject *Sender)
       if  (ldWeightToChange==0) return;
       stNewPoint.dAdcData=dAverageToChange;
       stNewPoint.ldWeight=ldWeightToChange;
-      vCalibr.push_back(stNewPoint);
-      std::sort(vCalibr.begin(),vCalibr.end(),PointCompare);
+      vCalibr.push_back(stNewPoint);   // добавляем точку
+      std::sort(vCalibr.begin(),vCalibr.end(),PointCompare); // и пересортировываем вектор
+      DisplayCalibrData(); // отображение
 
-      // отображение
-       std::vector<tCalibrPoint>::iterator it=vCalibr.begin();
-
-   CalibrSeries->Clear();
-    while (it!=vCalibr.end())
-    {
-      CalibrSeries->AddXY(it->dAdcData,it->ldWeight);
-      ++it;
-    }
 
 }
 //---------------------------------------------------------------------------
+//------------ Отображение калибровочного вектора на форме ------------------
+void __fastcall TWeightForm::DisplayCalibrData (void)
+{
+   AnsiString s;
+   std::vector<tCalibrPoint>::iterator it=vCalibr.begin();
+   CalibrSeries->Clear();
+   Memo1->Clear();
+    while (it!=vCalibr.end())
+    {
+      CalibrSeries->AddXY(it->dAdcData,it->ldWeight); // отображение на графике
+      s.printf("%d; %3.3Lf",it->dAdcData,it->ldWeight);
+      Memo1->Lines->Add(s); // отображение в МЕМО
+      ++it;
+    }
+}
+//---------------------------------------------------------------------------
+
 //---------- кнопка УТОЧНИТЬ ВЕС---------------------------------------------
 //----- подготавливает данные для новой калибровочной точки------------------
 void __fastcall TWeightForm::btChWeigthClick(TObject *Sender)
@@ -208,11 +222,56 @@ b = y2 - k*x2
         ld=k*dData +b;
         return ld;
 }
-
+//------------ получение калибровочной точки из строки ----------------------
+bool ConvertStringToPoint (AnsiString* s,tCalibrPoint* p)
+{
+        int i=s->AnsiPos(';');
+        if (i==0) return false;
+        AnsiString sData, sWeight;
+        sData=s->SubString(0,i-1);
+        sWeight=s->SubString(i+1,s->Length());
+        sData="2564";
+        int d;
+     11111111111111111111111111111111111111111111111!11!!!!1
+      //  p->dAdcData=sData.ToDouble();
+       // p->ldWeight=sWeight.ToDouble();
+        return true;
+}
+//---------------------------------------------------------------------------
 //------------ предикат для сортировки --------------------------------------
 bool PointCompare(tCalibrPoint a,tCalibrPoint b)
 {
         if ((a.dAdcData)<=(b.dAdcData)) return true;
         return false;
 }
-//---------------------------------------------------------------------------}
+//---------------------------------------------------------------------------
+
+void __fastcall TWeightForm::btOpenDialogClick(TObject *Sender)
+{
+        OpenDialog1->FileName=eFileNameEdit->Text;
+        OpenDialog1->Execute();
+        eFileNameEdit->Text=OpenDialog1->FileName;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TWeightForm::btApplyClick(TObject *Sender)
+{
+        tCalibrPoint stNewPoint;
+        AnsiString s;
+        s=Memo1->Lines->operator [](0);
+        ConvertStringToPoint(&s,&stNewPoint);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TWeightForm::btsaveToFileClick(TObject *Sender)
+{
+Memo1->Lines->SaveToFile(eFileNameEdit->Text);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TWeightForm::btLoadFromFileClick(TObject *Sender)
+{
+Memo1->Lines->LoadFromFile(eFileNameEdit->Text);
+}
+//---------------------------------------------------------------------------
+

@@ -15,6 +15,9 @@
 #include <TeeFunci.hpp>
 #include <TeEngine.hpp>
 #include <TeeProcs.hpp>
+#include "TeeSeriesTextEd.hpp"
+#include "TeeURL.hpp"
+#include <Dialogs.hpp>
 //---------------------------------------------------------------------------
 class TWeightForm : public TForm
 {
@@ -37,13 +40,27 @@ __published:	// IDE-managed Components
         TLabel *Label9;
         TFastLineSeries *CurrentDataSeries;
         THorizLineSeries *CalibrSeries;
+        TButton *btsaveToFile;
+        TOpenDialog *OpenDialog1;
+        TEdit *eFileNameEdit;
+        TButton *btOpenDialog;
+        TButton *btLoadFromFile;
+        TMemo *Memo1;
+        TLabel *Label10;
+        TButton *btApply;
+        TButton *btCancel;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall btChWeigthClick(TObject *Sender);
         void __fastcall TrackBar1Change(TObject *Sender);
         void __fastcall TrackBar2Change(TObject *Sender);
         void __fastcall Edit1Exit(TObject *Sender);
+        void __fastcall btOpenDialogClick(TObject *Sender);
+        void __fastcall btApplyClick(TObject *Sender);
+        void __fastcall btsaveToFileClick(TObject *Sender);
+        void __fastcall btLoadFromFileClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
+        void __fastcall DisplayCalibrData (void);
         void PushData (DWORD dData);
         __fastcall TWeightForm(TComponent* Owner);
 };

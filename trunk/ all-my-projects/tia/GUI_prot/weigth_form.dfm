@@ -1,7 +1,7 @@
 object WeightForm: TWeightForm
   Left = 870
-  Top = 117
-  Width = 739
+  Top = 150
+  Width = 924
   Height = 768
   Caption = 'WeightForm'
   Color = clBtnFace
@@ -81,6 +81,13 @@ object WeightForm: TWeightForm
     Width = 24
     Height = 16
     Caption = #1042#1077#1089
+  end
+  object Label10: TLabel
+    Left = 736
+    Top = 16
+    Width = 145
+    Height = 16
+    Caption = #1082#1072#1083#1080#1073#1088#1086#1074#1086#1095#1085#1099#1077' '#1090#1086#1095#1082#1080
   end
   object Chart1: TChart
     Left = 0
@@ -210,5 +217,70 @@ object WeightForm: TWeightForm
     TabOrder = 5
     Text = '0'
     OnExit = Edit1Exit
+  end
+  object btsaveToFile: TButton
+    Left = 16
+    Top = 576
+    Width = 137
+    Height = 25
+    Caption = #1089#1086#1093#1088#1072#1085#1080#1090#1100' '#1074' '#1092#1072#1081#1083
+    TabOrder = 6
+    OnClick = btsaveToFileClick
+  end
+  object eFileNameEdit: TEdit
+    Left = 16
+    Top = 616
+    Width = 497
+    Height = 24
+    TabOrder = 7
+    Text = 'eFileNameEdit'
+  end
+  object btOpenDialog: TButton
+    Left = 528
+    Top = 616
+    Width = 41
+    Height = 25
+    Caption = '......'
+    TabOrder = 8
+    OnClick = btOpenDialogClick
+  end
+  object btLoadFromFile: TButton
+    Left = 200
+    Top = 576
+    Width = 153
+    Height = 25
+    Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1080#1079' '#1092#1072#1081#1083#1072
+    TabOrder = 9
+    OnClick = btLoadFromFileClick
+  end
+  object Memo1: TMemo
+    Left = 712
+    Top = 40
+    Width = 169
+    Height = 553
+    Lines.Strings = (
+      '65077; 4,6')
+    TabOrder = 10
+  end
+  object btApply: TButton
+    Left = 712
+    Top = 600
+    Width = 153
+    Height = 25
+    Caption = #1055#1088#1080#1084#1077#1085#1080#1090#1100
+    TabOrder = 11
+    OnClick = btApplyClick
+  end
+  object btCancel: TButton
+    Left = 712
+    Top = 632
+    Width = 153
+    Height = 25
+    Caption = #1059#1073#1088#1072#1090#1100' '#1080#1079#1084#1077#1085#1077#1085#1080#1103
+    TabOrder = 12
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 592
+    Top = 608
   end
 end
