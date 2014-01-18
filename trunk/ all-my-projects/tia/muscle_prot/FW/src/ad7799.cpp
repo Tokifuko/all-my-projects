@@ -7,11 +7,13 @@
 #include "ad7799.h"
 #include "stm32f10x.h"
 
-#define START_STEP			1
-#define CONFIG_STEP			2
-#define MODE_SET_STEP		3
-#define IDLE_STEP			4
-#define RECEIVE_DATA_STEP	5
+#define START_STEP						1
+#define CONFIG_STEP						2
+#define MODE_SET_STEP					3
+#define IDLE_STEP						4
+#define RECEIVE_DATA_STEP				5
+#define CALIBRATION_MODE_STEP 			6
+#define WAIT_RDY_AFTER_CAIBRATION_STEP	7
 
 
 void AD7799_Class :: Init(void)
@@ -122,8 +124,21 @@ void AD7799_Class :: Task(void)
 			StartTxRx(3);
 			AD7799_state=MODE_SET_STEP;
 			break;
+	// --------- zero calibration need ---------------------------------------
+		case CALIBRATION_MODE_STEP: //write to mode register calibration command
+			SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_INT_CALIBR;
+			StartTxRx(3);
+			AD7799_state=WAIT_RDY_AFTER_CAIBRATION_STEP;
+			break;
+		case WAIT_RDY_AFTER_CAIBRATION_STEP:   // wait RDY pin
+			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) == Bit_RESET)
+			{
+				AD7799_state=MODE_SET_STEP; // and set required mode.
+			}
+			break;
+//--------------------------------------------------------------------------
 		case MODE_SET_STEP: //write to mode register
-			if (i==1) SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_PSW_ON;
+			if (bLedPswOn) SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_PSW_ON;
 			else SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_PSW_OFF;
 			StartTxRx(3);
 			AD7799_state=IDLE_STEP;
@@ -155,6 +170,11 @@ void AD7799_Class :: Task(void)
 					AD7799_state=CONFIG_STEP;
 					bChangeConfigFlag=false;
 				}
+				if (bCalibrationNeed) // zero-calibration request, after calibration, required mode set automatically
+				{
+					AD7799_state=CALIBRATION_MODE_STEP;
+					bCalibrationNeed=false;
+				}
 			break;
 		}
 
@@ -185,12 +205,18 @@ void AD7799_Class :: StartTxRx(uint8_t chDataSize)
 }
 void AD7799_Class :: PswPinOn(void)
 {
-	i=1;
-	bChangeModeFlag=1;
+	bLedPswOn=true;
+	bChangeModeFlag=true;
 }
 
 void AD7799_Class ::  PswPinOff(void)
 {
-	i=0;
+	bLedPswOn=false;
+	bChangeModeFlag=true;
+}
+
+void AD7799_Class :: StartZeroCalibration(void)
+{
+	bCalibrationNeed=true;
 	bChangeModeFlag=true;
 }

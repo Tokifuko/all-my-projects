@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 247
-  Top = 290
-  Width = 631
-  Height = 345
+  Left = 150
+  Top = 85
+  Width = 506
+  Height = 242
   Caption = 'MainForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -27,6 +27,13 @@ object MainForm: TMainForm
     Height = 16
     Caption = 'none'
   end
+  object Label1: TLabel
+    Left = 224
+    Top = 88
+    Width = 132
+    Height = 16
+    Caption = #1086#1090#1089#1095#1077#1090#1086#1074'  '#1074' '#1089#1077#1082#1091#1085#1076#1091
+  end
   object Button1: TButton
     Left = 30
     Top = 30
@@ -37,8 +44,8 @@ object MainForm: TMainForm
     OnClick = Button1Click
   end
   object TrackBar1: TTrackBar
-    Left = 217
-    Top = 158
+    Left = 33
+    Top = 142
     Width = 184
     Height = 55
     Max = 100
@@ -54,8 +61,8 @@ object MainForm: TMainForm
     OnChange = TrackBar1Change
   end
   object Button2: TButton
-    Left = 488
-    Top = 72
+    Left = 368
+    Top = 48
     Width = 75
     Height = 25
     Caption = #1043#1088#1072#1092#1080#1082#1080
@@ -63,8 +70,8 @@ object MainForm: TMainForm
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 440
-    Top = 144
+    Left = 320
+    Top = 120
     Width = 147
     Height = 25
     Caption = #1050#1072#1083#1080#1073#1088#1086#1074#1082#1072' '#1074#1077#1089#1072
@@ -72,6 +79,7 @@ object MainForm: TMainForm
     OnClick = Button3Click
   end
   object TestTimer: TTimer
+    Enabled = False
     Interval = 50
     OnTimer = TestTimerTimer
     Left = 296
@@ -79,13 +87,13 @@ object MainForm: TMainForm
   end
   object SpeedMeterTimer: TTimer
     OnTimer = SpeedMeterTimerTimer
-    Left = 536
-    Top = 40
+    Left = 416
+    Top = 16
   end
   object ProcessTimer: TTimer
     Interval = 100
     OnTimer = ProcessTimerTimer
-    Left = 416
-    Top = 32
+    Left = 296
+    Top = 8
   end
 end

@@ -1,8 +1,8 @@
 object ComForm: TComForm
-  Left = 332
-  Top = 163
-  Width = 392
-  Height = 450
+  Left = 147
+  Top = 331
+  Width = 469
+  Height = 522
   Caption = 'ComForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -262,8 +262,8 @@ object ComForm: TComForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 454
-    Width = 434
+    Top = 458
+    Width = 451
     Height = 19
     Panels = <
       item

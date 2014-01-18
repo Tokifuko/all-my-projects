@@ -21,7 +21,7 @@ TWeightForm *WeightForm;
 
 DWORD dAverageLocal=0;
 DWORD dAverageToChange=0;
-long double dWeightLocal=0;
+long double ldWeightLocal=0;
 long double ldWeightToChange=0;
 
 using std::vector;
@@ -48,6 +48,7 @@ __fastcall TWeightForm::TWeightForm(TComponent* Owner)
         s.Delete(s.Length()-3,4);
         eFileNameEdit->Text=s+".txt";
         Memo1->Lines->LoadFromFile(eFileNameEdit->Text);
+        DecimalSeparator='.';
 }
 //---------------------------------------------------------------------------
 //----------- вычисление среднего арифмитического  двунаправленной очереди --
@@ -55,8 +56,12 @@ DWORD CalcAverage ( deque <DWORD> &d)
 {
         DWORD dAverage=0;
         std::deque<DWORD>::iterator MyIt = d.begin();
-        while (MyIt != d.end()) dAverage+=(*MyIt++)/d.size();
-       return dAverage;
+        while (MyIt != d.end())
+        {
+                dAverage+=(*MyIt);
+                MyIt++;
+        }
+       return dAverage/d.size();
 }
 //--------------- сюда поступают данные от АЦП   ----------------------
 void TWeightForm::PushData (DWORD dData)
@@ -66,21 +71,21 @@ void TWeightForm::PushData (DWORD dData)
       if (stdAverageArray.size()>SLIDE_MED_N) stdAverageArray.pop_front();
      dAverageLocal=CalcAverage(stdAverageArray);
 
-      dWeightLocal=CalcWeight(dData);
+      ldWeightLocal=CalcWeight(dAverageLocal);
 
       //  индикация
-      AnsiString s;
-      s.sprintf("%d",dAverageLocal);
-      Label5->Caption=s;
-      s.sprintf("%3.3Lf",dWeightLocal);
-      Label6->Caption=s;
+      Label5->Caption=FloatToStrF(dAverageLocal,ffGeneral,32,0);
+      Label6->Caption=FloatToStrF(ldWeightLocal,ffFixed,6,4);
 
       //   на графике
-      CurrentDataSeries->Clear();
+      CurrentDataSeries->Clear(); // вертикальная линия текущих данных
       CurrentDataSeries->AddXY(dData,CalibrSeries->MinYValue()-1);
       CurrentDataSeries->AddXY(dData,CalibrSeries->MaxYValue()+1);
-      CurrentPointSeries->Clear();
-      CurrentPointSeries->AddXY(dData,dWeightLocal);
+      CurrentPointSeries->Clear(); // зеленая точка текущих данный
+      CurrentPointSeries->AddXY(dData,CalcWeight(dData));
+      CurrentAveragePoint->Clear(); // желтая точка - среднее значение
+      CurrentAveragePoint->AddXY(dAverageLocal,CalcWeight(dAverageLocal));
+
 }
 
 //----------- кнопка СОХРАНИТЬ, сохранет точку в калибровочном векторе ---
@@ -94,8 +99,6 @@ void __fastcall TWeightForm::Button1Click(TObject *Sender)
       vCalibr.push_back(stNewPoint);   // добавляем точку
       std::sort(vCalibr.begin(),vCalibr.end(),PointCompare); // и пересортировываем вектор
       DisplayCalibrData(); // отображение
-
-
 }
 //---------------------------------------------------------------------------
 //------------ Отображение калибровочного вектора на форме ------------------
@@ -108,8 +111,8 @@ void __fastcall TWeightForm::DisplayCalibrData (void)
     while (it!=vCalibr.end())
     {
       CalibrSeries->AddXY(it->dAdcData,it->ldWeight); // отображение на графике
-      s.printf("%d; %3.3Lf",it->dAdcData,it->ldWeight);
-      Memo1->Lines->Add(s); // отображение в МЕМО
+      s=FloatToStrF(it->dAdcData,ffGeneral,32,0)+"; "+FloatToStrF(it->ldWeight,ffFixed,3,3);
+      Memo1->Lines->Add(s); // отображение в МЕМО   "dAdcData; ldWeight"
       ++it;
     }
 }
@@ -119,14 +122,12 @@ void __fastcall TWeightForm::DisplayCalibrData (void)
 //----- подготавливает данные для новой калибровочной точки------------------
 void __fastcall TWeightForm::btChWeigthClick(TObject *Sender)
 {
-        ldWeightToChange=dWeightLocal;
+        ldWeightToChange=ldWeightLocal;
       dAverageToChange=dAverageLocal;
 
-      AnsiString s;
-      s.sprintf("%3.3Lf",ldWeightToChange);
-      Edit1->Text=s;
-      s.sprintf("%d",dAverageToChange);
-      Label8->Caption=s;
+      // отображение
+      Edit1->Text=FloatToStrF(ldWeightToChange,ffFixed,3,3);
+      Label8->Caption=FloatToStrF(dAverageToChange,ffGeneral,32,0);
       DWORD d;
       d=ldWeightToChange; // преобразование типов оставит только целую часть
       TrackBar1->Position=d;
@@ -140,9 +141,7 @@ void __fastcall TWeightForm::TrackBar1Change(TObject *Sender)
       DWORD d=ldWeightToChange;
       ldWeightToChange=ldWeightToChange-d;  // оставляем дробное
      ldWeightToChange=ldWeightToChange+TrackBar1->Position;
-     AnsiString s;
-      s.sprintf("%3.3Lf",ldWeightToChange);
-      Edit1->Text=s;
+        Edit1->Text=FloatToStrF(ldWeightToChange,ffFixed,3,3);
 }
 //--------- изменение веса ползунка-ми  TrackBar-------------
 //---------------- граммы ---------------------------------------------
@@ -151,18 +150,14 @@ void __fastcall TWeightForm::TrackBar2Change(TObject *Sender)
         DWORD d=ldWeightToChange;
      ldWeightToChange=d; // оставляем целое
         ldWeightToChange=ldWeightToChange+((float)(TrackBar2->Position)/(float)(TrackBar2->Max));
-     AnsiString s;
-      s.sprintf("%3.3Lf",ldWeightToChange);
-      Edit1->Text=s;
+        Edit1->Text=FloatToStrF(ldWeightToChange,ffFixed,3,3);
 }
 //---------------------------------------------------------------------------
 // -------- выход из EDIT, после введения нового числа -------------------
 void __fastcall TWeightForm::Edit1Exit(TObject *Sender)
 {
    long double ld;
-   AnsiString s;
-   s=Edit1->Text;
-   ld=strtod(s.c_str(),NULL);
+   ld=Edit1->Text.ToDouble();
    if (ld>(TrackBar1->Max)) ld=TrackBar1->Max;
    DWORD d;
    d=ld; // преобразование типов оставит только целую часть
@@ -220,7 +215,7 @@ b = y2 - k*x2
         k=(stFirstPoint.ldWeight-stSecondPoint.ldWeight)/(stFirstPoint.dAdcData-stSecondPoint.dAdcData);
         b= stSecondPoint.ldWeight-(k*stSecondPoint.dAdcData);
         ld=k*dData +b;
-        return ld;
+        return (long double) ld;
 }
 //------------ получение калибровочной точки из строки ----------------------
 bool ConvertStringToPoint (AnsiString* s,tCalibrPoint* p)
@@ -230,11 +225,8 @@ bool ConvertStringToPoint (AnsiString* s,tCalibrPoint* p)
         AnsiString sData, sWeight;
         sData=s->SubString(0,i-1);
         sWeight=s->SubString(i+1,s->Length());
-        sData="2564";
-        int d;
-     11111111111111111111111111111111111111111111111!11!!!!1
-      //  p->dAdcData=sData.ToDouble();
-       // p->ldWeight=sWeight.ToDouble();
+        p->dAdcData=sData.ToDouble();
+        p->ldWeight=sWeight.ToDouble();
         return true;
 }
 //---------------------------------------------------------------------------
@@ -252,14 +244,28 @@ void __fastcall TWeightForm::btOpenDialogClick(TObject *Sender)
         OpenDialog1->Execute();
         eFileNameEdit->Text=OpenDialog1->FileName;
 }
-//---------------------------------------------------------------------------
+//------------ кнопка ПРИМЕНИТЬ   -------------------------------------------
+//---------- загружает точи из МЕМО в калибровочный вектор-------------------
 
 void __fastcall TWeightForm::btApplyClick(TObject *Sender)
 {
         tCalibrPoint stNewPoint;
         AnsiString s;
-        s=Memo1->Lines->operator [](0);
-        ConvertStringToPoint(&s,&stNewPoint);
+        int i=0;
+        vCalibr.clear();
+        while (i<Memo1->Lines->Count)
+        {
+                s=Memo1->Lines->operator [](i);
+                try   {ConvertStringToPoint(&s,&stNewPoint);}
+                catch (EConvertError &E) {ShowMessage(AnsiString(E.ClassName()) + "\n" + AnsiString(E.Message));}
+                /// StatusBar1->SimpleText=(AnsiString(E.ClassName()) + "    " + AnsiString(E.Message));
+                 vCalibr.push_back(stNewPoint);   // добавляем точку
+                i++;
+                
+        }
+        std::sort(vCalibr.begin(),vCalibr.end(),PointCompare); // и пересортировываем вектор
+        DisplayCalibrData();
+
 }
 //---------------------------------------------------------------------------
 
@@ -274,4 +280,6 @@ void __fastcall TWeightForm::btLoadFromFileClick(TObject *Sender)
 Memo1->Lines->LoadFromFile(eFileNameEdit->Text);
 }
 //---------------------------------------------------------------------------
+
+
 

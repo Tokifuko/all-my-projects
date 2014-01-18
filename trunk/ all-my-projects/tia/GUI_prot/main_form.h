@@ -22,6 +22,7 @@ __published:	// IDE-managed Components
         TButton *Button2;
         TTimer *ProcessTimer;
         TButton *Button3;
+        TLabel *Label1;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall TestTimerTimer(TObject *Sender);
         void __fastcall SpeedMeterTimerTimer(TObject *Sender);

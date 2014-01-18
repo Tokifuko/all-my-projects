@@ -19,8 +19,10 @@
 //#define AD7799_COM_MODE_PSW_OFF  	{0x08,0x10,0x01,0x00}	// f=420Hz
 //#define AD7799_COM_MODE_PSW_ON  	{0x08,0x00,0x0a,0x00}	// f=16.7Hz
 //#define AD7799_COM_MODE_PSW_OFF  	{0x08,0x10,0x0a,0x00}	// f=16.7Hz
-#define AD7799_COM_MODE_PSW_ON  	{0x08,0x00,0x04,0x00}	// f=62Hz
-#define AD7799_COM_MODE_PSW_OFF  	{0x08,0x10,0x04,0x00}	// f=62Hz
+#define AD7799_COM_MODE_PSW_ON  	{0x08,0x10,0x04,0x00}	// f=62Hz
+#define AD7799_COM_MODE_PSW_OFF  	{0x08,0x00,0x04,0x00}	// f=62Hz
+#define AD7799_COM_MODE_INT_CALIBR 	{0x08,0x80,0x04,0x00}	// f=62Hz
+
 #define AD7799_COM_GET_STATUS  		{0x40,0x00,0x00,0x00}
 #define AD7799_COM_GET_DATA  		{0x58,0x00,0x00,0x00}
 #define AD7799_COM_RESET  			{0xff,0xff,0xff,0xff}
@@ -52,7 +54,7 @@ typedef void(*ftVoid_Void)(uint32_t);
 class AD7799_Class {
 private:
 	uint8_t cChar;
-	uint8_t i;
+	bool bLedPswOn;
     DMA_InitTypeDef  DMA_InitStructure_TX;
     DMA_InitTypeDef  DMA_InitStructure_RX;
     uint8_t SPI_MASTER_Buffer_Rx[BufferSize];
@@ -60,6 +62,7 @@ private:
     uint8_t AD7799_state;
     bool bChangeModeFlag;
     bool bChangeConfigFlag;
+    bool bCalibrationNeed;
 
 
 public:
@@ -69,6 +72,7 @@ public:
     void StartTxRx(uint8_t chDataSize);
     void PswPinOn(void);
     void PswPinOff(void);
+    void StartZeroCalibration(void);
 
 };
 

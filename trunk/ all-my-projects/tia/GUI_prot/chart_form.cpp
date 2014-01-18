@@ -27,13 +27,13 @@ void TChartForm::DataChart (DWORD dData)
       AnsiString s;
       s.sprintf("%d",Series1->Count());
       Label1->Caption=s;
-      Series1->AddY(dData,"lable") ;
+      Series1->AddY(dData) ;
       if (Series1->Count()>CHART_LEN) Series1->Delete(0,1,true);
 
       // вычисление псевдо_скользящего среднего (на самом деле это БИК фильтр получился)
        if (PseudoSlideMedSeries->Count()==0) dPseudoSlideMed=dData;
       dPseudoSlideMed=dPseudoSlideMed-(dPseudoSlideMed/PSEUDO_SLIDE_MED_N)+(dData/PSEUDO_SLIDE_MED_N);
-      PseudoSlideMedSeries->AddY(dPseudoSlideMed,"lable") ;
+      PseudoSlideMedSeries->AddY(dPseudoSlideMed) ;
       if (PseudoSlideMedSeries->Count()>CHART_LEN) PseudoSlideMedSeries->Delete(0,1,true);
 
       // И скользящее среднее
@@ -55,7 +55,7 @@ void TChartForm::DataChart (DWORD dData)
          dSlideMedLocal=dSlideMedLocal+dSlideMed[i];
          i++;
       }
-      SlideMedSeries->AddY(dSlideMedLocal,"lable") ;
+      SlideMedSeries->AddY(dSlideMedLocal) ;
       if (SlideMedSeries->Count()>CHART_LEN) SlideMedSeries->Delete(0,1,true);
 
 

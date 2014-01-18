@@ -22,6 +22,7 @@ __published:	// IDE-managed Components
         TFastLineSeries *SlideMedSeries;
         TButton *btClear;
         TFastLineSeries *PseudoSlideMedSeries;
+        TLabel *Label2;
         void __fastcall btClearClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations

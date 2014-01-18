@@ -49,6 +49,9 @@ __published:	// IDE-managed Components
         TLabel *Label10;
         TButton *btApply;
         TButton *btCancel;
+        TStatusBar *StatusBar1;
+        TMyPointSeries *CurrentAveragePoint;
+        TLabel *Label11;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall btChWeigthClick(TObject *Sender);
         void __fastcall TrackBar1Change(TObject *Sender);

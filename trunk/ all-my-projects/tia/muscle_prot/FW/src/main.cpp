@@ -16,6 +16,7 @@
 //#include <string.h>
 //#include <stdio.h>
 #define DEBUG_LED_TIMEOUT	1000
+#define USER_BATTON_TIMEOUT	100
 
 void GeneralInit(void);
 void Ad7799Callback(uint32_t iData);
@@ -33,7 +34,9 @@ uint32_t iTemp;
 int main(void)
 {
 	uint32_t iDebugLedTimer;
+	uint32_t iUserBattonTimer;
 	uint32_t flag=0;
+	uint32_t iUserBattonFlag=0;
 
 	Delay.Init();
 	GeneralInit();
@@ -43,17 +46,30 @@ int main(void)
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
 	Delay.Reset(&iDebugLedTimer);
+	Delay.Reset(&iUserBattonTimer);
+	ad7799.PswPinOff();
     while(1)
     {
     	ad7799.Task();
-       // while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-        /* Send SPI1 data */
-        //SPI_I2S_SendData(SPI1, 0x5555);
-
-    if (Delay.Elapsed(&iDebugLedTimer,DEBUG_LED_TIMEOUT))
+// --------------- user button start callibration process --------------
+    	if (UserButtonPressed())
     	{
-    	//SPI_I2S_SendData(SPI_MASTER,0x5555);
-
+    		if (iUserBattonFlag==0)
+    		{
+    			iUserBattonFlag=1;
+    			Delay.Reset(&iUserBattonTimer);
+    			ad7799.StartZeroCalibration();
+    		}
+    	}
+    	else if (Delay.Elapsed(&iUserBattonTimer,USER_BATTON_TIMEOUT))
+				{
+					iUserBattonFlag=0;
+				//	ad7799.PswPinOff();
+				}
+ //-------------------------------------------------------------------------
+ //------------ debug led and e.t.c. ---------------------------------------
+    	if (Delay.Elapsed(&iDebugLedTimer,DEBUG_LED_TIMEOUT))
+    	{
     		if (flag==0)
     			{
     				BLedDiscOn();
@@ -67,11 +83,11 @@ int main(void)
     				//ad7799.PswPinOff();
     			}
     	}
+//-------------------------------------------------------------------------
     }
 }
 
 void GeneralInit(void) {
-    //Delay.Init();
     RCC_APB2PeriphClockCmd(
     		LED_2_CLK |
     		G_LED_DISC_CLK |
@@ -102,9 +118,9 @@ void GeneralInit(void) {
     GPIO_Init( B_LED_DISC_PORT, &GPIO_InitStructure );
 
     // кнопки ручного управления
-    /* Configure KEY_DOWN_PIN as INPUT PULLUP */
+    /* Configure USER_BUTTON */
     GPIO_InitStructure.GPIO_Pin = USER_BUTTON_PIN;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init( USER_BUTTON_PORT, &GPIO_InitStructure );
 }
