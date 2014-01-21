@@ -39,8 +39,13 @@ void AD7799_Class :: Init(void)
 	GPIO_PinRemapConfig(GPIO_Remap_SPI1, ENABLE);
 
 
-	/* Configure SPI_MASTER pins: SCK and MOSI */
-	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_SCK | SPI_MASTER_PIN_MOSI;
+	/* Configure SPI_MASTER pins: SCK  */
+	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_SCK ;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
+	/* and MOSI */
+	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MOSI ;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
@@ -67,7 +72,7 @@ void AD7799_Class :: Init(void)
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
 	SPI_InitStructure.SPI_CRCPolynomial = CRCPolynomial;
 	SPI_Init(SPI_MASTER, &SPI_InitStructure);
-	 SPI_Cmd(SPI1, ENABLE);
+	 SPI_Cmd(SPI_MASTER, ENABLE);
 
 	/* SPI_MASTER_Rx_DMA_Channel configuration ---------------------------------*/
 	DMA_InitStructure_RX.DMA_PeripheralBaseAddr = (uint32_t)SPI_MASTER_DR_Base;

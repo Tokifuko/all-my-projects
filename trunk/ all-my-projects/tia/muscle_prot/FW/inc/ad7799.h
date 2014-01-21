@@ -44,7 +44,7 @@
 #define SPI_MASTER_Rx_DMA_FLAG       DMA1_FLAG_TC2
 #define SPI_MASTER_Tx_DMA_Channel    DMA1_Channel3
 #define SPI_MASTER_Tx_DMA_FLAG        DMA1_FLAG_TC3
-#define SPI_MASTER_DR_Base           0x4001300C
+#define SPI_MASTER_DR_Base           (SPI1_BASE + 0x0000000C) //0x4001300C
 
 #define BufferSize         5
 #define CRCPolynomial      7
