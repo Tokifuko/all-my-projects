@@ -7,6 +7,25 @@
 #include "ad7799.h"
 #include "stm32f10x.h"
 
+#define SPI_MASTER                   SPI1
+#define SPI_MASTER_CLK               RCC_APB2Periph_SPI1
+#define SPI_MASTER_GPIO              GPIOB
+#define SPI_MASTER_GPIO_CLK          RCC_APB2Periph_GPIOB
+#define SPI_MASTER_PIN_SCK           GPIO_Pin_3
+#define SPI_MASTER_PIN_MISO          GPIO_Pin_4
+#define SPI_MASTER_PIN_MOSI          GPIO_Pin_5
+#define SPI_MASTER_CS_GPIO           GPIOC
+#define SPI_MASTER_CS_GPIO_CLK       RCC_APB2Periph_GPIOC
+#define SPI_MASTER_PIN_CS            GPIO_Pin_12
+
+#define SPI_MASTER_DMA               DMA1
+#define SPI_MASTER_DMA_CLK           RCC_AHBPeriph_DMA1
+#define SPI_MASTER_Rx_DMA_Channel    DMA1_Channel2
+#define SPI_MASTER_Rx_DMA_FLAG       DMA1_FLAG_TC2
+#define SPI_MASTER_Tx_DMA_Channel    DMA1_Channel3
+#define SPI_MASTER_Tx_DMA_FLAG        DMA1_FLAG_TC3
+#define SPI_MASTER_DR_Base           (SPI1_BASE + 0x0000000C) //0x4001300C
+
 #define START_STEP						1
 #define CONFIG_STEP						2
 #define MODE_SET_STEP					3

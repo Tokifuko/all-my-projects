@@ -9,6 +9,8 @@
 #include "GPIO_config.h"
 #include "delay_util.h"
 #include "ad7799.h"
+#include "ms5803_spi.h"
+
 
 #include "UARTClass.h"
 
@@ -20,6 +22,8 @@
 
 void GeneralInit(void);
 void Ad7799Callback(uint32_t iData);
+void Ms5803Callback(uint32_t iData);
+
 
 UART_Class DbgUART;
 UART_Class* pUART1;
@@ -29,6 +33,7 @@ UART_Class* pUART4;
 UART_Class* pUART5;
 
 AD7799_Class ad7799;
+MS5803_Class ms5803;
 uint32_t iTemp;
 
 int main(void)
@@ -43,6 +48,9 @@ int main(void)
 	DbgUART.UART_Init(USART1);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
+	ms5803.Init();
+	ms5803.Callback=Ms5803Callback;
+
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
 	Delay.Reset(&iDebugLedTimer);
@@ -51,6 +59,7 @@ int main(void)
     while(1)
     {
     	ad7799.Task();
+    	ms5803.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
     	{
@@ -74,6 +83,7 @@ int main(void)
     			{
     				BLedDiscOn();
     				flag=1;
+    				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
     				//ad7799.PswPinOn();
     			}
     			else
@@ -136,4 +146,8 @@ void Ad7799Callback(uint32_t iData)
 	}
 */
 	DbgUART.SendPrintF("Tenzo=%d \n",iData);
+}
+void Ms5803Callback(uint32_t iData)
+{
+	DbgUART.SendPrintF("Pres=%d \n",iData);
 }
