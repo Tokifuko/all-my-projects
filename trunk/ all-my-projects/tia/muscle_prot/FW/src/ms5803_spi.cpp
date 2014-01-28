@@ -72,7 +72,7 @@ void MS5803_Class :: Init(void)
 	/* Configure SPI_MASTER MISO pin */
 	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MISO;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
 
 	/* SPI_MASTER configuration ------------------------------------------------*/
@@ -80,7 +80,7 @@ void MS5803_Class :: Init(void)
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
 	SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
 	SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
-	SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
+	SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
 	SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
 	SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_256;
 	SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
@@ -138,7 +138,7 @@ void MS5803_Class :: Task(void)
 	{
 		if (bWaitDevReadyFlag) // in many cases, after sending command, you need to wait for the device
 		{
-			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) != Bit_SET) return;
+			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) != Bit_RESET) return;
 			bWaitDevReadyFlag=false;
 		}
 
