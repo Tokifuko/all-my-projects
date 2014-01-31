@@ -10,6 +10,8 @@
 #include "delay_util.h"
 #include "ad7799.h"
 #include "ms5803_spi.h"
+#include "i2c_mgr.h"
+#include "common.h"
 
 
 #include "UARTClass.h"
@@ -34,6 +36,7 @@ UART_Class* pUART5;
 
 AD7799_Class ad7799;
 MS5803_Class ms5803;
+//i2cMgr_t i2cMgr;
 uint32_t iTemp;
 
 int main(void)
@@ -42,6 +45,9 @@ int main(void)
 	uint32_t iUserBattonTimer;
 	uint32_t flag=0;
 	uint32_t iUserBattonFlag=0;
+	uint8_t dataBufTxReset[4]={0x1E,0,0,0};
+	uint8_t dataBufTxRead[4]={0xA2,0,0,0};
+	uint8_t dataBufRx[4]={0,0,0,0};
 
 	Delay.Init();
 	GeneralInit();
@@ -50,16 +56,48 @@ int main(void)
 	ad7799.Callback=Ad7799Callback;
 	ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
+	i2cMgr.Init();
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
 	Delay.Reset(&iDebugLedTimer);
 	Delay.Reset(&iUserBattonTimer);
+	i2cMgr.SetDbgUART(&DbgUART);
 	ad7799.PswPinOff();
+	I2C_Cmd_t comReset,comRead, comReadStart;
+
+	comReset.Address = 0x77;
+	comReset.DataToWrite.Length = 1;
+	comReset.DataToWrite.Buf=dataBufTxReset;
+	comReset.DataToRead.Length = 0;
+	comReset.DataToRead.Buf = dataBufRx;
+	comReset.State = CmdWritingAddrTX;
+	comReset.Callback=Ms5803Callback;
+	i2cMgr.AddCmd(comReset);  // Reset command
+
+	comRead.Address = 0x77;
+	comRead.DataToWrite.Length = 1;
+	comRead.DataToWrite.Buf=dataBufTxRead;
+	comRead.DataToRead.Length = 0;
+	comRead.DataToRead.Buf = dataBufRx;
+	comRead.State = CmdWritingOne;
+	comRead.Callback=Ms5803Callback;
+
+	comReadStart.Address = 0x77;
+	comReadStart.DataToWrite.Length = 0;
+	comReadStart.DataToWrite.Buf=dataBufTxRead;
+	comReadStart.DataToRead.Length = 3;
+	comReadStart.DataToRead.Buf = dataBufRx;
+	comReadStart.State = CmdReadingMany;
+	comReadStart.Callback=Ms5803Callback;
+
+
+
     while(1)
     {
     	ad7799.Task();
     	ms5803.Task();
+    	i2cMgr.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
     	{
@@ -68,6 +106,7 @@ int main(void)
     			iUserBattonFlag=1;
     			Delay.Reset(&iUserBattonTimer);
     			ad7799.StartZeroCalibration();
+    			//i2cMgr.AddCmd(comReset);  // Reset command
     		}
     	}
     	else if (Delay.Elapsed(&iUserBattonTimer,USER_BATTON_TIMEOUT))
@@ -84,10 +123,12 @@ int main(void)
     				BLedDiscOn();
     				flag=1;
     				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
+    				i2cMgr.AddCmd(comRead);
     				//ad7799.PswPinOn();
     			}
     			else
     			{
+    				//i2cMgr.AddCmd(comReadStart);
     				BLedDiscOff();
     				flag=0;
     				//ad7799.PswPinOff();
@@ -151,3 +192,4 @@ void Ms5803Callback(uint32_t iData)
 {
 	DbgUART.SendPrintF("Pres=%d \n",iData);
 }
+

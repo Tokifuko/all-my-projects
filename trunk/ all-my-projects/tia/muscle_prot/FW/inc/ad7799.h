@@ -12,6 +12,7 @@
 
 #include "stm32f10x_conf.h"
 #include "stm32f10x.h"
+#include "common.h"
 
 #define AD7799_COM_CONFIG 			{0x10,0x07,0x30,0x00}  //g=128
 //#define AD7799_COM_CONFIG 			{0x10,0x06,0x30,0x00}		// g=64
@@ -32,7 +33,7 @@
 #define BufferSize         5
 #define CRCPolynomial      7
 
-typedef void(*ftVoid_Void)(uint32_t);
+//typedef void(*ftVoid_Void)(uint32_t);
 
 class AD7799_Class {
 private:
