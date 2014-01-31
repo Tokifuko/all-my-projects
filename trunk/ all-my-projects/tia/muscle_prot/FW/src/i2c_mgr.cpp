@@ -20,8 +20,14 @@ void i2cMgr_t::Task() {
                     CmdToRead->State = CmdWritingAddrTX;
                 }
                 else {  // nothing to write
-                    CmdToRead->State = CmdSucceded;
-                    StopAndGetNext();
+                	if (CmdToRead->DataToRead.Length !=0){
+                		SendAddrRX();
+                		CmdToRead->State = CmdWritingAddrRX;
+                	}
+                	else{  // nothing to do
+                		CmdToRead->State = CmdSucceded;
+                		StopAndGetNext();
+                	}
                 }
             } // if start
             else {
@@ -69,7 +75,6 @@ void i2cMgr_t::Task() {
                     CmdToRead->State = CmdSucceded;
                     if(CmdToRead->Callback != 0) CmdToRead->Callback(0);
                     StopAndGetNext();
-                    DbgUART->SendPrintF("I2C OneByte no read\r");
                 }
             } //
             else if (IEvt != I2C_WAITING) { // Some error occured
@@ -94,7 +99,7 @@ void i2cMgr_t::Task() {
             else if (IEvt != I2C_WAITING) { // Some error occured
                 CmdToRead->State = CmdFailed;
                 StopAndGetNext();
-                DbgUART->SendPrintF("I2C Addr RX timeout\r");
+                DbgUART->SendPrintF("I2C Addr RX error\r");
             }
             break;  // Otherwise still sending address
 
@@ -247,8 +252,8 @@ void i2cMgr_t::ReadMany() {
     // Prepare DMA
     DMA_DeInit(I2C_DMA_CHNL_RX);
     DMA_InitTypeDef DMA_InitStructure;
-    //DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) &I2C_NAMBER->DR;
-    DMA_InitStructure.DMA_PeripheralBaseAddr = 0x40005410;
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t) &I2C_NAMBER->DR;
+    //DMA_InitStructure.DMA_PeripheralBaseAddr = 0x40005410;
     DMA_InitStructure.DMA_MemoryBaseAddr     = (uint32_t) &CmdToRead->DataToRead.Buf[0];
     DMA_InitStructure.DMA_BufferSize         = CmdToRead->DataToRead.Length;
     DMA_InitStructure.DMA_DIR                = DMA_DIR_PeripheralSRC;  // From I2C to memory

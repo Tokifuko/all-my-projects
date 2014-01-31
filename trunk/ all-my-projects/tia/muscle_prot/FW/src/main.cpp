@@ -46,16 +46,16 @@ int main(void)
 	uint32_t flag=0;
 	uint32_t iUserBattonFlag=0;
 	uint8_t dataBufTxReset[4]={0x1E,0,0,0};
-	uint8_t dataBufTxRead[4]={0xA2,0,0,0};
+	uint8_t dataBufTxRead[4]={0xA4,0,0,0};
 	uint8_t dataBufRx[4]={0,0,0,0};
 
 	Delay.Init();
 	GeneralInit();
 	DbgUART.UART_Init(USART1);
-	ad7799.Init();
-	ad7799.Callback=Ad7799Callback;
-	ms5803.Init();
-	ms5803.Callback=Ms5803Callback;
+	//ad7799.Init();
+	//ad7799.Callback=Ad7799Callback;
+	//ms5803.Init();
+	//ms5803.Callback=Ms5803Callback;
 	i2cMgr.Init();
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
@@ -63,7 +63,7 @@ int main(void)
 	Delay.Reset(&iDebugLedTimer);
 	Delay.Reset(&iUserBattonTimer);
 	i2cMgr.SetDbgUART(&DbgUART);
-	ad7799.PswPinOff();
+	//ad7799.PswPinOff();
 	I2C_Cmd_t comReset,comRead, comReadStart;
 
 	comReset.Address = 0x77;
@@ -71,7 +71,6 @@ int main(void)
 	comReset.DataToWrite.Buf=dataBufTxReset;
 	comReset.DataToRead.Length = 0;
 	comReset.DataToRead.Buf = dataBufRx;
-	comReset.State = CmdWritingAddrTX;
 	comReset.Callback=Ms5803Callback;
 	i2cMgr.AddCmd(comReset);  // Reset command
 
@@ -80,7 +79,6 @@ int main(void)
 	comRead.DataToWrite.Buf=dataBufTxRead;
 	comRead.DataToRead.Length = 0;
 	comRead.DataToRead.Buf = dataBufRx;
-	comRead.State = CmdWritingOne;
 	comRead.Callback=Ms5803Callback;
 
 	comReadStart.Address = 0x77;
@@ -88,15 +86,14 @@ int main(void)
 	comReadStart.DataToWrite.Buf=dataBufTxRead;
 	comReadStart.DataToRead.Length = 3;
 	comReadStart.DataToRead.Buf = dataBufRx;
-	comReadStart.State = CmdReadingMany;
 	comReadStart.Callback=Ms5803Callback;
 
 
 
     while(1)
     {
-    	ad7799.Task();
-    	ms5803.Task();
+    	//ad7799.Task();
+    	//ms5803.Task();
     	i2cMgr.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
@@ -105,7 +102,7 @@ int main(void)
     		{
     			iUserBattonFlag=1;
     			Delay.Reset(&iUserBattonTimer);
-    			ad7799.StartZeroCalibration();
+    		//	ad7799.StartZeroCalibration();
     			//i2cMgr.AddCmd(comReset);  // Reset command
     		}
     	}
@@ -128,7 +125,7 @@ int main(void)
     			}
     			else
     			{
-    				//i2cMgr.AddCmd(comReadStart);
+    				i2cMgr.AddCmd(comReadStart);
     				BLedDiscOff();
     				flag=0;
     				//ad7799.PswPinOff();
