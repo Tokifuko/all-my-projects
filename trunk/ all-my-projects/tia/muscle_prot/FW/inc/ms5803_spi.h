@@ -30,6 +30,7 @@ private:
     uint8_t MS5803_state;
     uint8_t MS5803_OSR; //conversion speed 0-4
     bool bWaitDevReadyFlag;
+    bool bResetFlag;
     int32_t dT;
     int32_t TEMP;
     int64_t OFF;
@@ -44,6 +45,7 @@ public:
     void SetOSR(uint8_t chOSR); // set conversion speed 0-4
     uint32_t GetTemp(void);
     uint32_t GetPres(void);
+    void SendReset (void);
   /*  void PswPinOn(void);
     void PswPinOff(void);
     void StartZeroCalibration(void);

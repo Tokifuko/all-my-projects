@@ -5,9 +5,11 @@
  *      Author: Stefan
  */
 #include "ms5803_spi.h"
+#include "kl_lib.h"
 
 #define SPI_MASTER                   SPI2
 #define SPI_MASTER_CLK               RCC_APB1Periph_SPI2
+
 #define SPI_MASTER_GPIO              GPIOB
 #define SPI_MASTER_GPIO_CLK          RCC_APB2Periph_GPIOB
 #define SPI_MASTER_PIN_SCK           GPIO_Pin_13
@@ -47,8 +49,8 @@ void MS5803_Class :: Init(void)
 	RCC_AHBPeriphClockCmd(SPI_MASTER_DMA_CLK , ENABLE);
 
 	/* Enable SPI_MASTER clock and GPIO clock for SPI_MASTER  */
-	RCC_APB2PeriphClockCmd(SPI_MASTER_GPIO_CLK |
-							RCC_APB2Periph_AFIO , ENABLE);
+	/*RCC_APB2PeriphClockCmd(SPI_MASTER_GPIO_CLK |
+							RCC_APB2Periph_AFIO , ENABLE);*/
 	RCC_APB1PeriphClockCmd(SPI_MASTER_CLK,ENABLE);
 
 	// Disable JTAG
@@ -56,25 +58,28 @@ void MS5803_Class :: Init(void)
 	/* Enable SPI1 Pins Software Remapping */
 	//GPIO_PinRemapConfig(GPIO_Remap_SPI1, ENABLE);
 
+	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_SCK,GPIO_Mode_AF_PP);
+	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_MOSI,GPIO_Mode_AF_PP);
+	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_MISO,GPIO_Mode_IPU);   ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	/* Configure SPI_MASTER pins: SCK */
-	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_SCK;
+/*	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_SCK;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
-
+*/
 	/* and MOSI */
-	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MOSI ;
+/*	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MOSI ;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
-
+*/
 	/* Configure SPI_MASTER MISO pin */
-	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MISO;
+/*	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_MISO;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_Init(SPI_MASTER_GPIO, &GPIO_InitStructure);
-
+*/
 	/* SPI_MASTER configuration ------------------------------------------------*/
 	SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
 	SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
@@ -136,6 +141,13 @@ void MS5803_Class :: Task(void)
 	uint32_t iD1=0;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
+		if (bResetFlag) // we can send RESET command anytime
+		{
+			bWaitDevReadyFlag=false;
+			MS5803_state=START_RESET_STEP;
+			bResetFlag=false;
+		}
+
 		if (bWaitDevReadyFlag) // in many cases, after sending command, you need to wait for the device
 		{
 			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) != Bit_RESET) return;
@@ -147,7 +159,8 @@ void MS5803_Class :: Task(void)
 		case START_RESET_STEP:   // reset MS5803
 			SPI_MASTER_Buffer_Tx[0]=MS5803_RESET_COMAND;
 			StartTxRx(1);
-			MS5803_state=READ_ROM_COEF_STEP;
+			//MS5803_state=READ_ROM_COEF_STEP;
+			MS5803_state=0;
 			bWaitDevReadyFlag=true;
 			MS5803_coefficients_counter=0;
 			break;
@@ -226,3 +239,7 @@ void MS5803_Class :: StartTxRx(uint8_t chDataSize)
 void MS5803_Class ::SetOSR(uint8_t chOSR) {	if (chOSR<=4) MS5803_OSR=chOSR;}// set conversion speed 0-4
 uint32_t MS5803_Class ::GetTemp(void){	return TEMP;}
 uint32_t MS5803_Class ::GetPres(void){	return Presure;}
+
+void MS5803_Class ::SendReset(void){
+	bResetFlag=true;
+}

@@ -12,6 +12,7 @@
 #include "ms5803_spi.h"
 #include "i2c_mgr.h"
 #include "common.h"
+#include "kl_lib.h"
 
 
 #include "UARTClass.h"
@@ -54,15 +55,15 @@ int main(void)
 	DbgUART.UART_Init(USART1);
 	//ad7799.Init();
 	//ad7799.Callback=Ad7799Callback;
-	//ms5803.Init();
-	//ms5803.Callback=Ms5803Callback;
-	i2cMgr.Init();
+	ms5803.Init();
+	ms5803.Callback=Ms5803Callback;
+	//i2cMgr.Init();
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
 	Delay.Reset(&iDebugLedTimer);
 	Delay.Reset(&iUserBattonTimer);
-	i2cMgr.SetDbgUART(&DbgUART);
+	//i2cMgr.SetDbgUART(&DbgUART);
 	//ad7799.PswPinOff();
 	I2C_Cmd_t comReset,comRead, comReadStart;
 
@@ -72,7 +73,7 @@ int main(void)
 	comReset.DataToRead.Length = 0;
 	comReset.DataToRead.Buf = dataBufRx;
 	comReset.Callback=Ms5803Callback;
-	i2cMgr.AddCmd(comReset);  // Reset command
+	//i2cMgr.AddCmd(comReset);  // Reset command
 
 	comRead.Address = 0x77;
 	comRead.DataToWrite.Length = 1;
@@ -89,12 +90,22 @@ int main(void)
 	comReadStart.Callback=Ms5803Callback;
 
 
+	klGpioSetupByMsk(GPIOB,GPIO_Pin_12,GPIO_Mode_Out_PP);
 
+//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+//    GPIO_InitTypeDef GPIO_InitStructure;
+//    // светодиоды
+//    /* Configure LED_2_PIN as Output */
+//    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
+//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+//    GPIO_Init( GPIOB, &GPIO_InitStructure );
+//	GPIO_SetBits(GPIOB,GPIO_Pin_12);
     while(1)
     {
     	//ad7799.Task();
-    	//ms5803.Task();
-    	i2cMgr.Task();
+    	ms5803.Task();
+    	//i2cMgr.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
     	{
@@ -120,11 +131,14 @@ int main(void)
     				BLedDiscOn();
     				flag=1;
     				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
-    				i2cMgr.AddCmd(comRead);
+    				GPIO_ResetBits(GPIOB,GPIO_Pin_12);
+    				ms5803.SendReset();
+    				//i2cMgr.AddCmd(comRead);
     				//ad7799.PswPinOn();
     			}
     			else
     			{
+    				GPIO_SetBits(GPIOB,GPIO_Pin_12);
     				i2cMgr.AddCmd(comReadStart);
     				BLedDiscOff();
     				flag=0;
