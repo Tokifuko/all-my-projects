@@ -142,9 +142,9 @@ void MS5803_Class :: Task(void)
 {
 	uint32_t iD2=0;
 	uint32_t iD1=0;
-	uint64_t i64=0;
-	uint32_t i32=0;
-	uint128_t i128;
+	int64_t i64=0;
+	int32_t i32=0;
+	int128_t i128;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
 		if (bResetFlag) // we can send RESET command anytime
@@ -166,7 +166,7 @@ void MS5803_Class :: Task(void)
 			counter=0;
 		}
 
-		if (counter!=10)
+		if (counter!=10)   /// такой вот делай, потом убрать!!!!!!!!
 		{
 			counter++;
 			return;
@@ -218,32 +218,21 @@ void MS5803_Class :: Task(void)
 			//------------------ temp ------------------
 			iD2=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
 			dT=iD2-(MS5803_coefficients[5]<<8);
-			if (dT<0)
-			{
-				bSignMinus_dT=true;
-				i32=dT*(-1);
-			}
-			else
-			{
-				bSignMinus_dT=false;
-				i32=dT;
-			}
-			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[6], &i64);
+			i32=MS5803_coefficients[6];
+			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>23;
-			if (bSignMinus_dT)TEMP=2000-i64;
-			else TEMP=2000+i64;
+			TEMP=2000+i64;
+
 			//-------------- OFFset--------------------------
-			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[4],&i64);
+			i32=MS5803_coefficients[4];
+			smult64_32_x_32(&dT,&i32,&i64);
 			i64=i64>>5;
-			if (bSignMinus_dT) OFF=(MS5803_coefficients[5]<<18)-i64;
-			else OFF=(MS5803_coefficients[5]<<18)+i64;
+			OFF=(MS5803_coefficients[5]<<18)+i64;
 			//-----------SENSitivity----------------
-			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[3], &i64);
+			i32=MS5803_coefficients[3];
+			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>7;
-			if (bSignMinus_dT) SENS=(MS5803_coefficients[1]<<17)-i64;
-			else SENS=(MS5803_coefficients[1]<<17)+i64;
-			if (SENS<0) bSignMinus_SENS=true;
-			else  bSignMinus_SENS=false;
+			SENS=(MS5803_coefficients[1]<<17)+i64;
 			MS5803_state=CONV_PRES_STEP;
 			break;
 		case READ_PRES_STEP: // read ADC data after conversion
@@ -253,40 +242,9 @@ void MS5803_Class :: Task(void)
 			break;
 		case CALC_PRES_STEP:
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
-			if (bSignMinus_SENS) i64=SENS*(-1);
-			else i64=SENS;
-			mult128_64_x_64((uint32_t*)&iD1,(uint32_t*) &i64,(uint64_t*) &i128);
-
-			Shift_128bits_right(&i128,21);
-
-			if ((bSignMinus_SENS) ^ (OFF<0)) // отрицательое с отрицательным
-			{
-				OFF=OFF*(-1);
-				i128.l+=OFF;
-				if (i128.l<OFF) i128.h++;
-				bSignMinus_PPES=true;
-
-			}
-			if ((bSignMinus_SENS) ^ (OFF>=0)) // отр с положит
-			{
-				if (i128.l>=OFF)
-				{
-					i128.l-=OFF;
-				}
-				else
-				{
-
-				}
-
-			}
-			if ((!bSignMinus_SENS) ^ (OFF<0)) // положит с отр
-			{
-				//i128+off
-			}
-			if ((!bSignMinus_SENS) ^ (OFF>=0)) // положит с положит
-			{
-				//i128+off
-			}
+			i64=iD1;
+			sign_mult128_64_x_64((int32_t*)&i64,(int32_t*) &SENS,(int64_t*) &i128);
+			sign_Shift_128bits_right(&i128,21);
 
 			//Presure=(((iD1*SENS)>>21)-OFF)>>15;			// !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
 			//MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.

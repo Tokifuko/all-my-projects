@@ -30,6 +30,12 @@ typedef struct {
 
 } uint128_t;
 
+typedef struct {
+	int64_t l;
+	int64_t h;
+
+} int128_t;
+
 __INLINE void mult64_32_x_32(const uint32_t*  x1,const uint32_t*  x2,uint64_t* res) /// !!!!!!!!!!!!!!!!!!! может добавить ограничители на регистры !!!!!!!!!
 {
 	uint32_t* resL;
@@ -44,19 +50,19 @@ __INLINE void mult64_32_x_32(const uint32_t*  x1,const uint32_t*  x2,uint64_t* r
 	);
 }
 
-/*__INLINE void smult64_32_x_32(int32_t* x1,int32_t* x2,int32_t* resL,int32_t* resH) /// !!!!!!!!!!!!!!!!!!! может добавить ограничители на регистры !!!!!!!!!
+__INLINE void smult64_32_x_32(const int32_t* x1,const int32_t* x2,int64_t* res) /// !!!!!!!!!!!!!!!!!!! может добавить ограничители на регистры !!!!!!!!!
 {
 	int32_t* resL;
 	int32_t* resH;
 	resL=(int32_t*)res;
-	resH=resL+1
+	resH=resL+1;
 	__asm
 	(
 		"smull	%[resL], %[resH], %[X1], %[X2]"		"\n\t"
 		: [resL] "=&r" (*resL), [resH] "=&r" (*resH)
 		: [X1] "r"(*x1), [X2] "r" (*x2)
 	);
-}*/
+}
 
 // http://habrahabr.ru/post/121950/
 inline void mult128_64_x_64(uint32_t* const x, uint32_t* const y, uint64_t* res)
@@ -87,6 +93,34 @@ inline void mult128_64_x_64(uint32_t* const x, uint32_t* const y, uint64_t* res)
     midWord += m2;
     if (midWord < m2) highByte++;
 }
+inline void sign_mult128_64_x_64(int32_t* const x, int32_t* const y, int64_t* res)
+{
+    // Define vars (depending from byte order)
+
+    #define ptrRes ((int32_t*)res)
+	int64_t &  lowWord = (int64_t&)(ptrRes[0]);
+	int64_t &  midWord = (int64_t&)(ptrRes[1]);
+	int64_t & highWord = (int64_t&)(ptrRes[2]);
+	int32_t  & highByte = (int32_t &)(ptrRes[3]);
+    #undef ptrRes
+
+    const int32_t & x0 = x[0];
+    const int32_t & x1 = x[1];
+    const int32_t & y0 = y[0];
+    const int32_t & y1 = y[1];
+
+    // Multiply action
+    smult64_32_x_32(&x0,&y0,&lowWord);
+    smult64_32_x_32(&x1,&y1,&highWord);
+    int64_t m1;
+    int64_t m2;
+    smult64_32_x_32(&x0,&y1,&m1);
+    smult64_32_x_32(&x1,&y0,&m2);
+    midWord += m1;
+    if (midWord < m1) highByte++;
+    midWord += m2;
+    if (midWord < m2) highByte++;
+}
 
 __INLINE void Shift_128bits_right(uint128_t*  data, uint32_t namber) /// !!!!!!!!!!!!!!!!!!! может добавить ограничители на регистры !!!!!!!!!
 {
@@ -98,6 +132,18 @@ __INLINE void Shift_128bits_right(uint128_t*  data, uint32_t namber) /// !!!!!!!
 	data->h=(data->h)>>namber;
 	data->l=(data->l)>>namber;
 	data->l+=temp;
+}
+__INLINE void sign_Shift_128bits_right(int128_t*  data, uint32_t namber) /// !!!!!!!!!!!!!!!!!!! может добавить ограничители на регистры !!!!!!!!!
+{
+	int64_t temp;
+	temp=1<<namber;
+	temp--;
+	temp=temp & (data->h);
+	temp=temp<<(64-namber);
+	data->h=(data->h)>>namber;
+	data->l=((uint64_t)(data->l))>>namber;
+	//data->l=(data->l) & (0xFFFFFFFFFFFFFFFF>>namber)
+	data->l=(data->l) | temp;
 }
 
 #endif	/* COMMON_H */

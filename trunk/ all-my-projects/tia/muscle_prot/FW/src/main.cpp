@@ -104,8 +104,12 @@ int main(void)
 
 
 	uint32_t x1,x2, resL,resH;
-	uint64_t x64,y64;
+	int64_t x64,y64;
+	int32_t x32,y32;
 	uint128_t z128;
+	int32_t i32;
+	int64_t i64;
+	int128_t i128;
 
     while(1)
     {
@@ -150,11 +154,48 @@ int main(void)
 //				Delay.ms(1000);
 //				DbgUART.SendPrintF(" %#8x %#8x %#8x %#8x \n",*(a_ptr+3),*(a_ptr+2),*(a_ptr+1), *a_ptr);
 
-//				z128.h=x64;
-//				z128.l=y64;
-//				Shift_128bits_right(&z128,1);
-//				Delay.ms(1000);
-//				DbgUART.SendPrintF(" %#8x %#8x %#8x %#8x \n",*(a_ptr+3),*(a_ptr+2),*(a_ptr+1), *a_ptr);
+
+/*
+				i64=0xFEDCBA9876543210;
+				DbgUART.SendPrintF(" %#16llX %lld \n", i64, i64);
+				i64=i64*(-1);
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#16llX %lld\n", i64, i64);
+				i64=i64<<8;
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#16llX %lld\n", i64, i64);
+				i64=i64*(-1);
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#16llX %lld\n", i64, i64);*/
+				x32=0xfedcba98;
+				y32=0x100;
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#X %d\n", x32, x32);
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#X %d\n", y32, y32);
+				i64=0x0123456789abcdef;
+				i64=i64*(-1);
+				//smult64_32_x_32(&x32,&y32,&i64);
+
+				Delay.ms(100);
+				DbgUART.SendPrintF(" %#16llX %lld\n", i64, i64);
+				Delay.ms(100);
+				i128.h=i64;
+				i128.l=i64;
+				DbgUART.SendPrintF(" %#16llX %16llX\n", i128.h, i128.l);
+				Delay.ms(100);
+				sign_Shift_128bits_right(&i128,8);
+				DbgUART.SendPrintF(" %#16llX %16llX\n", i128.h, i128.l);
+
+				Delay.ms(100);
+				i32=i64;
+				DbgUART.SendPrintF(" %#16X \n", i32);
+				i32=i32*(-1);
+				DbgUART.SendPrintF(" %#16X \n", i32);
+
+				//i64=0xFEDCBA9876543210;
+
+				//DbgUART.SendPrintF(" %#8x %#8x %#8x %#8x \n",*(a_ptr+3),*(a_ptr+2),*(a_ptr+1), *a_ptr);
 /*
     			x1=0x77777777;
     			x2=0x55555555;
