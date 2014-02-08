@@ -9,3 +9,4 @@ void BLedDiscOn (void)			{GPIO_SetBits(B_LED_DISC_PORT,B_LED_DISC_PIN);}
 
 bool UserButtonPressed(void) { return (GPIO_ReadInputDataBit(USER_BUTTON_PORT, USER_BUTTON_PIN) == Bit_RESET); }
 
+

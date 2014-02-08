@@ -14,11 +14,15 @@
 #include "stm32f10x_exti.h"
 #include "stm32f10x_dma.h"
 
+
+
 // =============================== General =====================================
 #define PACKED __attribute__ ((__packed__))
 #ifndef countof
 #define countof(A)  (sizeof(A)/sizeof(A[0]))
 #endif
+
+
 
 // Functional types
 //typedef void(*ftVoid_Void)(void);

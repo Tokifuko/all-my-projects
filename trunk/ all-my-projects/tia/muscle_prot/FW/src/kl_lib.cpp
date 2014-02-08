@@ -12,6 +12,9 @@
 #include "stm32f10x_flash.h"
 #include <stdarg.h>
 
+
+
+
 // ======== GPIO =========
 void klGpioSetupByMsk (GPIO_TypeDef *PGpioPort, uint16_t APinMask, GPIOMode_TypeDef AMode) {
     // Clock

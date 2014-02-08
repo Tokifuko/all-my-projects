@@ -11,7 +11,9 @@
 #define SPI_MASTER_CLK               RCC_APB1Periph_SPI2
 
 #define SPI_MASTER_GPIO              GPIOB
-#define SPI_MASTER_GPIO_CLK          RCC_APB2Periph_GPIOB
+//#define SPI_MASTER_GPIO_CLK          RCC_APB2Periph_GPIOB
+
+#define SPI_MASTER_PIN_CSB           GPIO_Pin_12  // chip select
 #define SPI_MASTER_PIN_SCK           GPIO_Pin_13
 #define SPI_MASTER_PIN_MISO          GPIO_Pin_14
 #define SPI_MASTER_PIN_MOSI          GPIO_Pin_15
@@ -36,14 +38,14 @@
 
 #define MS5803_RESET_COMAND 		0x1E
 #define MS5803_READ_COEF_COMAND 	0xA0
-#define MS5803_TEMP_CONV_COMAND 	0x40
-#define MS5803_PRES_CONV_COMAND		0x50
+#define MS5803_TEMP_CONV_COMAND 	0x58 ///!!!!!!!!!!!!! поменял
+#define MS5803_PRES_CONV_COMAND		0x48
 #define MS5803_ADC_READ_COMAND		0x00
 
 void MS5803_Class :: Init(void)
 {
 	SPI_InitTypeDef  SPI_InitStructure;
-	GPIO_InitTypeDef GPIO_InitStructure;
+	//GPIO_InitTypeDef GPIO_InitStructure;
 
 	/* Enable SPI_MASTER DMA clock */
 	RCC_AHBPeriphClockCmd(SPI_MASTER_DMA_CLK , ENABLE);
@@ -60,7 +62,8 @@ void MS5803_Class :: Init(void)
 
 	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_SCK,GPIO_Mode_AF_PP);
 	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_MOSI,GPIO_Mode_AF_PP);
-	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_MISO,GPIO_Mode_IPU);   ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_MISO,GPIO_Mode_AF_OD);   ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	klGpioSetupByMsk(SPI_MASTER_GPIO,SPI_MASTER_PIN_CSB,GPIO_Mode_Out_PP);
 
 	/* Configure SPI_MASTER pins: SCK */
 /*	GPIO_InitStructure.GPIO_Pin = SPI_MASTER_PIN_SCK;
@@ -132,13 +135,16 @@ void MS5803_Class :: Init(void)
 	MS5803_state=READ_ROM_COEF_STEP;
 	bWaitDevReadyFlag=true;
 	MS5803_coefficients_counter=0;
-
+	counter=0;
 }
 
 void MS5803_Class :: Task(void)
 {
 	uint32_t iD2=0;
 	uint32_t iD1=0;
+	uint64_t i64=0;
+	uint32_t i32=0;
+	uint128_t i128;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
 		if (bResetFlag) // we can send RESET command anytime
@@ -150,8 +156,20 @@ void MS5803_Class :: Task(void)
 
 		if (bWaitDevReadyFlag) // in many cases, after sending command, you need to wait for the device
 		{
-			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) != Bit_RESET) return;
+			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) == Bit_RESET) return;
 			bWaitDevReadyFlag=false;
+		}
+
+		if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_CSB) == Bit_RESET)
+		{
+			GPIO_SetBits(SPI_MASTER_GPIO,SPI_MASTER_PIN_CSB);
+			counter=0;
+		}
+
+		if (counter!=10)
+		{
+			counter++;
+			return;
 		}
 
 		switch (MS5803_state)
@@ -159,8 +177,8 @@ void MS5803_Class :: Task(void)
 		case START_RESET_STEP:   // reset MS5803
 			SPI_MASTER_Buffer_Tx[0]=MS5803_RESET_COMAND;
 			StartTxRx(1);
-			//MS5803_state=READ_ROM_COEF_STEP;
-			MS5803_state=0;
+			MS5803_state=READ_ROM_COEF_STEP;
+			//MS5803_state=0;
 			bWaitDevReadyFlag=true;
 			MS5803_coefficients_counter=0;
 			break;
@@ -168,14 +186,16 @@ void MS5803_Class :: Task(void)
 			if (MS5803_coefficients_counter!=0) // save received coefficient
 			{
 				MS5803_coefficients[MS5803_coefficients_counter-1]=SPI_MASTER_Buffer_Rx[2]+(SPI_MASTER_Buffer_Rx[1]<<8);
+
 			}
 			if (MS5803_coefficients_counter!=7) // get next coefficient
 			{
-				SPI_MASTER_Buffer_Tx[0]=MS5803_READ_COEF_COMAND+(MS5803_coefficients_counter<<2);
+				SPI_MASTER_Buffer_Tx[0]=MS5803_READ_COEF_COMAND+(MS5803_coefficients_counter<<1);
 				StartTxRx(3);
 				MS5803_coefficients_counter++;
 			}
 			else MS5803_state=CONV_TEMP_STEP; //successfully received coefficients, go next step
+			//MS5803_state=0; //stop
 			break;
 		case CONV_PRES_STEP:   // send command to start ADC conversion D1
 			SPI_MASTER_Buffer_Tx[0]=MS5803_PRES_CONV_COMAND+(MS5803_OSR<<2);
@@ -194,10 +214,36 @@ void MS5803_Class :: Task(void)
 			StartTxRx(4);
 			MS5803_state=CALC_TEMP_STEP;
 			break;
-		case CALC_TEMP_STEP:
+		case CALC_TEMP_STEP: // calc temp and coefficients
+			//------------------ temp ------------------
 			iD2=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
 			dT=iD2-(MS5803_coefficients[5]<<8);
-			TEMP=2000+((dT*MS5803_coefficients[6])>>23);   // !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
+			if (dT<0)
+			{
+				bSignMinus_dT=true;
+				i32=dT*(-1);
+			}
+			else
+			{
+				bSignMinus_dT=false;
+				i32=dT;
+			}
+			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[6], &i64);
+			i64=i64>>23;
+			if (bSignMinus_dT)TEMP=2000-i64;
+			else TEMP=2000+i64;
+			//-------------- OFFset--------------------------
+			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[4],&i64);
+			i64=i64>>5;
+			if (bSignMinus_dT) OFF=(MS5803_coefficients[5]<<18)-i64;
+			else OFF=(MS5803_coefficients[5]<<18)+i64;
+			//-----------SENSitivity----------------
+			mult64_32_x_32(&i32,(uint32_t*) &MS5803_coefficients[3], &i64);
+			i64=i64>>7;
+			if (bSignMinus_dT) SENS=(MS5803_coefficients[1]<<17)-i64;
+			else SENS=(MS5803_coefficients[1]<<17)+i64;
+			if (SENS<0) bSignMinus_SENS=true;
+			else  bSignMinus_SENS=false;
 			MS5803_state=CONV_PRES_STEP;
 			break;
 		case READ_PRES_STEP: // read ADC data after conversion
@@ -207,11 +253,45 @@ void MS5803_Class :: Task(void)
 			break;
 		case CALC_PRES_STEP:
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
-			OFF=(MS5803_coefficients[5]<<18)+((MS5803_coefficients[4]*dT)>>5);
-			SENS=(MS5803_coefficients[1]<<17)+((MS5803_coefficients[3]*dT)>>7);
-			Presure=(((iD1*SENS)>>21)-OFF)>>15;			// !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
-			MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
-			Callback(Presure);
+			if (bSignMinus_SENS) i64=SENS*(-1);
+			else i64=SENS;
+			mult128_64_x_64((uint32_t*)&iD1,(uint32_t*) &i64,(uint64_t*) &i128);
+
+			Shift_128bits_right(&i128,21);
+
+			if ((bSignMinus_SENS) ^ (OFF<0)) // отрицательое с отрицательным
+			{
+				OFF=OFF*(-1);
+				i128.l+=OFF;
+				if (i128.l<OFF) i128.h++;
+				bSignMinus_PPES=true;
+
+			}
+			if ((bSignMinus_SENS) ^ (OFF>=0)) // отр с положит
+			{
+				if (i128.l>=OFF)
+				{
+					i128.l-=OFF;
+				}
+				else
+				{
+
+				}
+
+			}
+			if ((!bSignMinus_SENS) ^ (OFF<0)) // положит с отр
+			{
+				//i128+off
+			}
+			if ((!bSignMinus_SENS) ^ (OFF>=0)) // положит с положит
+			{
+				//i128+off
+			}
+
+			//Presure=(((iD1*SENS)>>21)-OFF)>>15;			// !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
+			//MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
+			MS5803_state=0; // stop
+			//Callback(Presure);
 			break;
 		}
 	}
@@ -219,6 +299,7 @@ void MS5803_Class :: Task(void)
 
 void MS5803_Class :: StartTxRx(uint8_t chDataSize)
 {
+	GPIO_ResetBits(SPI_MASTER_GPIO,SPI_MASTER_PIN_CSB);
 	/* SPI_MASTER_Tx_DMA_Channel configuration ---------------------------------*/
 	DMA_DeInit(SPI_MASTER_Tx_DMA_Channel);
 	DMA_InitStructure_TX.DMA_BufferSize = chDataSize;

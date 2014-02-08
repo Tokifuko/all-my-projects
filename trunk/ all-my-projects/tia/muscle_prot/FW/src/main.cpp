@@ -14,7 +14,6 @@
 #include "common.h"
 #include "kl_lib.h"
 
-
 #include "UARTClass.h"
 
 //#include "motor_class.h"
@@ -39,6 +38,7 @@ AD7799_Class ad7799;
 MS5803_Class ms5803;
 //i2cMgr_t i2cMgr;
 uint32_t iTemp;
+
 
 int main(void)
 {
@@ -90,7 +90,7 @@ int main(void)
 	comReadStart.Callback=Ms5803Callback;
 
 
-	klGpioSetupByMsk(GPIOB,GPIO_Pin_12,GPIO_Mode_Out_PP);
+
 
 //	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 //    GPIO_InitTypeDef GPIO_InitStructure;
@@ -101,6 +101,12 @@ int main(void)
 //    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 //    GPIO_Init( GPIOB, &GPIO_InitStructure );
 //	GPIO_SetBits(GPIOB,GPIO_Pin_12);
+
+
+	uint32_t x1,x2, resL,resH;
+	uint64_t x64,y64;
+	uint128_t z128;
+
     while(1)
     {
     	//ad7799.Task();
@@ -115,6 +121,81 @@ int main(void)
     			Delay.Reset(&iUserBattonTimer);
     		//	ad7799.StartZeroCalibration();
     			//i2cMgr.AddCmd(comReset);  // Reset command
+    		//	DbgUART.SendPrintF("size of double %d  \n",sizeof(double));
+    		//	DbgUART.SendPrintF("size of long %d  \n",sizeof(long));
+    		//	Delay.ms(100);
+    		//	DbgUART.SendPrintF("size of uint64_t %d  \n",sizeof(uint64_t));
+    			//y64=0x0123456789ABCDEF;
+
+    			//Delay.ms(100);
+    			//DbgUART.SendPrintF("%16x \n", y64);
+//    			x64=0xFEDCBA9876543210;
+//    			y64=0xFEDCBA9876543210;
+//    			z128.h=0;
+//    			z128.l=0;
+//    		    uint32_t  * a_ptr = (uint32_t*)&x64;
+//    		    uint32_t  * b_ptr = (uint32_t*)&y64;
+//    		    uint64_t * r_ptr = (uint64_t*)(void*)&z128;
+//
+//
+//
+//    		    DbgUART.SendPrintF(" %#8x and  %#8x \n",*(a_ptr+1), *a_ptr);
+//    		    Delay.ms(100);
+//    		    DbgUART.SendPrintF("mult");
+//    		    Delay.ms(100);
+//    		    DbgUART.SendPrintF(" %#8x and  %#8x \n",*(b_ptr+1), *b_ptr);
+//
+//				mult128_64_x_64(a_ptr, b_ptr, r_ptr);
+//				a_ptr=(uint32_t*)(void*)&z128;
+//				Delay.ms(1000);
+//				DbgUART.SendPrintF(" %#8x %#8x %#8x %#8x \n",*(a_ptr+3),*(a_ptr+2),*(a_ptr+1), *a_ptr);
+
+//				z128.h=x64;
+//				z128.l=y64;
+//				Shift_128bits_right(&z128,1);
+//				Delay.ms(1000);
+//				DbgUART.SendPrintF(" %#8x %#8x %#8x %#8x \n",*(a_ptr+3),*(a_ptr+2),*(a_ptr+1), *a_ptr);
+/*
+    			x1=0x77777777;
+    			x2=0x55555555;
+    			y64=x1*x2;
+    			resL=0;
+    			resH=0;
+    			z128.h=0;
+    			z128.l=0;
+    			mult64_32_x_32(&x1,&x2,&resL,&resH);
+    			DbgUART.SendPrintF(" %16x and  %16x \n", resL,resH);
+    			//y64=0x0123456789ABCDEF;
+    			//y64=y64>>8;
+    			Delay.ms(100);
+    			mult64_32_x_32(&x1,&x2,(uint32_t*) &y64,((uint32_t*) &y64)+1);
+    			DbgUART.SendPrintF("%x x %x = %x%x \n", x1,x2, *(((uint32_t*) &y64)+1),*((uint32_t*) &y64));
+    			Delay.ms(1000);
+    			//DbgUART.SendPrintF("%16x, %16x \n",*((uint32_t*) &y64), *(((uint32_t*) &y64)+1));
+*/
+
+    /*			CalibrationData CB_DATA = {46546,42845,29751,29457,32745,29059}; //static values from data sheet
+    			    MeasurementData MM_DATA = {4311550,8387300}; //static values from data sheet
+    			    CalculatedValues values;
+
+    			    calculateTemperature(ms5803.CB_DATA, ms5803.MM_DATA, &(ms5803.values));
+    			    //calculateTemperatureCompensatedPressure(CB_DATA, MM_DATA, &values);
+    			    //doSecondOrderTemperatureCompensation(&values);
+
+    			   // DbgUART.SendPrintF("dT %i\n", values.dT);
+    			    DbgUART.SendPrintF("TEMP %i\n", ms5803.values.TEMP);
+    			   // DbgUART.SendPrintF("OFF %" PRId64 "\n", values.OFF);
+    			   // DbgUART.SendPrintF("SENS %" PRId64 "\n", values.SENS);
+    			   // DbgUART.SendPrintF("P %i\n", values.P);
+    			    Delay.ms(100);
+
+/*    			    if(values.dT == 4580 && values.TEMP == 2015 && values.OFF == 2808943914ULL && values.SENS == 1525751591ULL && values.P == 10005) {
+    			    	DbgUART.SendPrintF("Calculated values are correct.\n");
+    			    } else {
+    			    	DbgUART.SendPrintF("Check algorithm. Values are incorrect.\n");
+    			    }*/
+
+
     		}
     	}
     	else if (Delay.Elapsed(&iUserBattonTimer,USER_BATTON_TIMEOUT))
@@ -130,16 +211,19 @@ int main(void)
     			{
     				BLedDiscOn();
     				flag=1;
-    				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
-    				GPIO_ResetBits(GPIOB,GPIO_Pin_12);
+
+    				//GPIO_ResetBits(GPIOB,GPIO_Pin_12);
     				ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
     				//ad7799.PswPinOn();
     			}
     			else
     			{
-    				GPIO_SetBits(GPIOB,GPIO_Pin_12);
-    				i2cMgr.AddCmd(comReadStart);
+    				//GPIO_SetBits(GPIOB,GPIO_Pin_12);
+    				//i2cMgr.AddCmd(comReadStart);
+    				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
+
+    			    Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
     				//ad7799.PswPinOff();
@@ -201,6 +285,6 @@ void Ad7799Callback(uint32_t iData)
 }
 void Ms5803Callback(uint32_t iData)
 {
-	DbgUART.SendPrintF("Pres=%d \n",iData);
+	DbgUART.SendPrintF("Data=%d \n",iData);
 }
 
