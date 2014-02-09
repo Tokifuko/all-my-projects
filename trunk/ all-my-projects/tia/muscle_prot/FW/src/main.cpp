@@ -326,6 +326,6 @@ void Ad7799Callback(uint32_t iData)
 }
 void Ms5803Callback(uint32_t iData)
 {
-	DbgUART.SendPrintF("Data=%d \n",iData);
+	DbgUART.SendPrintF("Data=%X \n",(int32_t) iData);
 }
 

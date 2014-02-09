@@ -143,7 +143,11 @@ void MS5803_Class :: Task(void)
 	uint32_t iD2=0;
 	uint32_t iD1=0;
 	int64_t i64=0;
+	uint64_t ui64=0;
+	uint64_t c0=0;
+	uint64_t c1=0;
 	int32_t i32=0;
+	uint32_t ui32=0;
 	int128_t i128;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
@@ -226,13 +230,23 @@ void MS5803_Class :: Task(void)
 			//-------------- OFFset--------------------------
 			i32=MS5803_coefficients[4];
 			smult64_32_x_32(&dT,&i32,&i64);
-			i64=i64>>5;
-			OFF=(MS5803_coefficients[5]<<18)+i64;
+			i64=i64>>(5+11);
+			OFF=(MS5803_coefficients[5]<<(18-11))+i64;
 			//-----------SENSitivity----------------
 			i32=MS5803_coefficients[3];
 			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>7;
-			SENS=(MS5803_coefficients[1]<<17)+i64;
+			i64=(MS5803_coefficients[1]<<17)+i64;
+			if (i64<0)
+			{
+				bSignMinus_SENS=true;
+				SENS=i64*(-1);
+			}
+			else
+			{
+				bSignMinus_SENS=false;
+				SENS=i64;
+			}
 			MS5803_state=CONV_PRES_STEP;
 			break;
 		case READ_PRES_STEP: // read ADC data after conversion
@@ -243,13 +257,22 @@ void MS5803_Class :: Task(void)
 		case CALC_PRES_STEP:
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
 			i64=iD1;
-			sign_mult128_64_x_64((int32_t*)&i64,(int32_t*) &SENS,(int64_t*) &i128);
-			sign_Shift_128bits_right(&i128,21);
+			ui32=*((uint32_t*)&SENS);
+			mult64_32_x_32(&iD1,&ui32, &c1); // первая половина умножения
+			ui32=*(((uint32_t*)&SENS)+1);
+			mult64_32_x_32(&iD1,&ui32, &c0); // вторая половина умножения
+			i64=c1+(c0>>(21+11));				// целиком результат, старшие 64 бита
+			if (bSignMinus_SENS) i64=i64*(-1);  // востанавливаем знак
+
+			i64=i64-OFF;
+			Presure=i64>>4;
+			//sign_mult128_64_x_64((int32_t*)&i64,(int32_t*) &SENS,(int64_t*) &i128);
+			//sign_Shift_128bits_right(&i128,21);
 
 			//Presure=(((iD1*SENS)>>21)-OFF)>>15;			// !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
 			//MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
 			MS5803_state=0; // stop
-			//Callback(Presure);
+			Callback(Presure);
 			break;
 		}
 	}
