@@ -51,6 +51,7 @@ unsigned int iChartCounter=0;
 unsigned int iChartCounter_1=0;
 unsigned int iChartCounter_2=0;
 
+
 unsigned long counter;	//счётчик принятых байтов, обнуляется при каждом открытии порта
 AnsiString sGlobal;
 
@@ -91,6 +92,7 @@ protected:
 public:
         __fastcall WriteThread(bool CreateSuspended);	//конструктор потока
 };
+
 
 //---------------------------------------------------------------------------
 

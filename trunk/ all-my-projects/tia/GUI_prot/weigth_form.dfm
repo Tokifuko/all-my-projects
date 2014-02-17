@@ -1,6 +1,6 @@
 object WeightForm: TWeightForm
-  Left = 659
-  Top = 28
+  Left = 976
+  Top = 325
   Width = 924
   Height = 649
   Caption = 'WeightForm'

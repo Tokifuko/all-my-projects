@@ -4,7 +4,8 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="GUI_prot.exe"/>
-    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj weigth_form.obj"/>
+    <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj weigth_form.obj 
+      parser_class.obj"/>
     <RESFILES value="GUI_prot.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -60,6 +61,7 @@
       <FILE FILENAME="com_form.cpp" FORMNAME="ComForm" UNITNAME="com_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="chart_form.cpp" FORMNAME="ChartForm" UNITNAME="chart_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="weigth_form.cpp" FORMNAME="WeightForm" UNITNAME="weigth_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="parser_class.cpp" FORMNAME="" UNITNAME="parser_class" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
