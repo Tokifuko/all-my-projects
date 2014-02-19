@@ -149,6 +149,7 @@ void MS5803_Class :: Task(void)
 	int32_t i32=0;
 	uint32_t ui32=0;
 	int128_t i128;
+	//long long a,b,c,i,dT,c1,c2,c3,c4,d1,off,sens,p;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
 		if (bResetFlag) // we can send RESET command anytime
@@ -190,7 +191,7 @@ void MS5803_Class :: Task(void)
 			if (MS5803_coefficients_counter!=0) // save received coefficient
 			{
 				MS5803_coefficients[MS5803_coefficients_counter-1]=SPI_MASTER_Buffer_Rx[2]+(SPI_MASTER_Buffer_Rx[1]<<8);
-
+				DbgUART->SendPrintF("Coef_%d=%d \n",(MS5803_coefficients_counter-1),MS5803_coefficients[MS5803_coefficients_counter-1]);
 			}
 			if (MS5803_coefficients_counter!=7) // get next coefficient
 			{
@@ -221,22 +222,31 @@ void MS5803_Class :: Task(void)
 		case CALC_TEMP_STEP: // calc temp and coefficients
 			//------------------ temp ------------------
 			iD2=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
+			DbgUART->SendPrintF("Adc_2=%d \n",iD2);
 			dT=iD2-(MS5803_coefficients[5]<<8);
+			DbgUART->SendPrintF("dT=%i \n",dT);
 			i32=MS5803_coefficients[6];
 			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>23;
 			TEMP=2000+i64;
+			DbgUART->SendPrintF("Temp_i=%i \n",TEMP);
 
 			//-------------- OFFset--------------------------
 			i32=MS5803_coefficients[4];
 			smult64_32_x_32(&dT,&i32,&i64);
-			i64=i64>>(5+11);
-			OFF=(MS5803_coefficients[5]<<(18-11))+i64;
+			OFF=i64>>5;
+			ui64=MS5803_coefficients[2];
+			ui64=ui64<<18;
+			OFF=OFF+ui64;
+			DbgUART->SendPrintF("OFF=%lld \n",OFF);
 			//-----------SENSitivity----------------
 			i32=MS5803_coefficients[3];
 			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>7;
-			i64=(MS5803_coefficients[1]<<17)+i64;
+			ui64=MS5803_coefficients[1];
+			ui64=ui64<<17;
+			i64=ui64+i64;
+			DbgUART->SendPrintF("Sens=%lld \n",i64);
 			if (i64<0)
 			{
 				bSignMinus_SENS=true;
@@ -247,6 +257,7 @@ void MS5803_Class :: Task(void)
 				bSignMinus_SENS=false;
 				SENS=i64;
 			}
+			//DbgUART->SendPrintF("Sens=%lld \n",SENS);
 			MS5803_state=CONV_PRES_STEP;
 			break;
 		case READ_PRES_STEP: // read ADC data after conversion
@@ -256,6 +267,7 @@ void MS5803_Class :: Task(void)
 			break;
 		case CALC_PRES_STEP:
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
+			DbgUART->SendPrintF("Adc_1=%d \n",iD1);
 			i64=iD1;
 			ui32=*((uint32_t*)&SENS);
 			mult64_32_x_32(&iD1,&ui32, &c1); // первая половина умножения

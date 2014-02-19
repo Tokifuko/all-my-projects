@@ -9,7 +9,9 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
-typedef void(*ftVoid_Void)(DWORD);
+#include "parser_class.h"
+
+//typedef void(*ftVoid_Void)(DWORD);
 //---------------------------------------------------------------------------
 class TComForm : public TForm
 {
@@ -36,10 +38,22 @@ __published:	// IDE-managed Components
         void __fastcall CheckBox2Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
-        ftVoid_Void CallBack;
+        //ftVoid_Void CallBack;
+
         __fastcall TComForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TComForm *ComForm;
+extern Parser_Class* pcTenzoParser;
+extern Parser_Class* pcCoef_0_Parser;
+extern Parser_Class* pcCoef_1_Parser;
+extern Parser_Class* pcCoef_2_Parser;
+extern Parser_Class* pcCoef_3_Parser;
+extern Parser_Class* pcCoef_4_Parser;
+extern Parser_Class* pcCoef_5_Parser;
+extern Parser_Class* pcCoef_6_Parser;
+extern Parser_Class* pcCoef_7_Parser;
+extern Parser_Class* pcAdc_1_Parser;
+extern Parser_Class* pcAdc_2_Parser;
 //---------------------------------------------------------------------------
 #endif

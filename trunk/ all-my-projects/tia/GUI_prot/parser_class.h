@@ -25,15 +25,17 @@ private:
         CRITICAL_SECTION pCritSec;
         unsigned int iBufSizeMax;
 
+
 public:
         void SetCallback (ftVoid_dw pFunc){Callback=pFunc;};
-        void SetHeader (AnsiString* pHeader){sHeader=*pHeader;};
+        void SetHeader (char* pcHeader){sHeader=pcHeader;};
         void SetBufsize (unsigned int iBufSize=255){iBufSizeMax=iBufSize;};
         bool ParsString (AnsiString *pStr);
         void AddData (DWORD   dData);
         bool  GetData (DWORD *pdData );
         void ProcessData (void);
-        Parser_Class (ftVoid_dw pFunc, AnsiString* pHeaderText,unsigned int iBufSize=255);
+        DWORD dwDataCounter;
+        Parser_Class (ftVoid_dw pFunc, char* pcHeaderText,unsigned int iBufSize=255);
         ~Parser_Class(void);
 };
 

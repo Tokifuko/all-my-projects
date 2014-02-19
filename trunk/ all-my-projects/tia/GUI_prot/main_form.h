@@ -23,6 +23,7 @@ __published:	// IDE-managed Components
         TTimer *ProcessTimer;
         TButton *Button3;
         TLabel *Label1;
+        TButton *Button4;
         void __fastcall Button1Click(TObject *Sender);
         void __fastcall TestTimerTimer(TObject *Sender);
         void __fastcall SpeedMeterTimerTimer(TObject *Sender);
@@ -30,6 +31,8 @@ __published:	// IDE-managed Components
         void __fastcall Button2Click(TObject *Sender);
         void __fastcall ProcessTimerTimer(TObject *Sender);
         void __fastcall Button3Click(TObject *Sender);
+        void __fastcall FormActivate(TObject *Sender);
+        void __fastcall Button4Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TMainForm(TComponent* Owner);

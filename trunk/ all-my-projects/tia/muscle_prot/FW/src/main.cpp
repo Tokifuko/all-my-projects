@@ -57,6 +57,7 @@ int main(void)
 	//ad7799.Callback=Ad7799Callback;
 	ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
+	ms5803.DbgUART=&DbgUART;
 	//i2cMgr.Init();
 
 	DbgUART.SendPrintF("Hello word %d \n",24);

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 150
-  Top = 85
+  Left = 144
+  Top = 90
   Width = 506
   Height = 242
   Caption = 'MainForm'
@@ -11,6 +11,7 @@ object MainForm: TMainForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   PixelsPerInch = 120
   TextHeight = 16
   object LText1: TLabel
@@ -77,6 +78,15 @@ object MainForm: TMainForm
     Caption = #1050#1072#1083#1080#1073#1088#1086#1074#1082#1072' '#1074#1077#1089#1072
     TabOrder = 3
     OnClick = Button3Click
+  end
+  object Button4: TButton
+    Left = 320
+    Top = 160
+    Width = 145
+    Height = 25
+    Caption = #1056#1072#1089#1095#1077#1090' '#1076#1072#1074#1083#1077#1085#1080#1103
+    TabOrder = 4
+    OnClick = Button4Click
   end
   object TestTimer: TTimer
     Enabled = False

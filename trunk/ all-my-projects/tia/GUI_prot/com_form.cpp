@@ -191,9 +191,21 @@ void __fastcall ReadThread::Printing()
 
  sBuf=chBuf;
  i=0;
-
+ bool bRes;
  // **************** парсим показания с АЦП Тензодатчика  **********************************
-        sHead="Tenzo=";        // это начало сообщения со значением АЦП  Тензодатчика
+  bRes=pcTenzoParser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_0_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_1_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_2_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_3_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_4_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_5_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_6_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcCoef_7_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcAdc_1_Parser->ParsString(&sBuf);
+  if (!bRes) bRes=pcAdc_2_Parser->ParsString(&sBuf);
+  if (!bRes) ComForm->Memo1->Lines->Add(sBuf);
+  /*      sHead="Tenzo=";        // это начало сообщения со значением АЦП  Тензодатчика
         iPosChar=sBuf.Pos(sHead);
         if (iPosChar!=0)
         {
@@ -202,6 +214,7 @@ void __fastcall ReadThread::Printing()
                 if (ComForm->CallBack != NULL)ComForm->CallBack(i);
         }  // if (iPosChar!=0)
          else  ComForm->Memo1->Lines->Add(sBuf);
+  */
  // **************** парсим показания со штангени   **********************************
      /*   sHead="CALIPERS_VAL=";        // это начало сообщения
         iPosChar=sBuf.Pos(sHead);

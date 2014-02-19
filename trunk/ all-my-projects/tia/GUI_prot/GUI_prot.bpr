@@ -5,12 +5,13 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="GUI_prot.exe"/>
     <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj weigth_form.obj 
-      parser_class.obj"/>
+      parser_class.obj presure_form.obj ms5803-14ba.obj"/>
     <RESFILES value="GUI_prot.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm chart_form.dfm weigth_form.dfm"/>
+    <RESDEPEN value="$(RESFILES) main_form.dfm com_form.dfm chart_form.dfm weigth_form.dfm 
+      presure_form.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="tee.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib tee.lib bcbsmp.lib vclx.lib Tee8C6.lib TeePro8C6.lib 
@@ -62,6 +63,8 @@
       <FILE FILENAME="chart_form.cpp" FORMNAME="ChartForm" UNITNAME="chart_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="weigth_form.cpp" FORMNAME="WeightForm" UNITNAME="weigth_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="parser_class.cpp" FORMNAME="" UNITNAME="parser_class" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="presure_form.cpp" FORMNAME="PresureForm" UNITNAME="presure_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ms5803-14ba.c" FORMNAME="" UNITNAME="ms5803-14ba" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

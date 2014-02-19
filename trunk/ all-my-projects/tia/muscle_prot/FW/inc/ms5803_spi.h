@@ -11,6 +11,7 @@
 #include "stm32f10x_conf.h"
 #include "stm32f10x.h"
 #include "common.h"
+#include "UARTClass.h"
 
 
 
@@ -43,7 +44,7 @@ private:
     int32_t counter;
 
 public:
-
+    UART_Class* DbgUART;
     ftVoid_Void Callback;
     void Init(void);
     void Task (void);

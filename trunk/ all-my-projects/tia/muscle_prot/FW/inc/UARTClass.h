@@ -24,12 +24,12 @@
 #define USART2_GPIO     	GPIOA
 #define USART2_GPIO_CLK 	RCC_APB2Periph_GPIOA
 
-#define UART1_BUF_SIZE 				64// Ќ≈ ћ≈Ќя“№ не работает malloc
+#define UART1_BUF_SIZE 				FIFO_SIZE// Ќ≈ ћ≈Ќя“№ не работает malloc
 #define UART1_BAUD_RATE             115200
 #define UART1_PARITY                USART_Parity_No
 #define UART1_BITS                  USART_StopBits_2
 
-#define UART2_BUF_SIZE 				64// Ќ≈ ћ≈Ќя“№ не работает malloc
+#define UART2_BUF_SIZE 				FIFO_SIZE// Ќ≈ ћ≈Ќя“№ не работает malloc
 #define UART2_BAUD_RATE             115200
 #define UART2_PARITY                USART_Parity_No
 #define UART2_BITS                  USART_StopBits_2

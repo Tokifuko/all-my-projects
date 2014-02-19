@@ -5,7 +5,7 @@
 
 #define FIFO_NO_ERROR	0
 #define FIFO_NO_MEMORY	1
-#define FIFO_SIZE	64 // не работает malloc
+#define FIFO_SIZE	255 // не работает malloc
 
 #include "stm32f10x_conf.h"
 
