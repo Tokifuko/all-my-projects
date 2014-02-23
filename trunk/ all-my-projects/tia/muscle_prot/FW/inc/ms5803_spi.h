@@ -39,7 +39,7 @@ private:
     int32_t dT;
     int32_t TEMP;
     int64_t OFF;
-    uint64_t SENS;
+    int64_t SENS;
     int32_t Presure;
     int32_t counter;
 

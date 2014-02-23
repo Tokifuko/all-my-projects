@@ -149,6 +149,7 @@ void MS5803_Class :: Task(void)
 	int32_t i32=0;
 	uint32_t ui32=0;
 	int128_t i128;
+	uint128_t ui128;
 	//long long a,b,c,i,dT,c1,c2,c3,c4,d1,off,sens,p;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
@@ -224,13 +225,13 @@ void MS5803_Class :: Task(void)
 			iD2=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
 			DbgUART->SendPrintF("Adc_2=%d \n",iD2);
 			dT=iD2-(MS5803_coefficients[5]<<8);
-			DbgUART->SendPrintF("dT=%i \n",dT);
+			//DbgUART->SendPrintF("dT=%i \n",dT);
 			i32=MS5803_coefficients[6];
 			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>23;
 			TEMP=2000+i64;
 			DbgUART->SendPrintF("Temp_i=%i \n",TEMP);
-
+//
 			//-------------- OFFset--------------------------
 			i32=MS5803_coefficients[4];
 			smult64_32_x_32(&dT,&i32,&i64);
@@ -238,27 +239,22 @@ void MS5803_Class :: Task(void)
 			ui64=MS5803_coefficients[2];
 			ui64=ui64<<18;
 			OFF=OFF+ui64;
-			DbgUART->SendPrintF("OFF=%lld \n",OFF);
+		//	DbgUART->SendPrintF("OFF=%lld \n",OFF);
 			//-----------SENSitivity----------------
 			i32=MS5803_coefficients[3];
-			smult64_32_x_32(&dT,&i32, &i64);
-			i64=i64>>7;
+			smult64_32_x_32(&dT,&i32, &SENS);
+			SENS=SENS>>7;
 			ui64=MS5803_coefficients[1];
 			ui64=ui64<<17;
-			i64=ui64+i64;
-			DbgUART->SendPrintF("Sens=%lld \n",i64);
-			if (i64<0)
-			{
-				bSignMinus_SENS=true;
-				SENS=i64*(-1);
-			}
-			else
-			{
-				bSignMinus_SENS=false;
-				SENS=i64;
-			}
-			//DbgUART->SendPrintF("Sens=%lld \n",SENS);
-			MS5803_state=CONV_PRES_STEP;
+			SENS=ui64+SENS;
+			DbgUART->SendPrintF("Sens=%lld \n",SENS);
+			if (SENS<0)
+				{
+					bSignMinus_SENS=true;
+					SENS=SENS*(-1);
+				}
+				else bSignMinus_SENS=false;
+     		MS5803_state=CONV_PRES_STEP;
 			break;
 		case READ_PRES_STEP: // read ADC data after conversion
 			SPI_MASTER_Buffer_Tx[0]=MS5803_ADC_READ_COMAND;
@@ -266,22 +262,23 @@ void MS5803_Class :: Task(void)
 			MS5803_state=CALC_PRES_STEP;
 			break;
 		case CALC_PRES_STEP:
+			//Presure=(((iD1*SENS)>>21)-OFF)>>15;
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
+			// показани€ ј÷ѕ - 24 бита.
 			DbgUART->SendPrintF("Adc_1=%d \n",iD1);
-			i64=iD1;
-			ui32=*((uint32_t*)&SENS);
-			mult64_32_x_32(&iD1,&ui32, &c1); // перва€ половина умножени€
-			ui32=*(((uint32_t*)&SENS)+1);
-			mult64_32_x_32(&iD1,&ui32, &c0); // втора€ половина умножени€
-			i64=c1+(c0>>(21+11));				// целиком результат, старшие 64 бита
-			if (bSignMinus_SENS) i64=i64*(-1);  // востанавливаем знак
-
+			ui64=iD1;
+			// чтобы корректно умножить iD1 (24 бита) на SENS (41 бит) приводим их к 64 битам
+			// и умножаем методом  арацубы
+			mult128_64_x_64((uint32_t*)&ui64,(uint32_t*) &SENS,(uint64_t*) &ui128);
+			//DbgUART->SendPrintF("karatsub_h=%lld \n",ui128.h);
+			//DbgUART->SendPrintF("karatsub_l=%lld \n",ui128.l);
+			Shift_128bits_right(&ui128,21); // сдвигаем получившиес€ 128 битное число
+			i64=ui128.l; // теперь искомый результат не превышает 64 бит и располагаетс€ в младщей части
+			if (bSignMinus_SENS) i64=i64*(-1); // востанавливаем знак
+			//DbgUART->SendPrintF("PresStep_1=%lld \n",i64);
 			i64=i64-OFF;
-			Presure=i64>>4;
-			//sign_mult128_64_x_64((int32_t*)&i64,(int32_t*) &SENS,(int64_t*) &i128);
-			//sign_Shift_128bits_right(&i128,21);
-
-			//Presure=(((iD1*SENS)>>21)-OFF)>>15;			// !!!!!!!!!!!!!!! data type conversion !!!!!!!!!!!!!!!!
+			i64=i64>>15;
+			Presure=i64;
 			//MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
 			MS5803_state=0; // stop
 			Callback(Presure);
