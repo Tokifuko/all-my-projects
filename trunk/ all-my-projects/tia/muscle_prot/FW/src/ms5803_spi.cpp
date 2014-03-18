@@ -192,7 +192,7 @@ void MS5803_Class :: Task(void)
 			if (MS5803_coefficients_counter!=0) // save received coefficient
 			{
 				MS5803_coefficients[MS5803_coefficients_counter-1]=SPI_MASTER_Buffer_Rx[2]+(SPI_MASTER_Buffer_Rx[1]<<8);
-				DbgUART->SendPrintF("Coef_%d=%d \n",(MS5803_coefficients_counter-1),MS5803_coefficients[MS5803_coefficients_counter-1]);
+				//DbgUART->SendPrintF("Coef_%d=%d \n",(MS5803_coefficients_counter-1),MS5803_coefficients[MS5803_coefficients_counter-1]);
 			}
 			if (MS5803_coefficients_counter!=7) // get next coefficient
 			{
