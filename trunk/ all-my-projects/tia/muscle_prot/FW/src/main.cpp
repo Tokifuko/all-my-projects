@@ -29,6 +29,7 @@ void Ms5803Callback(uint32_t iData);
 void CallBackCalipers(uint32_t iData);
 
 UART_Class DbgUART;
+UART_Class ComportUART;
 UART_Class* pUART1;
 UART_Class* pUART2;
 UART_Class* pUART3;
@@ -54,6 +55,7 @@ int main(void)
 	Delay.Init();
 	GeneralInit();
 	DbgUART.UART_Init(USART1);
+	ComportUART.UART_Init(USART3);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
 	ms5803.Init();
@@ -218,4 +220,6 @@ void Ms5803Callback(uint32_t iData)
 void CallBackCalipers(uint32_t iData) // вызывается при окончании работы с I2C командой
 {
 	DbgUART.SendPrintF("Calip=%d \n",calipers.iSpiDataRx);
+	ComportUART.SendPrintF("Calip2=%d \n",calipers.iSpiDataRx);
+	ComportUART.SendByte('a');
 }

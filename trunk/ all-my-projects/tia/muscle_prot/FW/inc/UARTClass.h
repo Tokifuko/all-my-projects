@@ -24,6 +24,12 @@
 #define USART2_GPIO     	GPIOA
 #define USART2_GPIO_CLK 	RCC_APB2Periph_GPIOA
 
+#define USART3_CLK      	RCC_APB1Periph_USART3
+#define USART3_TxPin   		GPIO_Pin_10				// remap!!!!!!
+#define USART3_RxPin   		GPIO_Pin_11
+#define USART3_GPIO     	GPIOC
+#define USART3_GPIO_CLK 	RCC_APB2Periph_GPIOC
+
 #define UART1_BUF_SIZE 				FIFO_SIZE// Ќ≈ ћ≈Ќя“№ не работает malloc
 #define UART1_BAUD_RATE             115200
 #define UART1_PARITY                USART_Parity_No
@@ -33,6 +39,11 @@
 #define UART2_BAUD_RATE             115200
 #define UART2_PARITY                USART_Parity_No
 #define UART2_BITS                  USART_StopBits_2
+
+#define UART3_BUF_SIZE 				FIFO_SIZE// Ќ≈ ћ≈Ќя“№ не работает malloc
+#define UART3_BAUD_RATE             115200
+#define UART3_PARITY                USART_Parity_No
+#define UART3_BITS                  USART_StopBits_2
 
 #define PRINTF_BUF_SIZE		255
 //
@@ -76,7 +87,7 @@ extern UART_Class* pUART5;
 extern "C" {
 void USART1_IRQHandler(void);
 //void USART2_IRQHandler(void);
-//void USART3_IRQHandler(void);
+void USART3_IRQHandler(void);
 //void USART4_IRQHandler(void);
 //void USART5_IRQHandler(void);
 }

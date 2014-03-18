@@ -6,7 +6,7 @@
 
 void UART_Class :: UART_Init(USART_TypeDef* UART)
 {
-	if (FIFO_TxData.Init(UART1_BUF_SIZE)!=FIFO_NO_ERROR) return;
+
     GPIO_InitTypeDef  GPIO_InitStructure;
     USART_InitTypeDef USART_InitStructure;
     USART_ClockInitTypeDef USART_ClockInitStructure;
@@ -17,6 +17,7 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
     switch ((uint32_t)UART)
     {
       case ((uint32_t)USART1_BASE):
+		if (FIFO_TxData.Init(UART1_BUF_SIZE)!=FIFO_NO_ERROR) return;
 		  /* Enable GPIO &  USARTx clock */
 		  RCC_APB2PeriphClockCmd (USART1_GPIO_CLK, ENABLE );
 		  RCC_APB2PeriphClockCmd( USART1_CLK, ENABLE );
@@ -59,6 +60,47 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
           break;
 
       case ((uint32_t)USART3_BASE):
+
+			if (FIFO_TxData.Init(UART3_BUF_SIZE)!=FIFO_NO_ERROR) return;
+
+
+
+		  /* Enable GPIO &  USARTx clock */
+		  RCC_APB2PeriphClockCmd (RCC_APB2Periph_AFIO|USART3_GPIO_CLK, ENABLE );
+		  RCC_APB1PeriphClockCmd( USART3_CLK, ENABLE );
+		  GPIO_PinRemapConfig(GPIO_PartialRemap_USART3, ENABLE); // remap to C10 and C11
+
+		  /* Configure pin: RX */
+		  GPIO_InitStructure.GPIO_Pin = USART3_RxPin;
+		  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+		  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+		  GPIO_Init(USART3_GPIO, &GPIO_InitStructure);
+
+		  /* Configure pin: TX */
+		  GPIO_InitStructure.GPIO_Pin = USART3_TxPin;
+		  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+		  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+		  GPIO_Init(USART3_GPIO, &GPIO_InitStructure);
+
+
+		  /* настройка порта */
+		  USART_InitStructure.USART_BaudRate = UART3_BAUD_RATE;
+		  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+		  USART_InitStructure.USART_StopBits = UART3_BITS;
+		  USART_InitStructure.USART_Parity = UART3_PARITY;
+		  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+		  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+		  USART_ClockInitStructure.USART_Clock = USART_Clock_Disable;
+		  USART_ClockInitStructure.USART_CPOL = USART_CPOL_Low;
+		  USART_ClockInitStructure.USART_CPHA = USART_CPHA_2Edge;
+		  USART_ClockInitStructure.USART_LastBit = USART_LastBit_Disable;
+
+		   /* Enable the USARTy Interrupt */
+		  NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+		  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+		  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+		  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
           pUART3=this; // глобальный указатель - для обработки прерываний именно этого обьекта
           break;
 
@@ -162,4 +204,9 @@ void UART_Class :: UART_InterruptHandler(void)
 void USART1_IRQHandler(void)
 {
 	pUART1->UART_InterruptHandler();
+}
+
+void USART3_IRQHandler(void)
+{
+	pUART3->UART_InterruptHandler();
 }
