@@ -130,7 +130,7 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
     NVIC_Init(&NVIC_InitStructure);
 
     /* Enable USART Receive interrupt */
-    USART_ITConfig( UART, USART_IT_RXNE, ENABLE );
+   // USART_ITConfig( UART, USART_IT_RXNE, ENABLE );
 
     /* Enable the USART */
     USART_Cmd(UART, ENABLE);
@@ -178,6 +178,7 @@ void UART_Class :: UART_InterruptHandler(void)
 			/* A character was retrieved from the FIFO so can be sent to the THR now. */
 			USART_SendData( pUART, FIFO_TxData.SimpleReadByte() );
 		}
+		return;
 	}
 
 	if( USART_GetITStatus( pUART, USART_IT_RXNE ) == SET )

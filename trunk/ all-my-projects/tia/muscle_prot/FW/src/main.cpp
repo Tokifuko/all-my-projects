@@ -10,7 +10,7 @@
 #include "delay_util.h"
 #include "ad7799.h"
 #include "ms5803_spi.h"
-#include "i2c_mgr.h"
+//#include "i2c_mgr.h"
 #include "common.h"
 #include "kl_lib.h"
 #include "CalipersClass.h"
@@ -58,7 +58,7 @@ int main(void)
 	ComportUART.UART_Init(USART3);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
-	ms5803.Init();
+	//ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
 	ms5803.DbgUART=&DbgUART;
 	//i2cMgr.Init();
@@ -69,50 +69,11 @@ int main(void)
 
 	Delay.Reset(&iDebugLedTimer);
 	Delay.Reset(&iUserBattonTimer);
-	//i2cMgr.SetDbgUART(&DbgUART);
-	//ad7799.PswPinOff();
-/*	I2C_Cmd_t comReset,comRead, comReadStart;
-
-	comReset.Address = 0x77;
-	comReset.DataToWrite.Length = 1;
-	comReset.DataToWrite.Buf=dataBufTxReset;
-	comReset.DataToRead.Length = 0;
-	comReset.DataToRead.Buf = dataBufRx;
-	comReset.Callback=Ms5803Callback;
-	//i2cMgr.AddCmd(comReset);  // Reset command
-
-	comRead.Address = 0x77;
-	comRead.DataToWrite.Length = 1;
-	comRead.DataToWrite.Buf=dataBufTxRead;
-	comRead.DataToRead.Length = 0;
-	comRead.DataToRead.Buf = dataBufRx;
-	comRead.Callback=Ms5803Callback;
-
-	comReadStart.Address = 0x77;
-	comReadStart.DataToWrite.Length = 0;
-	comReadStart.DataToWrite.Buf=dataBufTxRead;
-	comReadStart.DataToRead.Length = 3;
-	comReadStart.DataToRead.Buf = dataBufRx;
-	comReadStart.Callback=Ms5803Callback;
-
-
-*/
-
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-//    GPIO_InitTypeDef GPIO_InitStructure;
-//    // светодиоды
-//    /* Configure LED_2_PIN as Output */
-//    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_12;
-//    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-//    GPIO_Init( GPIOB, &GPIO_InitStructure );
-//	GPIO_SetBits(GPIOB,GPIO_Pin_12);
-
-
     while(1)
     {
-    	ad7799.Task();
-    	ms5803.Task();
+    //ad7799.Task();
+    	//ms5803.Task();
+    	//Delay.ms(500);
   	  calipers.Task();
     	//i2cMgr.Task();
 // --------------- user button start callibration process --------------
@@ -150,9 +111,9 @@ int main(void)
     			{
     				//GPIO_SetBits(GPIOB,GPIO_Pin_12);
     				//i2cMgr.AddCmd(comReadStart);
-    				DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
+    				//DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
 
-    			    Delay.ms(100);
+    			  //  Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
     				ad7799.PswPinOff();
@@ -202,14 +163,14 @@ void GeneralInit(void) {
 
 void Ad7799Callback(uint32_t iData)
 {
-	iTemp++;
+	/*iTemp++;
 	if (iTemp>100)
 	{
-		DbgUART.SendPrintF("Tenzo=%d \n",iData);
+		//DbgUART.SendPrintF("Tenzo=%d \n",iData);
 
 	iTemp=0;
 	}
-
+*/
 	//DbgUART.SendPrintF("Tenzo=%d \n",iData);
 }
 void Ms5803Callback(uint32_t iData)
@@ -219,7 +180,11 @@ void Ms5803Callback(uint32_t iData)
 
 void CallBackCalipers(uint32_t iData) // вызывается при окончании работы с I2C командой
 {
-	DbgUART.SendPrintF("Calip=%d \n",calipers.iSpiDataRx);
-	ComportUART.SendPrintF("Calip2=%d \n",calipers.iSpiDataRx);
-	ComportUART.SendByte('a');
+	int32_t i;
+	i=calipers.iTemp;
+	//i=6545354;
+	DbgUART.SendPrintF("Calip=%d \n",i);
+	ComportUART.SendPrintF("Calip2=%d \n",i);
+	//ComportUART.SendByte('a');
 }
+

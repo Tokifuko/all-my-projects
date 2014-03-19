@@ -16,19 +16,12 @@ void calipers_t::Init(void)
 
 	  /* Enable GPIOs clock */
 
-	  klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_AF_OD);
+	 // klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_AF_OD);
 	  klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_IN_FLOATING);
 	  klGpioSetupByMsk(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN,GPIO_Mode_IN_FLOATING);
 
 	  /* Connect EXTI Line to CALIPERS_SCL pin */
 	  GPIO_EXTILineConfig(CALIPERS_SCl_EXTI_PORT_SOURCE, CALIPERS_SCL_EXTI_PIN_SOURCE);
-
-	  /* Configure PA.00 pin as input floating */
-	  /*
-	  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-	  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	  GPIO_Init(GPIOA, &GPIO_InitStructure);
-*/
 
 	  /* Configure CALIPERS_SCL_EXTI line */
 	  EXTI_InitStructure.EXTI_Line = CALIPERS_SCL_EXTI_LINE;
@@ -39,8 +32,8 @@ void calipers_t::Init(void)
 
 	  /* Enable and set CALIPERS_SCL_EXTI Interrupt to the lowest priority */
 	  NVIC_InitStructure.NVIC_IRQChannel = CALIPERS_SCL_EXTI_IRQ;
-	  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x0F;
-	  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x0F;
+	  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
+	  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
 	  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	  NVIC_Init(&NVIC_InitStructure);
 
@@ -57,6 +50,12 @@ void calipers_t::Task(void)
 		chSpiState=SPI_IDLE;
 	}
 
+	if (bGetDataFlag)
+	{
+		bGetDataFlag=false;
+		if(Callback != 0) Callback(0);
+	}
+
 }
 uint8_t calipers_t::GetState(void)
 {
@@ -65,15 +64,17 @@ uint8_t calipers_t::GetState(void)
 
 void calipers_t::SCL_IRQ(void)
 {
+	uint8_t bPin=GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN);
+
 	if (Delay.Elapsed(&dwPoketTimer,15))// прошло время между посылками - началась другая посылка
 	{
 		  chBitCount=0;
 		  iSpiDataRx=0;
 		  Delay.Reset(&dwIdleTimer); // чтобы не перейти в режим IDLE
 		  chSpiState=SPI_START_RX;
-		  //if(Callback != 0)Callback();
 	}
 	//Delay.Reset(&dwPoketTimer);
+	//Delay.ms(1);
 	chBitCount++;
 	//  биты 1,17,18,19,20,21,23 не считаем
 	if ((chBitCount==1) |(chBitCount==17)| (chBitCount==18)|(chBitCount==19)|(chBitCount==20)|(chBitCount==21)|(chBitCount==23)) return;
@@ -85,10 +86,11 @@ void calipers_t::SCL_IRQ(void)
 	if (chBitCount==24) // 24-й тоже не считаем, он последний, возвращаем результат.
 	{
 		chSpiState=SPI_END_RX;
-		if(Callback != 0) Callback(0);
+		bGetDataFlag=true;
+		iTemp=iSpiDataRx;
 		return;
 	}
-	if (!GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN)) iSpiDataRx+=(1<<(chBitCount-2));
+	if (!bPin) iSpiDataRx+=(1<<(chBitCount-2));
 }
 
 void EXTI9_5_IRQHandler(void)

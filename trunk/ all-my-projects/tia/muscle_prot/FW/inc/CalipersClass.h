@@ -39,9 +39,11 @@ private:
 	uint32_t dwIdleTimer;
 	char chBitCount;
 	uint8_t chSpiState;
+	bool bGetDataFlag;
 
 public:
-    int32_t iSpiDataRx;
+	int32_t iSpiDataRx;
+	int32_t iTemp;
     ftVoid_Void Callback;
     void Init(void);
     void Task(void);
