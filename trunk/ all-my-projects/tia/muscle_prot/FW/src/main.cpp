@@ -71,8 +71,8 @@ int main(void)
 	Delay.Reset(&iUserBattonTimer);
     while(1)
     {
-    //ad7799.Task();
-    	//ms5803.Task();
+     ad7799.Task();
+    	ms5803.Task();
     	//Delay.ms(500);
   	  calipers.Task();
     	//i2cMgr.Task();

@@ -17,7 +17,7 @@ void calipers_t::Init(void)
 	  /* Enable GPIOs clock */
 
 	 // klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_AF_OD);
-	  klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_IN_FLOATING);
+	  klGpioSetupByMsk(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN,GPIO_Mode_IPU);
 	  klGpioSetupByMsk(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN,GPIO_Mode_IN_FLOATING);
 
 	  /* Connect EXTI Line to CALIPERS_SCL pin */
@@ -64,8 +64,7 @@ uint8_t calipers_t::GetState(void)
 
 void calipers_t::SCL_IRQ(void)
 {
-	uint8_t bPin=GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN);
-
+	if (!(GPIO_ReadInputDataBit(CALIPERS_SCL_PORT,CALIPERS_SCL_PIN))) return; // чтобы исключить случайные срабатывания
 	if (Delay.Elapsed(&dwPoketTimer,15))// прошло время между посылками - началась другая посылка
 	{
 		  chBitCount=0;
@@ -74,13 +73,12 @@ void calipers_t::SCL_IRQ(void)
 		  chSpiState=SPI_START_RX;
 	}
 	//Delay.Reset(&dwPoketTimer);
-	//Delay.ms(1);
 	chBitCount++;
 	//  биты 1,17,18,19,20,21,23 не считаем
 	if ((chBitCount==1) |(chBitCount==17)| (chBitCount==18)|(chBitCount==19)|(chBitCount==20)|(chBitCount==21)|(chBitCount==23)) return;
 	if (chBitCount==22) // 22 бит - знаковый
 	{
-		if (!GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN)) iSpiDataRx*=-1;
+		if (!GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN))	iSpiDataRx*=-1;
 		return;
 	}
 	if (chBitCount==24) // 24-й тоже не считаем, он последний, возвращаем результат.
@@ -90,7 +88,7 @@ void calipers_t::SCL_IRQ(void)
 		iTemp=iSpiDataRx;
 		return;
 	}
-	if (!bPin) iSpiDataRx+=(1<<(chBitCount-2));
+	if (!(GPIO_ReadInputDataBit(CALIPERS_SDA_PORT,CALIPERS_SDA_PIN))) iSpiDataRx+=(1<<(chBitCount-2));
 }
 
 void EXTI9_5_IRQHandler(void)
