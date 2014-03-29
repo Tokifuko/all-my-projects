@@ -71,7 +71,7 @@ public:
     void UART_Disable(void);
     void SendPrintF(const char *fmt, ...);
     void SendByte(char chData);
-
+    void SendBuf(uint16_t iDataSize, uint8_t* chData );
     void UART_InterruptHandler(void);
     void UART_DeInit();
     // ~UART_Class(void); // деструктор

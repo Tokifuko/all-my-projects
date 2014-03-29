@@ -141,6 +141,11 @@ void  UART_Class ::SendByte(char chData)
 	FIFO_TxData.WriteByte(chData);
 	UART_StartTx();
 }
+void  UART_Class ::SendBuf(uint16_t iDataSize, uint8_t* chData )
+{
+	FIFO_TxData.WriteData(iDataSize, chData);
+	UART_StartTx();
+}
 
 void UART_Class ::SendPrintF(const char *fmt, ...)
 {
