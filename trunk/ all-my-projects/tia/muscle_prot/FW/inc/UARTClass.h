@@ -62,6 +62,7 @@ public:
     uint16_t        eco_in_flag; // флаг включающий эхо (то что входит - подается на выход)
     uint16_t        eco_out_flag;// флаг включающий эхо (то что выходит - подается на вход)
     FIFO_Class FIFO_TxData;
+    FIFO_Class FIFO_RxData;
     void UART_Init(USART_TypeDef* UART);
     void UART_StartTx(void);
     void UART_StartRx(void);
