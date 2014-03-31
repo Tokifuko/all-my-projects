@@ -18,6 +18,7 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
     {
       case ((uint32_t)USART1_BASE):
 		if (FIFO_TxData.Init(UART1_BUF_SIZE)!=FIFO_NO_ERROR) return;
+        if (FIFO_RxData.Init(UART1_BUF_SIZE)!=FIFO_NO_ERROR) return;
 		  /* Enable GPIO &  USARTx clock */
 		  RCC_APB2PeriphClockCmd (USART1_GPIO_CLK, ENABLE );
 		  RCC_APB2PeriphClockCmd( USART1_CLK, ENABLE );
@@ -61,7 +62,8 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
 
       case ((uint32_t)USART3_BASE):
 
-			if (FIFO_TxData.Init(UART3_BUF_SIZE)!=FIFO_NO_ERROR) return;
+		if (FIFO_TxData.Init(UART3_BUF_SIZE)!=FIFO_NO_ERROR) return;
+      	if (FIFO_RxData.Init(UART3_BUF_SIZE)!=FIFO_NO_ERROR) return;
 
 
 
@@ -98,7 +100,7 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
 
 		   /* Enable the USARTy Interrupt */
 		  NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-		  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+		  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
 		  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 		  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
           pUART3=this; // глобальный указатель - для обработки прерываний именно этого обьекта
@@ -149,15 +151,20 @@ void  UART_Class ::SendBuf(uint16_t iDataSize, uint8_t* chData )
 
 void UART_Class ::SendPrintF(const char *fmt, ...)
 {
+
   char bp[PRINTF_BUF_SIZE]; // строка, хранит текст сообщения
   int count;
+/*
   va_list argp;
   va_start(argp, fmt);
   vsprintf(bp, fmt, argp);
   va_end(argp);
   count = strlen(bp);
+*/
+  count=16;
   FIFO_TxData.WriteData(count,(uint8_t*) bp);
   UART_StartTx();
+
 }
 
 void UART_Class :: UART_StartTx(void){USART_ITConfig( pUART, USART_IT_TXE, ENABLE );}
@@ -176,7 +183,6 @@ void UART_Class :: UART_InterruptHandler(void)
 		if (FIFO_TxData.IsEmpty())
 		{
 			USART_ITConfig( pUART, USART_IT_TXE, DISABLE );
-
 		}
 		else
 		{
@@ -189,21 +195,8 @@ void UART_Class :: UART_InterruptHandler(void)
 	if( USART_GetITStatus( pUART, USART_IT_RXNE ) == SET )
 	{
 	      cChar = USART_ReceiveData( pUART );
-	      /* пока получение не требуется
-	       *
-             if(xQueueSendFromISR( xQueue_UART_Rx, &cChar, &xHigherPriorityTaskWoken ) == pdTRUE )
-              {
-                  if (eco_in_flag)
-                  {
-                      xQueueSendFromISR( xQueue_UART_Tx, &cChar, &xHigherPriorityTaskWoken );
-                      UART_StartTx();
-                  }
-              }
-              else
-              {
-                  USART_ITConfig( pUART, USART_IT_RXNE, DISABLE );
-              }
-              */
+	      FIFO_RxData.WriteByte(cChar);
+          if (eco_in_flag) SendByte(cChar);
 	}
 }
 

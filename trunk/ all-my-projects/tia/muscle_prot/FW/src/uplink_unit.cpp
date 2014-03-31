@@ -7,6 +7,7 @@
 
 #include "uplink_unit.h"
 #include "crc_8_16_32.h"
+#include <stdlib.h>
 
 uint8_t UplinkClass :: Init(uint16_t iSize)
 {
@@ -14,21 +15,21 @@ uint8_t UplinkClass :: Init(uint16_t iSize)
 	while (i<BUF_NAMBER)
 	{
 		BufArray[i].Clear();
+		i++;
 	}
-	return;// 0;
+	return 0;
 }
 
 void UplinkClass :: Task(void)
 {
-	while (pUART->FIFO_RxData.IsEmpty()) Recive(pUART->FIFO_RxData.SimpleReadByte());
-
-	return;// 0;
+	while (!(pUART->FIFO_RxData.IsEmpty())) Recive(pUART->FIFO_RxData.SimpleReadByte());
 }
 
 void UplinkClass :: Send (DataPack_t* pDataPack)
 {
 	pDataPack->Pref=DATA_PACK_PREF;
-	pDataPack->CRC16=crc16_tbl_buf((unsigned char*)&pDataPack->Command,CRC16_INIT,DATA_CRC_CALC_SIZE);
+	pDataPack->Reserv=0;
+	pDataPack->CRC16=crc16_tbl_buf((unsigned char*)&(pDataPack->Command),CRC16_INIT,DATA_CRC_CALC_SIZE);
 	pUART->SendBuf(DATA_PACK_SIZE, (uint8_t*)pDataPack);
 	return;
 }
@@ -38,10 +39,11 @@ DataPack_t* UplinkClass :: GetCommand (void)
 	uint8_t i=0;
 	while (i<BUF_NAMBER)
 	{
-		if (/*IsValidCommand()*/)
+		if (/*IsValidCommand()*/1)
 		{
-			/*insert_data*/;
+			/*gjfgjhfghj*/;
 		}
+		i++;
 	}
 	return NULL;
 }
@@ -52,7 +54,7 @@ void UplinkClass :: Recive(uint8_t chDataByte)
 	uint8_t i=0;
 	while (i<BUF_NAMBER)
 	{
-		if (/* buf_no_empty*/1) /*insert_data*/;
+		if (!(BufArray[i].IsEmpty())) BufArray[i].Insert(chDataByte);
 		i++;
 	}
 	// if got prefix - activation new buffer
@@ -61,14 +63,14 @@ void UplinkClass :: Recive(uint8_t chDataByte)
 		i=0;
 		while (i<BUF_NAMBER)
 		{
-			if (/* buf_empty*/1)
+			if (BufArray[i].IsEmpty())
 			{
-				/*insert_data*/;
+				BufArray[i].Insert(chDataByte);
 				break;
 			}
 			i++;
-		}
-	}// if (chDataByte==HI_DATA_PACK_PREF_BYTE)
+		}//while
+	}// if
 }
 
 
@@ -81,21 +83,22 @@ void SmartBufClass :: Insert(uint8_t chDataByte)
 		Clear();
 		return;
 	}
-	((uint8_t*) &DataPack)+chByteCounter=chDataByte; // insert data byte in buffer of bytes
+	*((uint8_t*)(&DataPack+chByteCounter))=chDataByte; // insert data byte in buffer of bytes
 	chByteCounter++;
 	bEmptyFlag=false;
 	// processing data
 	if (chByteCounter==DATA_PACK_SIZE)
 	{
-		// calc crc16
-		bValidCommand==true;
-		// else clear
+		uint16_t iCRC16;
+		iCRC16=crc16_tbl_buf((unsigned char*)&(DataPack.Command),CRC16_INIT,DATA_CRC_CALC_SIZE);
+		if (DataPack.CRC16==iCRC16) bValidCommand=true;
+			else Clear();
 	}
 }
 
-void SmartBufClass :: Clear(uint8_t chDataByte)
+void SmartBufClass :: Clear(void)
 {
 	chByteCounter=0;
 	bEmptyFlag=true;
-	bValidCommand==false;
+	bValidCommand=false;
 }

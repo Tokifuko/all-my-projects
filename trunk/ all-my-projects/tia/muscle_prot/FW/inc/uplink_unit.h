@@ -10,8 +10,8 @@
 
 #include "UARTClass.h"
 
-#define DATA_PACK_SIZE	10 // размер структуры
-#define DATA_CRC_CALC_SIZE	3 // кол-во 16-и битных чисел, по которым считается CRC16
+#define DATA_PACK_SIZE	sizeof(DataPack_t) // размер структуры
+#define DATA_CRC_CALC_SIZE	DATA_PACK_SIZE-4 // кол-во байт, по которым считается CRC16
 
 #define DATA_PACK_PREF	0xA55A // префикс
 #define HI_DATA_PACK_PREF_BYTE	0xA5
@@ -25,6 +25,7 @@ struct DataPack_t {
     uint16_t CRC16;
 	uint8_t Command;
 	uint8_t Addr;
+	uint16_t Reserv;  // нужен для выравнивания структуры по 32 бита
     uint32_t Data;
 };
 
@@ -40,7 +41,7 @@ public:
 	void Clear (void);
 	bool IsValidCommand (void) {return bValidCommand;};
 	bool IsEmpty (void) {return bEmptyFlag;};
-	DataPack_t* GetCommand (void) {return &DataPack);
+	DataPack_t* GetCommand (void) {return &DataPack;};
 };
 
 class UplinkClass {

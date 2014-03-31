@@ -50,6 +50,7 @@ int main(void)
 	uint32_t iUserBattonTimer;
 	uint32_t flag=0;
 	uint32_t iUserBattonFlag=0;
+	DataPack_t tTestData;
 	/*uint8_t dataBufTxReset[4]={0x1E,0,0,0};
 	uint8_t dataBufTxRead[4]={0xA4,0,0,0};
 	uint8_t dataBufRx[4]={0,0,0,0};
@@ -77,9 +78,10 @@ int main(void)
     while(1)
     {
      ad7799.Task();
-    	ms5803.Task();
+   	ms5803.Task();
     	//Delay.ms(500);
   	  calipers.Task();
+  	uplink.Task();
     	//i2cMgr.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
@@ -111,6 +113,10 @@ int main(void)
     				ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
     				ad7799.PswPinOn();
+    				tTestData.Addr=0x11;
+    				tTestData.Command=0xFF;
+    				tTestData.Data=0x33445566;
+    				uplink.Send(&tTestData);
     			}
     			else
     			{
@@ -183,7 +189,7 @@ void Ms5803Callback(uint32_t iData)
 	DbgUART.SendPrintF("Pres=%d \n",(int32_t) iData);
 }
 
-void CallBackCalipers(uint32_t iData) // вызывается при окончании работы с I2C командой
+void CallBackCalipers(uint32_t iData)
 {
 	int32_t i;
 	i=calipers.iTemp;
