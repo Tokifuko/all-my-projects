@@ -14,6 +14,7 @@
 #include "common.h"
 #include "kl_lib.h"
 #include "CalipersClass.h"
+#include "uplink_unit.h"
 
 #include "UARTClass.h"
 
@@ -38,6 +39,7 @@ UART_Class* pUART5;
 
 AD7799_Class ad7799;
 MS5803_Class ms5803;
+UplinkClass uplink;
 //i2cMgr_t i2cMgr;
 uint32_t iTemp;
 calipers_t calipers;
@@ -58,12 +60,15 @@ int main(void)
 	ComportUART.UART_Init(USART3);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
-	//ms5803.Init();
+	ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
 	ms5803.DbgUART=&DbgUART;
+
+	uplink.Init(0);
+	uplink.SetUart(&ComportUART);
 	//i2cMgr.Init();
-	  calipers.Init();
-	  calipers.Callback=CallBackCalipers;
+	calipers.Init();
+	calipers.Callback=CallBackCalipers;
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
@@ -184,7 +189,7 @@ void CallBackCalipers(uint32_t iData) // вызывается при окончании работы с I2C к
 	i=calipers.iTemp;
 	//i=6545354;
 	DbgUART.SendPrintF("Calip=%d \n",i);
-	ComportUART.SendPrintF("Calip2=%d \n",i);
+	//ComportUART.SendPrintF("Calip2=%d \n",i);
 	//ComportUART.SendByte('a');
 }
 

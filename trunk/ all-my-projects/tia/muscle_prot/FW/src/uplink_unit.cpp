@@ -5,7 +5,8 @@
  *      Author: Admin
  */
 
-#include "Uplink_unit.h"
+#include "uplink_unit.h"
+#include "crc_8_16_32.h"
 
 uint8_t UplinkClass :: Init(uint16_t iSize)
 {
@@ -27,9 +28,8 @@ void UplinkClass :: Task(void)
 void UplinkClass :: Send (DataPack_t* pDataPack)
 {
 	pDataPack->Pref=DATA_PACK_PREF;
-	// calc CRC16
-	//pDataPack->CRC16=
-	pUART->SendBuf(DATA_PACK_SIZE, (*uint8_t)pDataPack);
+	pDataPack->CRC16=crc16_tbl_buf((unsigned char*)&pDataPack->Command,CRC16_INIT,DATA_CRC_CALC_SIZE);
+	pUART->SendBuf(DATA_PACK_SIZE, (uint8_t*)pDataPack);
 	return;
 }
 

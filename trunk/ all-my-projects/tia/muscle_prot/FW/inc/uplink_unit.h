@@ -11,19 +11,22 @@
 #include "UARTClass.h"
 
 #define DATA_PACK_SIZE	10 // размер структуры
+#define DATA_CRC_CALC_SIZE	3 // кол-во 16-и битных чисел, по которым считается CRC16
+
 #define DATA_PACK_PREF	0xA55A // префикс
 #define HI_DATA_PACK_PREF_BYTE	0xA5
 #define LO_DATA_PACK_PREF_BYTE	0x5A
 #define BUF_NAMBER			4
 
+#define CRC16_INIT		0x00
 
 struct DataPack_t {
 	uint16_t Pref;
     uint16_t CRC16;
 	uint8_t Command;
 	uint8_t Addr;
-    uint32_t Data
-}
+    uint32_t Data;
+};
 
 class SmartBufClass {
 private:
