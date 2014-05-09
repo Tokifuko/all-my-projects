@@ -154,14 +154,14 @@ void UART_Class ::SendPrintF(const char *fmt, ...)
 
   char bp[PRINTF_BUF_SIZE]; // строка, хранит текст сообщения
   int count;
-/*
+
   va_list argp;
   va_start(argp, fmt);
   vsprintf(bp, fmt, argp);
   va_end(argp);
   count = strlen(bp);
-*/
-  count=16;
+
+  //count=16;
   FIFO_TxData.WriteData(count,(uint8_t*) bp);
   UART_StartTx();
 

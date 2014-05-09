@@ -24,7 +24,8 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TComForm *ComForm;
-
+UplinkClass LinkToComPort;
+DataPack_t* pCommandRx;
 
 //=============================================================================
 //..................... объявления глобальных переменных ......................
@@ -120,10 +121,6 @@ void __fastcall ReadThread::Execute()
 {
  COMSTAT comstat;		//структура текущего состояния порта, в данной программе используется для определения количества принятых в порт байтов
  DWORD i,btr, temp, mask, signal;	//переменная temp используется в качестве заглушки
- char chThreadBuf[ BUFSIZE] ;
- unsigned int chThreadBufCounter=0;
-
-
  overlapped.hEvent = CreateEvent(NULL, true, true, NULL);	//создать сигнальный объект-событие для асинхронных операций
  SetCommMask(COMport, EV_RXCHAR);                   	        //установить маску на срабатывание по событию приёма байта в порт
  while(!Terminated)						//пока поток не будет прерван, выполняем цикл
@@ -146,24 +143,18 @@ void __fastcall ReadThread::Execute()
            ReadFile(COMport, bufrd, btr, &temp, &overlapped);     //прочитать байты из порта в буфер программы
 
            counter+=btr;                                          //увеличиваем счётчик байтов
-
-
- //*************** вытаскиваем строки из принятых данных ************
+ //*************** парсим данные ************************************************************
            i=0;
-           while (i<btr)  // работаем с буфером посимвольно, чтоб отследить конец строки
+           while (i<btr)  // работаем с буфером посимвольно
            {              // так как \n может придти в следующем пакете, а не в этом
-                chThreadBuf[chThreadBufCounter]=bufrd[i];
-                if (chThreadBufCounter>=BUFSIZE)chThreadBufCounter=0;
-                i++;
-                if (chThreadBuf[chThreadBufCounter]=='\n')      // пришел конец строки
+
+                LinkToComPort.Recive(bufrd[i]);  // обрабатываем новый байт
+                pCommandRx=LinkToComPort.GetCommand(); // проверяем, не принялась ли новая команда
+                if    (pCommandRx!=NULL)
                 {
-                        memcpy(chBuf,chThreadBuf,chThreadBufCounter+1);
-                        chThreadBufCounter=0;
-                        Synchronize(Printing);	//вызываем функцию для вывода данных на экран и в файл
+                        //dfsdhsdfhfdghdf;
+                        Synchronize(Printing);  //вызываем функцию для вывода данных на экран и в файл
                 }
-                else chThreadBufCounter++;
-
-
            }//while (i<btr)
           }//if(btr)
        }
@@ -193,7 +184,7 @@ void __fastcall ReadThread::Printing()
  i=0;
  bool bRes;
  // **************** парсим показания с АЦП Тензодатчика  **********************************
-  bRes=pcTenzoParser->ParsString(&sBuf);
+ /* bRes=pcTenzoParser->ParsString(&sBuf);
   if (!bRes) bRes=pcCoef_0_Parser->ParsString(&sBuf);
   if (!bRes) bRes=pcCoef_1_Parser->ParsString(&sBuf);
   if (!bRes) bRes=pcCoef_2_Parser->ParsString(&sBuf);
@@ -205,7 +196,7 @@ void __fastcall ReadThread::Printing()
   if (!bRes) bRes=pcAdc_1_Parser->ParsString(&sBuf);
   if (!bRes) bRes=pcAdc_2_Parser->ParsString(&sBuf);
   if (!bRes) ComForm->Memo1->Lines->Add(sBuf);
-  /*      sHead="Tenzo=";        // это начало сообщения со значением АЦП  Тензодатчика
+ */ /*      sHead="Tenzo=";        // это начало сообщения со значением АЦП  Тензодатчика
         iPosChar=sBuf.Pos(sHead);
         if (iPosChar!=0)
         {
@@ -470,7 +461,7 @@ void COMOpen()
  reader->FreeOnTerminate = true;        //установить это свойство потока, чтобы он автоматически уничтожался после завершения
  SetThreadPriority(reader,THREAD_PRIORITY_HIGHEST);
 
-
+ LinkToComPort.Init(0);
 }
 
 //---------------------------------------------------------------------------

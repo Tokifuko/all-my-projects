@@ -5,7 +5,8 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="GUI_prot.exe"/>
     <OBJFILES value="GUI_prot.obj main_form.obj com_form.obj chart_form.obj weigth_form.obj 
-      parser_class.obj presure_form.obj ms5803-14ba.obj"/>
+      parser_class.obj presure_form.obj ms5803-14ba.obj observer_pattern.obj 
+      crc_8_16_32.obj"/>
     <RESFILES value="GUI_prot.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -31,13 +32,14 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="GUI_prot.cpp"/>
-    <INCLUDEPATH value="&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;C:\eclipse\all-my-projects\tia\GUI_prot;C:\TeeChart\Sources\Compiled\Builder6\Include;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="C:\TeeChart\Sources\Compiled\Builder6\Lib;&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\eclipse\all-my-projects\tia\GUI_prot&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="..\muscle_prot\FW\src;&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;C:\eclipse\all-my-projects\tia\GUI_prot;C:\TeeChart\Sources\Compiled\Builder6\Include;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..\muscle_prot\FW\src;C:\TeeChart\Sources\Compiled\Builder6\Lib;&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;C:\eclipse\all-my-projects\tia\GUI_prot&quot;;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot; 
+    <IDLCFLAGS value="-I..\muscle_prot\FW\src 
+      -I&quot;C:\Program Files (x86)\Borland\CBuilder6\Projects&quot; 
       -IC:\eclipse\all-my-projects\tia\GUI_prot 
       -IC:\TeeChart\Sources\Compiled\Builder6\Include -I$(BCB)\include 
       -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
@@ -65,6 +67,8 @@
       <FILE FILENAME="parser_class.cpp" FORMNAME="" UNITNAME="parser_class" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="presure_form.cpp" FORMNAME="PresureForm" UNITNAME="presure_form" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ms5803-14ba.c" FORMNAME="" UNITNAME="ms5803-14ba" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="observer_pattern.cpp" FORMNAME="" UNITNAME="observer_pattern" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="crc_8_16_32.cpp" FORMNAME="" UNITNAME="crc_8_16_32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
