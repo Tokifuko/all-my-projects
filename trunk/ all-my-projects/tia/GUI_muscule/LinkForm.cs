@@ -12,25 +12,26 @@ using System.IO.Ports;
 
 namespace GUI_muscule
 {
+    
     public partial class LinkForm : Form
     {
         int i = 0;
-        SerialPort mySerialPort = new SerialPort();
+        public SerialPort mySerialPort = new SerialPort();
         public delegate void CPPUHandler();
         public event CPPUHandler ComPortParamUpdateEvent;
-
-        public  poc.PocketManager myPokMan = new poc.PocketManager();
+        poc.PocketManagerSingleton myPocManager = poc.PocketManagerSingleton.Instance;
+       // public  poc.PocketManager myPokMan = poc.PocketManager();
         public LinkForm()
         {
             InitializeComponent();
             SetDefalutPortParam();
-
+            mySerialPort.DataReceived += myPocManager.ComPortDataReceivedEventHandler;
         }
         private void SetDefalutPortParam()
         {
             mySerialPort.BaudRate = 115200;
-            mySerialPort.PortName = "no port";
-            //mySerialPort.PortName = "COM17";
+            //mySerialPort.PortName = "no port";
+            mySerialPort.PortName = "COM1";
             mySerialPort.StopBits = StopBits.One;
             mySerialPort.DataBits = 8;
             mySerialPort.Handshake = Handshake.None;
@@ -56,6 +57,12 @@ namespace GUI_muscule
         {
             object[] obj = SerialPort.GetPortNames();
             if (obj.Contains(mySerialPort.PortName)) mySerialPort.Open();
+            else
+            {
+                mySerialPort.PortName = "no port";
+                // уведомляем MainForm о изменении параметров порта
+                if (ComPortParamUpdateEvent != null) ComPortParamUpdateEvent();
+            }
         }
         public void ComPortClose()   
         {
@@ -71,12 +78,13 @@ namespace GUI_muscule
         {
             comboBox1.Items.Clear();
             comboBox1.Items.AddRange(SerialPort.GetPortNames());
+            comboBox1.Items.Add("no port");
+            if (comboBox1.Text != mySerialPort.PortName) comboBox1.SelectedIndex = 0;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null) mySerialPort.PortName = comboBox1.SelectedItem.ToString();
-            else  mySerialPort.PortName = "no port";
+            mySerialPort.PortName = comboBox1.SelectedItem.ToString();
             // уведомляем MainForm о изменении параметров порта
             if (ComPortParamUpdateEvent != null) ComPortParamUpdateEvent();
         }
