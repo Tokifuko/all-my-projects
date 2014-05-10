@@ -41,12 +41,12 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(92, 26);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 24);
             this.comboBox1.TabIndex = 1;
             this.comboBox1.DropDown += new System.EventHandler(this.comboBox1_DropDown);
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // LinkForm
             // 
@@ -60,6 +60,7 @@
             this.MinimizeBox = false;
             this.Name = "LinkForm";
             this.Text = "Form1";
+            this.Activated += new System.EventHandler(this.LinkForm_Activated);
             this.ResumeLayout(false);
             this.PerformLayout();
 
