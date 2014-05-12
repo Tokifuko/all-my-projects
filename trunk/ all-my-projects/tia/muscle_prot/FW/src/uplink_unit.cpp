@@ -30,6 +30,7 @@ void UplinkClass :: Send (DataPack_t* pDataPack)
 	pDataPack->Pref=DATA_PACK_PREF;
 	pDataPack->Reserv=0;
 	pDataPack->CRC16=crc16_tbl_buf((unsigned char*)&(pDataPack->Command),CRC16_INIT,DATA_CRC_CALC_SIZE);
+	//pDataPack->CRC16=crc16_sft_buf((unsigned char*)&(pDataPack->Command),CRC16_INIT,DATA_CRC_CALC_SIZE);
 	pUART->SendBuf(DATA_PACK_SIZE, (uint8_t*)pDataPack);
 	return;
 }

@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CRC16.cs" />
     <Compile Include="LinkForm.cs">
       <SubType>Form</SubType>
     </Compile>

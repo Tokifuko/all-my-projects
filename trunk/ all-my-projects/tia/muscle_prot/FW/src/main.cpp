@@ -50,6 +50,7 @@ int main(void)
 	uint32_t iUserBattonTimer;
 	uint32_t flag=0;
 	uint32_t iUserBattonFlag=0;
+	uint32_t count;
 	DataPack_t tTestData;
 	/*uint8_t dataBufTxReset[4]={0x1E,0,0,0};
 	uint8_t dataBufTxRead[4]={0xA4,0,0,0};
@@ -92,7 +93,15 @@ int main(void)
     			Delay.Reset(&iUserBattonTimer);
     			ad7799.StartZeroCalibration();
     			//i2cMgr.AddCmd(comReset);  // Reset command
-
+				tTestData.Addr=0x11;
+				tTestData.Command=0xFF;
+				tTestData.Data=0x33445566;
+				count =0;
+				while (count<20)
+				{
+					uplink.Send(&tTestData);
+					count++;
+				}
     		}
     	}
     	else if (Delay.Elapsed(&iUserBattonTimer,USER_BATTON_TIMEOUT))
@@ -113,10 +122,7 @@ int main(void)
     				ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
     				ad7799.PswPinOn();
-    				tTestData.Addr=0x11;
-    				tTestData.Command=0xFF;
-    				tTestData.Data=0x33445566;
-    				uplink.Send(&tTestData);
+
 
     			}
     			else

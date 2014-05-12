@@ -23,6 +23,9 @@ namespace GUI_muscule
             myLinkForm.ComPortParamUpdateEvent += ComPortParamUpdateHandler;
             label1.Text = myLinkForm.GetPortParam();
             myPocManager.NewPocketEvent += myNewPoketHandler;
+            byte[] tempBuf = new byte[] { 0x17, 0x18, 0xff,0x11,0x00,0x00,0x66,0x55,0x44,0x33};
+            int i = CRC16.CRC.CalcCrc16(tempBuf, 8);
+            label2.Text = i.ToString();
         }
         private void myNewPoketHandler(poc.DataPack_t dp)
         {
@@ -30,7 +33,10 @@ namespace GUI_muscule
             label2.Invoke((Action)delegate
             {
                 i++;
-                label2.Text = i.ToString();
+                for (int count = 0; count < 100; count++ )
+                {
+                    label2.Text = i.ToString()+ "  count  " +count.ToString()+"    yay"; 
+                }
             });
    
         }
