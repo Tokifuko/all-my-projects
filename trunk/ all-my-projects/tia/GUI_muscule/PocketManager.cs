@@ -5,7 +5,7 @@ using CRC16;
 
 namespace poc
 {
-    public struct Constants
+    public static class Constants
     {
         public const byte POCKET_LO_PREFIX = 0x5A;
         public const byte POCKET_HI_PREFIX = 0xA5;
