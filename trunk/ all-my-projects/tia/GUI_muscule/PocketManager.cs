@@ -12,38 +12,76 @@ namespace poc
         public const UInt32 POCKET_PREFIX = 0xA55A;
         public const int POCKET_LENGTH = 12;
     }
-    
-    public enum DataPocketState
+    public enum SmartDataBufState
     {
         EMPTY=0,
         ACTIVE=1,
         READY=2
     }
-    public class DataPack_t
+    public struct DataPack_t
     {
-        public DataPack_t() { }
-        public UInt32 Pref;
-        public UInt32 CRC16;
+        public  DataPack_t(UInt16 Prefix=0,UInt16 crc16=0, byte command=0, byte addr=0, UInt16 reserv=0,UInt32 data=0  )
+        {
+            Pref = Prefix; CRC16 = crc16; Command = command;
+            Addr = addr; Reserv = reserv; Data = data;
+        }
+        public  DataPack_t (byte[] byteBuf)
+        {
+            Pref = 0; CRC16 = 0; Command = 0;
+            Addr = 0; Reserv = 0; Data = 0;
+            if (byteBuf.Length < Constants.POCKET_LENGTH) return;
+            Pref = ByteToUint16(byteBuf[0],byteBuf[1]);
+            CRC16 = ByteToUint16(byteBuf[2], byteBuf[3]);
+            Command = byteBuf[4];
+            Addr = byteBuf[5];
+            Reserv = ByteToUint16(byteBuf[6], byteBuf[7]);
+            Data = ByteToUint32(new byte[]{byteBuf[8], byteBuf[9], byteBuf[10], byteBuf[11]});
+        }
+        public static UInt16 ByteToUint16(byte hi, byte lo)
+        {
+            UInt32 i = hi;
+            i = i << 8;
+            i += lo;
+            return (UInt16)i;
+        }
+        public static UInt32 ByteToUint32(byte[] bBuf)
+        {
+            if (bBuf.Length != 4) return 0; /////////!!!!!!!!!!!!!!!!!!!!!!!  может тут эксэпшон кинуть? только я еще не умею
+            UInt32 i = 0;
+            foreach(byte b in bBuf)
+            {
+                i = i << 8;
+                i += b;
+             }
+            return i;
+        }
+        public UInt16 Pref;
+        public UInt16 CRC16;
         public byte Command;
         public byte Addr;
         public UInt16 Reserv;  // нужен для выравнивания структуры по 32 бита
         public UInt32 Data;
+    }
+    public class SmartDataBuf
+    {
+        public SmartDataBuf() { }
+        public DataPack_t DataPack=new DataPack_t();
         private byte[] buf =new byte [Constants.POCKET_LENGTH];
-        private DataPocketState bStatus = 0;
+        private SmartDataBufState bStatus = 0;
         private byte bCounter=0;
         public void ClearPocket() 
         {
-            bStatus = DataPocketState.EMPTY;
+            bStatus = SmartDataBufState.EMPTY;
             bCounter = 0;
         }
-        public DataPocketState GetStatus() { return bStatus; }
+        public SmartDataBufState GetStatus() { return bStatus; }
         public void AddNewByte (byte b)
         {
             // если первый байт совпадает с началом префикса, то активирум пакет
             if (bCounter == 0)
             {
                 if (b != Constants.POCKET_LO_PREFIX) return;
-                bStatus = DataPocketState.ACTIVE;
+                bStatus = SmartDataBufState.ACTIVE;
             }
             buf[bCounter] = b;
 
@@ -62,39 +100,54 @@ namespace poc
             if (bCounter == Constants.POCKET_LENGTH)
             {
                 UInt32 crcCalc = CRC.CalcCrc16(buf, buf.Length, 4);
-                // прим. У crc поменяны старший и младший байт
-                // для совместиммости
-                CRC16 = buf[3];
-                CRC16 = CRC16 << 8;
-                CRC16 += buf[2]; ;
-                if (crcCalc==CRC16) bStatus = DataPocketState.READY;
+                // прим. У crc поменяны старший и младший байт для совместиммости
+                UInt16 myCRC16= DataPack_t.ByteToUint16(buf[3], buf[2]);
+                if (crcCalc == myCRC16)
+                {
+                    DataPack = new DataPack_t(buf);
+                    bStatus = SmartDataBufState.READY;
+                }
                 else ClearPocket();
             }
-            
         }// AddNewByte
-    }//struct DataPack_t
+    }//struct SmartDataBuf
 
-
-    public delegate void NewPocketHandler(DataPack_t data);
-
-    public  class PocketManagerSingleton
+        //IDisposable implementation that the provider can 
+        //return to subscribers so that they can stop receiving 
+        //notifications at any time.
+    public class Unsubscriber : IDisposable
     {
-        public event NewPocketHandler NewPocketEvent;
-        DataPack_t[] PocketArray = new DataPack_t[6];
-        List<DataPack_t> PocketList = new List<DataPack_t>();
-        /// Защищенный конструктор нужен, чтобы предотвратить создание экземпляра класса Singleton
-        protected PocketManagerSingleton() 
+        private List<IObserver<DataPack_t>> _observers;
+        private IObserver<DataPack_t> _observer;
+
+        public Unsubscriber(List<IObserver<DataPack_t>> observers, IObserver<DataPack_t> observer)
         {
-            for (int i = 0; i < 6; i++) PocketList.Add(new DataPack_t());
+            this._observers = observers;
+            this._observer = observer;
         }
-        private sealed class PocketManagerSingletonCreator
+        public void Dispose()
         {
-            private static readonly PocketManagerSingleton instance = new PocketManagerSingleton();
-            public static PocketManagerSingleton Instance { get { return instance; } }
+            if (!(_observer == null)) _observers.Remove(_observer);
         }
-        public static PocketManagerSingleton Instance
+    }
+ 
+    public  class PocketManager :IObservable<DataPack_t>
+    {
+        // provider store references to observers
+        List<IObserver<DataPack_t>> observers;
+        SmartDataBuf[] PocketArray = new SmartDataBuf[6];
+        List<SmartDataBuf> PocketList = new List<SmartDataBuf>();
+        public PocketManager() 
         {
-            get { return PocketManagerSingletonCreator.Instance; }
+            for (int i = 0; i < 6; i++) PocketList.Add(new SmartDataBuf());
+            observers = new List<IObserver<DataPack_t>>();
+        }
+        public IDisposable Subscribe(IObserver<DataPack_t> observer)
+        {
+            if (!observers.Contains(observer))
+                observers.Add(observer);
+
+            return new Unsubscriber(observers, observer);
         }
 
         // EventHandler from ComPort
@@ -108,26 +161,29 @@ namespace poc
                 {
                     bDataByte = (byte)sp.ReadByte();
                     // добавляем новый байт во все активные пакеты
-                    foreach (DataPack_t pocket in PocketList) 
+                    foreach (SmartDataBuf pocket in PocketList) 
                     {
-                        if (pocket.GetStatus()== DataPocketState.ACTIVE) pocket.AddNewByte(bDataByte);
+                        if (pocket.GetStatus()== SmartDataBufState.ACTIVE) pocket.AddNewByte(bDataByte);
                     }
                     // добавляем новый байт в первый пустой пакет
-                    foreach (DataPack_t pocket in PocketList) 
+                    foreach (SmartDataBuf pocket in PocketList) 
                     {
-                        if (pocket.GetStatus() == DataPocketState.EMPTY)
+                        if (pocket.GetStatus() == SmartDataBufState.EMPTY)
                         {
                             pocket.AddNewByte(bDataByte);
                             break;
                         }
                     }
                     // обрабатываем готовые пакеты
-                    foreach (DataPack_t pocket in PocketList) 
+                    foreach (SmartDataBuf pocket in PocketList) 
                     {
-                        if (pocket.GetStatus() == DataPocketState.READY)
+                        if (pocket.GetStatus() == SmartDataBufState.READY)
                         {
-                            if (NewPocketEvent != null) NewPocketEvent(pocket);
-                             pocket.ClearPocket();
+                            foreach(var observer in observers)
+                            {
+                                observer.OnNext(pocket.DataPack);
+                            }
+                            pocket.ClearPocket();
                         }
                     }
     
@@ -135,7 +191,7 @@ namespace poc
             }//if (sp!=null)
 
         }//ComPortDataReceivedEventHandler
-    }//class PocketManagerSingleton
+    }//class PocketManager
 
 }
 

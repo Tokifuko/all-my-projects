@@ -7,59 +7,69 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using poc;
 
 
 namespace GUI_muscule
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form , IObserver<DataPack_t>
     {
         UInt32 i;
-        LinkForm myLinkForm;
-        poc.PocketManagerSingleton myPocManager = poc.PocketManagerSingleton.Instance;
+        PocketManager myPocManager = new PocketManager();
+        MySerialPort mySerialPort = new MySerialPort();
         public MainForm()
         {
             InitializeComponent();
-            myLinkForm = new LinkForm();
-            myLinkForm.ComPortParamUpdateEvent += ComPortParamUpdateHandler;
-            label1.Text = myLinkForm.GetPortParam();
-            myPocManager.NewPocketEvent += myNewPoketHandler;
-            byte[] tempBuf = new byte[] { 0x17, 0x18, 0xff,0x11,0x00,0x00,0x66,0x55,0x44,0x33};
-            int i = CRC16.CRC.CalcCrc16(tempBuf, 8);
-            label2.Text = i.ToString();
+            comboBox1_DropDown(null, null);
+            label1.Text = mySerialPort.GetPortParam();
+            mySerialPort.DataReceived += myPocManager.ComPortDataReceivedEventHandler;
+            Subscribe(myPocManager);
         }
-        private void myNewPoketHandler(poc.DataPack_t dp)
+
+        //***************************************************************************************************
+        //                          реализация интерфейса IObserver
+        //***************************************************************************************************
+        private IDisposable unsubscriber;
+        public virtual void Subscribe(IObservable<DataPack_t> provider)
         {
-            // хэндлер вызывается из другого потока, для доступа к контролу используется INVOKE
+            unsubscriber = provider.Subscribe(this);
+        }
+        public virtual void Unsubscribe()
+        {
+            unsubscriber.Dispose();
+        }
+        public virtual void OnCompleted() {}// Do nothing.
+        public virtual void OnError(Exception error) {}// Do nothing.
+        public virtual void OnNext(DataPack_t value)
+        {
+            // Метод вызывается из потока СОМ-порта
+            // для доступа к контролу используется INVOKE
             label2.Invoke((Action)delegate
             {
                 i++;
-                for (int count = 0; count < 100; count++ )
+                for (int count = 0; count <= 100; count++)
                 {
-                    label2.Text = i.ToString()+ "  count  " +count.ToString()+"    yay"; 
+                    label2.Text = i.ToString() + "  count  " + count.ToString() + "    yay";
                 }
             });
-   
         }
 
-        // орбаротчик вызывается из LinkForm при выборе другого порта
-        public void ComPortParamUpdateHandler()  { label1.Text = myLinkForm.GetPortParam(); }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //var i=myLinkForm.myPokMan.add(4, 5);
-            myLinkForm.SetTxtBox(i.ToString());
-            
-        }
-
+        //***************************************************************************************************
+        //                                обработчики контролов
+        //***************************************************************************************************
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            if (myLinkForm.GetPortStatus()) myLinkForm.ComPortClose();
-            else myLinkForm.ComPortOpen();
+            if (mySerialPort.IsOpen)
+            {
+                mySerialPort.Close();
+                logTextBox.AppendText("порт закрыт"  + '\n');
+            }
+            else logTextBox.AppendText(mySerialPort.OpenPort() + '\n');
         }
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
-            if (myLinkForm.GetPortStatus())
+            if (mySerialPort.IsOpen)
             {
                 label1.ForeColor = Color.Red;
                 ConnectButton.Text = "Закрыть COM порт";
@@ -71,19 +81,23 @@ namespace GUI_muscule
             }
         }
 
-        private void show_param_button_Click(object sender, EventArgs e)
+        private void comboBox1_DropDown(object sender, EventArgs e)
         {
-            if (myLinkForm.Visible==true)
-            {
-                myLinkForm.Hide();
-                show_param_button.Text = "<< показать параметры";
-            }
-            else
-            {
-                myLinkForm.Show();
-                myLinkForm.SetDesktopLocation(this.Location.X-myLinkForm.Size.Width, this.Location.Y);
-                show_param_button.Text = ">> скрыть параметры";
-            }
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(mySerialPort.GetPortNamesList());
+            comboBox1.Items.Add("no port");
+            if (comboBox1.Text != mySerialPort.PortName) comboBox1.SelectedIndex = 0;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            mySerialPort.PortName = comboBox1.SelectedItem.ToString();
+            label1.Text = mySerialPort.GetPortParam();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //var i=myLinkForm.myPokMan.add(4, 5);
+            //  myLinkForm.SetTxtBox(i.ToString());
         }
     }
 }

@@ -17,9 +17,25 @@ namespace GUI_muscule
             DataBits = 8;
             Handshake = Handshake.None;
         }
-        public void SetParam()
+        public string[] GetPortNamesList()
         {
-
+            return SerialPort.GetPortNames();
+        }
+        public string GetPortParam()
+        {
+            return "Порт:     " + this.PortName + '\n' +
+                    "Скорость: " + this.BaudRate.ToString();
+        }
+        public string OpenPort(string sPortName = "defalut",int iBaudRate=0)
+        {
+            
+            object[] obj = SerialPort.GetPortNames();
+            if (sPortName != "defalut") this.PortName = sPortName;
+            if (!obj.Contains(this.PortName)) return "нет такого порта в системе";
+            if (iBaudRate != 0) this.BaudRate = iBaudRate;
+            if (IsOpen) return "порт уже открыт";
+            Open();
+            return "порт отрыт";
         }
     }
 }
