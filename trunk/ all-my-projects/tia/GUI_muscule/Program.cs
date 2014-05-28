@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MathWorks.MATLAB.NET.Utility;
+using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule
 {

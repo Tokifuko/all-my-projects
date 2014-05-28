@@ -17,6 +17,7 @@ namespace GUI_muscule
         UInt32 i;
         PocketManager myPocManager = new PocketManager();
         MySerialPort mySerialPort = new MySerialPort();
+        Grafics myGrafForm = new Grafics();
         public MainForm()
         {
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace GUI_muscule
             label1.Text = mySerialPort.GetPortParam();
             mySerialPort.DataReceived += myPocManager.ComPortDataReceivedEventHandler;
             Subscribe(myPocManager);
+            myGrafForm.Show();
         }
 
         //***************************************************************************************************
