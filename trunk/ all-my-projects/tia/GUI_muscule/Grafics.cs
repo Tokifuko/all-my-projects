@@ -11,8 +11,8 @@ using System.IO;
 
 using MathWorks.MATLAB.NET.Utility;
 using MathWorks.MATLAB.NET.Arrays;
-using MathWorks.MATLAB.NET.WebFigures;
-using MathWorks.MATLAB.NET.WebFigures.RenderEngine;
+//using MathWorks.MATLAB.NET.WebFigures;
+//using MathWorks.MATLAB.NET.WebFigures.RenderEngine;
 
 namespace GUI_muscule
 {
@@ -20,48 +20,17 @@ namespace GUI_muscule
     {
         int i = 0;
         myMatlabLib.MTLClass mylObj = new myMatlabLib.MTLClass();
-        MWNumericArray input = null;
+        /*MWNumericArray input = null;
         MWNumericArray output = null;
-        MWArray[] result = null;
+        MWArray[] result = null;*/
         MWArray MTLfigHandler = null;
         public Grafics()
         {
             InitializeComponent();
-            MTLfigHandler = mylObj.GetFigHandle();
+            //MTLfigHandler = mylObj.GetFigHandle();
+            mylObj.GetFigHandle();
         }
-        /*
-        public static void PlolExemple()
-        {
-                try
-                {
-                    const int numPoints = 10;  // Number of points to plot
-
-                    // Allocate native array for plot values
-                    double[,] plotValues = new double[2, numPoints];
-
-                    // Plot 5x vs x^2
-                    for (int x = 1; x <= numPoints; x++)
-                    {
-                        plotValues[0, x - 1] = x * 5;
-                        plotValues[1, x - 1] = x * x;
-                    }
-
-                    // Create a new plotter object
-                    PlotComp.PlotComp plotter = new PlotComp.PlotComp();
-
-                    // Plot the two sets of values - Note the ability to cast the native array to a MATLAB numeric array
-                    plotter.drawgraph((MWNumericArray)plotValues);
-
-                   // Console.ReadLine();  // Wait for user to exit application
-                }
-
-                catch (Exception ex)
-                {
-                    System.Windows.Forms.MessageBox.Show(ex.Message);
-                   // Console.WriteLine("Error: {0}", exception);
-                   // Console.ReadLine();  // Wait for user to exit application
-                }
-        }*/
+     
         public byte[] getByteArrayFromDeployedComponent(int r)
         {
             MWArray width = 500;
@@ -95,31 +64,11 @@ namespace GUI_muscule
             }
             return outputImageAsImage;
         }
-        public Image Get_WebImage(int r)
-        {
-            Image outputImageAsImage=null;
-            try
-            {
-                WebFigure figure = new WebFigure(mylObj.webfigure_fibonachi2D());
-                WebFigureRenderer renderer = new WebFigureRenderer();
-                WebFigureRenderParameters param =new WebFigureRenderParameters(figure);
-                param.Rotation = 10*r;
-                param.Elevation = 30;
-                param.Width = 500;
-                param.Height = 500;
-                outputImageAsImage =renderer.RenderToImage(param);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-            }
-            return outputImageAsImage;
-        }
-        public void ShowMatlabChart()
+          public void ShowMatlabChart()
         {
             try
             {
-                mylObj = new myMatlabLib.MTLClass();
+                //mylObj = new myMatlabLib.MTLClass();
                 mylObj.fibonachi2D();
             }
             catch(Exception ex)//обработка исключения 
@@ -135,8 +84,17 @@ namespace GUI_muscule
         {
             //ShowMatlabChart();
             //pictureBox1.Image = Get_WebImage(i++);
-            pictureBox1.Image = Get_StreamImage(i++);
+            //pictureBox1.Image = Get_StreamImage(i++);
             //PlolExemple();
+           // mylObj.GetFigHandle();
+            for (i = 0; i < 50; i++)
+            {
+                ShowMatlabChart();
+                // PlotFigure();
+                this.Refresh();
+                label1.Text = i.ToString();
+            }
+             
         }
     }
     /*

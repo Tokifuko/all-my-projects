@@ -55,8 +55,8 @@
     <Reference Include="myMatlabLib">
       <HintPath>..\Matlab\fibonachi2D\for_testing\myMatlabLib.dll</HintPath>
     </Reference>
-    <Reference Include="PlotComp">
-      <HintPath>..\Matlab\drawgraph\for_testing\PlotComp.dll</HintPath>
+    <Reference Include="NSubstitute">
+      <HintPath>packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,10 +69,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebFiguresService, Version=2.14.0.0, Culture=neutral, PublicKeyToken=e1d84a0da19db86f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\WebFiguresService.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Grafics.cs">
@@ -81,6 +77,8 @@
     <Compile Include="Grafics.Designer.cs">
       <DependentUpon>Grafics.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatLabChats\IMatLabLib.cs" />
+    <Compile Include="MatLabChats\MatLabChart2D.cs" />
     <Compile Include="MySerialPort.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -110,6 +108,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

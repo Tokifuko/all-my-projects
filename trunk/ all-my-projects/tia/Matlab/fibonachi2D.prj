@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="4171150757" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="1002408880" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>fibonachi2D</param.appname>
     <param.icon />
     <param.icons />
@@ -41,12 +41,12 @@
     <param.encryption.key.file />
     <param.net.enable.remoting>false</param.net.enable.remoting>
     <param.net.tsa.enable>false</param.net.tsa.enable>
-    <param.net.tsa.assembly />
+    <param.net.tsa.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.assembly>
     <param.net.tsa.interface />
     <param.net.tsa.namespace>myMatlabLib</param.net.tsa.namespace>
     <param.net.tsa.superclass>MTLClass</param.net.tsa.superclass>
     <param.net.tsa.metadata />
-    <param.net.tsa.metadata.assembly>C:\Users\Stefan\Documents\MATLAB</param.net.tsa.metadata.assembly>
+    <param.net.tsa.metadata.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.metadata.assembly>
     <unset>
       <param.icon />
       <param.icons />
@@ -85,7 +85,6 @@
       <param.encryption.key.file />
       <param.net.enable.remoting />
       <param.net.tsa.enable />
-      <param.net.tsa.assembly />
       <param.net.tsa.interface />
       <param.net.tsa.namespace />
       <param.net.tsa.superclass />
