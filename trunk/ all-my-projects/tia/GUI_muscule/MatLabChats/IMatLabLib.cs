@@ -8,6 +8,8 @@ namespace GUI_muscule.MatLabChats
 {
     public interface IMatLabLib
     {
+        void Init();
         void AddNewPoint(int p);
+        void Repaint();
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using poc;
-using myMatlabLib;
 
 namespace GUI_muscule.MatLabChats
 {

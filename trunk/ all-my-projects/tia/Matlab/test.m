@@ -1,7 +1,5 @@
 function test
-global  globalFigHandler 
-figure (globalFigHandler);
-%f=GetFigHandle;
-fibonachi2D();
-fibonachi2D();
-fibonachi2D();
+for s = (pi*20): -0.2: 0.0
+   AddValue(sin(s));
+   Repaint;
+end 

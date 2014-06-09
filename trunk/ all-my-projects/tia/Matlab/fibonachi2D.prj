@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1002408880" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="3495710790" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>fibonachi2D</param.appname>
     <param.icon />
     <param.icons />
@@ -44,7 +44,7 @@
     <param.net.tsa.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.assembly>
     <param.net.tsa.interface />
     <param.net.tsa.namespace>myMatlabLib</param.net.tsa.namespace>
-    <param.net.tsa.superclass>MTLClass</param.net.tsa.superclass>
+    <param.net.tsa.superclass>MTLChart</param.net.tsa.superclass>
     <param.net.tsa.metadata />
     <param.net.tsa.metadata.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.metadata.assembly>
     <unset>
@@ -92,18 +92,20 @@
       <param.net.tsa.metadata.assembly />
     </unset>
     <fileset.exports>
-      <file>${PROJECT_ROOT}\fibonachi2D.m</file>
-      <file>${PROJECT_ROOT}\figToImStream_fibonachi2D.m</file>
+      <file>${PROJECT_ROOT}\AddValue.m</file>
+      <file>${PROJECT_ROOT}\Drive.m</file>
       <file>${PROJECT_ROOT}\GetFigHandle.m</file>
-      <file>${PROJECT_ROOT}\webfigure_fibonachi2D.m</file>
+      <file>${PROJECT_ROOT}\Repaint.m</file>
+      <file>${PROJECT_ROOT}\test.m</file>
     </fileset.exports>
     <fileset.classes>
       <entity.package name="">
-        <entity.class name="MTLClass">
-          <file>${PROJECT_ROOT}\fibonachi2D.m</file>
-          <file>${PROJECT_ROOT}\figToImStream_fibonachi2D.m</file>
+        <entity.class name="MTLChart">
+          <file>${PROJECT_ROOT}\AddValue.m</file>
+          <file>${PROJECT_ROOT}\Drive.m</file>
           <file>${PROJECT_ROOT}\GetFigHandle.m</file>
-          <file>${PROJECT_ROOT}\webfigure_fibonachi2D.m</file>
+          <file>${PROJECT_ROOT}\Repaint.m</file>
+          <file>${PROJECT_ROOT}\test.m</file>
         </entity.class>
       </entity.package>
     </fileset.classes>

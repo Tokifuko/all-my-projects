@@ -52,7 +52,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll</HintPath>
     </Reference>
-    <Reference Include="myMatlabLib">
+    <Reference Include="myMatlabLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Matlab\fibonachi2D\for_testing\myMatlabLib.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
@@ -77,6 +78,7 @@
     <Compile Include="Grafics.Designer.cs">
       <DependentUpon>Grafics.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatLabChats\MatLabAdapter.cs" />
     <Compile Include="MatLabChats\IMatLabLib.cs" />
     <Compile Include="MatLabChats\MatLabChart2D.cs" />
     <Compile Include="MySerialPort.cs">
