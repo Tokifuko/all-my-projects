@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_muscule", "GUI_muscule.csproj", "{97B96457-D221-49E9-A310-8F26BBF3416D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_musculeTests", "GUI_musculeTests_NUnit\GUI_musculeTests.csproj", "{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_musculeTests", "GUI_musculeTests\GUI_musculeTests.csproj", "{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
