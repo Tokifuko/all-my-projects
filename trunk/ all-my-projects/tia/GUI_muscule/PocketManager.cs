@@ -40,7 +40,6 @@ namespace poc
             Reserv = BitConverter.ToUInt16(byteBuf, 6);
             Data = BitConverter.ToUInt32(byteBuf, 8);
         }
-
         public byte[] ConverToBytes()
         {
             byte[] bArray = new byte[Constants.POCKET_LENGTH];
@@ -52,19 +51,12 @@ namespace poc
             BitConverter.GetBytes(Data).CopyTo(bArray, 8);
             return bArray;
         }
-        
-        public void CalcCRC() // считает CRC для текущего пакета
+        public void FullCrcField()  {this.CRC16 = CalcCRC();}
+        public UInt16 CalcCRC() // возвращает CRC для текущего пакета
         {
             byte[] buf = new byte[Constants.POCKET_LENGTH];
             buf = ConverToBytes();
-            this.CRC16= CRC.CalcCrc16(buf, buf.Length, 4);
-        }
-        public bool ChecCRC()
-        {
-            byte[] buf = new byte[Constants.POCKET_LENGTH];
-            buf = ConverToBytes();
-            UInt16 newCRC=CRC.CalcCrc16(buf, buf.Length, 4);
-            return (this.CRC16==newCRC);
+            return CRC.CalcCrc16(buf, buf.Length, 4);
         }
         public UInt16 Pref;
         public UInt16 CRC16;
@@ -111,7 +103,7 @@ namespace poc
             if (bCounter == Constants.POCKET_LENGTH)
             {
                 DataPack = new DataPack_t(buf);
-                if (DataPack.ChecCRC()) bStatus = SmartDataBufState.READY;
+                if (DataPack.CRC16 == DataPack.CalcCRC()) bStatus = SmartDataBufState.READY;
                 else ClearPocket();
             }
         }// AddNewByte

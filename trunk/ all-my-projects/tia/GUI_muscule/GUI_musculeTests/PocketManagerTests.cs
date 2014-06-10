@@ -16,18 +16,16 @@ namespace poc.Tests
         public void DataPack_CheckCRCMetod()
         {
             DataPack_t myDataPack = new DataPack_t(testPack);
-            myDataPack.CRC16 = 0;
-            Assert.IsFalse(myDataPack.ChecCRC());
-            myDataPack.CRC16 = 0x1718;
-            Assert.IsTrue(myDataPack.ChecCRC());
-
+            Assert.IsTrue(myDataPack.CalcCRC()==0x1718);
+            myDataPack.Data = 0;
+            Assert.IsTrue(myDataPack.CalcCRC() != 0x1718);
         }
         [Test()]
-        public void DataPack_CalcCRCMetod()
+        public void DataPack_FullCrcField()
         {
             DataPack_t myDataPack = new DataPack_t(testPack);
             myDataPack.CRC16 = 0;
-            myDataPack.CalcCRC();
+            myDataPack.FullCrcField();
             Assert.IsTrue(myDataPack.CRC16 == 0x1718);
         }
         [Test()]
@@ -65,13 +63,6 @@ namespace poc.Tests
         private void AddManyBytes(byte[] byte_list)
         {
             foreach (byte b in byte_list) p.AddNewByte(b);
-        }
-
-        [Test()]
-        public void SmartDataBuf_ClearPocket()
-        {
-            p.ClearPocket();
-            Assert.IsTrue(p.GetStatus() == SmartDataBufState.EMPTY);
         }
 
         [Test()]
