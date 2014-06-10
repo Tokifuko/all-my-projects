@@ -9,6 +9,9 @@ namespace GUI_muscule
 {
     public class MySerialPort : SerialPort
     {
+        public delegate void GetNewByte(byte b);
+        public event GetNewByte NewByteReceived;
+
         public MySerialPort()
         {
             BaudRate = 115200;
@@ -16,6 +19,7 @@ namespace GUI_muscule
             StopBits = StopBits.One;
             DataBits = 8;
             Handshake = Handshake.None;
+            base.DataReceived += ComPortDataReceivedEventHandler;
         }
         public string[] GetPortNamesList()
         {
@@ -36,6 +40,16 @@ namespace GUI_muscule
             if (IsOpen) return "порт уже открыт";
             Open();
             return "порт отрыт";
+        }
+               // EventHandler from ComPort
+        public void ComPortDataReceivedEventHandler(Object sender, SerialDataReceivedEventArgs e)
+        {
+            byte b;
+            while (base.BytesToRead!=0)
+            {
+                b = (byte)base.ReadByte();
+                if (NewByteReceived != null) NewByteReceived(b);
+            }
         }
     }
 }

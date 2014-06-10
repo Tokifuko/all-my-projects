@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_muscule", "GUI_muscule.csproj", "{97B96457-D221-49E9-A310-8F26BBF3416D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_musculeTests", "GUI_musculeTests\GUI_musculeTests.csproj", "{C3A0A808-D645-418A-98C0-423186568EC0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_musculeTests_NUnit", "GUI_musculeTests_NUnit\GUI_musculeTests_NUnit.csproj", "{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{97B96457-D221-49E9-A310-8F26BBF3416D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97B96457-D221-49E9-A310-8F26BBF3416D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97B96457-D221-49E9-A310-8F26BBF3416D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3A0A808-D645-418A-98C0-423186568EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3A0A808-D645-418A-98C0-423186568EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3A0A808-D645-418A-98C0-423186568EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3A0A808-D645-418A-98C0-423186568EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D51DEAD2-8209-4FD5-A9CB-27E0A575C64C}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -27,33 +27,44 @@ namespace poc
         }
         public  DataPack_t (byte[] byteBuf)
         {
-            Pref = 0; CRC16 = 0; Command = 0;
-            Addr = 0; Reserv = 0; Data = 0;
-            if (byteBuf.Length < Constants.POCKET_LENGTH) return;
-            Pref = ByteToUint16(byteBuf[0],byteBuf[1]);
-            CRC16 = ByteToUint16(byteBuf[2], byteBuf[3]);
+            if (byteBuf.Length < Constants.POCKET_LENGTH)
+            {
+                Pref = 0; CRC16 = 0; Command = 0;
+                Addr = 0; Reserv = 0; Data = 0;
+                return;
+            }
+            Pref = BitConverter.ToUInt16(byteBuf, 0);
+            CRC16 = BitConverter.ToUInt16(byteBuf, 2);
             Command = byteBuf[4];
             Addr = byteBuf[5];
-            Reserv = ByteToUint16(byteBuf[6], byteBuf[7]);
-            Data = ByteToUint32(new byte[]{byteBuf[8], byteBuf[9], byteBuf[10], byteBuf[11]});
+            Reserv = BitConverter.ToUInt16(byteBuf, 6);
+            Data = BitConverter.ToUInt32(byteBuf, 8);
         }
-        public static UInt16 ByteToUint16(byte hi, byte lo)
+
+        public byte[] ConverToBytes()
         {
-            UInt32 i = hi;
-            i = i << 8;
-            i += lo;
-            return (UInt16)i;
+            byte[] bArray = new byte[Constants.POCKET_LENGTH];
+            BitConverter.GetBytes(Pref).CopyTo(bArray, 0);
+            BitConverter.GetBytes(CRC16).CopyTo(bArray, 2);
+            bArray[4] = Command;
+            bArray[5] = Addr;
+            BitConverter.GetBytes(Reserv).CopyTo(bArray, 6);
+            BitConverter.GetBytes(Data).CopyTo(bArray, 8);
+            return bArray;
         }
-        public static UInt32 ByteToUint32(byte[] bBuf)
+        
+        public void CalcCRC() // считает CRC для текущего пакета
         {
-            if (bBuf.Length != 4) return 0; /////////!!!!!!!!!!!!!!!!!!!!!!!  может тут эксэпшон кинуть? только я еще не умею
-            UInt32 i = 0;
-            foreach(byte b in bBuf)
-            {
-                i = i << 8;
-                i += b;
-             }
-            return i;
+            byte[] buf = new byte[Constants.POCKET_LENGTH];
+            buf = ConverToBytes();
+            this.CRC16= CRC.CalcCrc16(buf, buf.Length, 4);
+        }
+        public bool ChecCRC()
+        {
+            byte[] buf = new byte[Constants.POCKET_LENGTH];
+            buf = ConverToBytes();
+            UInt16 newCRC=CRC.CalcCrc16(buf, buf.Length, 4);
+            return (this.CRC16==newCRC);
         }
         public UInt16 Pref;
         public UInt16 CRC16;
@@ -99,14 +110,8 @@ namespace poc
             bCounter++;
             if (bCounter == Constants.POCKET_LENGTH)
             {
-                UInt32 crcCalc = CRC.CalcCrc16(buf, buf.Length, 4);
-                // прим. У crc поменяны старший и младший байт для совместиммости
-                UInt16 myCRC16= DataPack_t.ByteToUint16(buf[3], buf[2]);
-                if (crcCalc == myCRC16)
-                {
-                    DataPack = new DataPack_t(buf);
-                    bStatus = SmartDataBufState.READY;
-                }
+                DataPack = new DataPack_t(buf);
+                if (DataPack.ChecCRC()) bStatus = SmartDataBufState.READY;
                 else ClearPocket();
             }
         }// AddNewByte
@@ -150,47 +155,37 @@ namespace poc
             return new Unsubscriber(observers, observer);
         }
 
-        // EventHandler from ComPort
-        public void ComPortDataReceivedEventHandler(Object sender, SerialDataReceivedEventArgs e)
+        // EventHandler from myComPort
+        public void NewByteReceivedEventHandler(byte bDataByte)
         {
-            SerialPort sp = (SerialPort)sender;
-            byte bDataByte;
-            if (sp!=null)
+            // добавляем новый байт во все активные пакеты
+            foreach (SmartDataBuf pocket in PocketList) 
             {
-                while (sp.BytesToRead != 0)
+                if (pocket.GetStatus()== SmartDataBufState.ACTIVE) pocket.AddNewByte(bDataByte);
+            }
+            // добавляем новый байт в первый пустой пакет
+            foreach (SmartDataBuf pocket in PocketList) 
+            {
+                if (pocket.GetStatus() == SmartDataBufState.EMPTY)
                 {
-                    bDataByte = (byte)sp.ReadByte();
-                    // добавляем новый байт во все активные пакеты
-                    foreach (SmartDataBuf pocket in PocketList) 
+                    pocket.AddNewByte(bDataByte);
+                    break;
+                }
+            }
+            // обрабатываем готовые пакеты
+            foreach (SmartDataBuf pocket in PocketList) 
+            {
+                if (pocket.GetStatus() == SmartDataBufState.READY)
+                {
+                    foreach(var observer in observers)
                     {
-                        if (pocket.GetStatus()== SmartDataBufState.ACTIVE) pocket.AddNewByte(bDataByte);
+                        observer.OnNext(pocket.DataPack);
                     }
-                    // добавляем новый байт в первый пустой пакет
-                    foreach (SmartDataBuf pocket in PocketList) 
-                    {
-                        if (pocket.GetStatus() == SmartDataBufState.EMPTY)
-                        {
-                            pocket.AddNewByte(bDataByte);
-                            break;
-                        }
-                    }
-                    // обрабатываем готовые пакеты
-                    foreach (SmartDataBuf pocket in PocketList) 
-                    {
-                        if (pocket.GetStatus() == SmartDataBufState.READY)
-                        {
-                            foreach(var observer in observers)
-                            {
-                                observer.OnNext(pocket.DataPack);
-                            }
-                            pocket.ClearPocket();
-                        }
-                    }
-    
-                }//while (sp.BytesToRead != 0)
-            }//if (sp!=null)
+                    pocket.ClearPocket();
+                }
+            }
+        }//NewByteReceivedEventHandler
 
-        }//ComPortDataReceivedEventHandler
     }//class PocketManager
 
 }

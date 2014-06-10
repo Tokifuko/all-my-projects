@@ -17,15 +17,16 @@ namespace GUI_muscule
         UInt32 i;
         PocketManager myPocManager = new PocketManager();
         MySerialPort mySerialPort = new MySerialPort();
-        Grafics myGrafForm = new Grafics();
+        FakeDevForm myFakeDevForm =new FakeDevForm();
+       // Grafics myGrafForm = new Grafics();
         public MainForm()
         {
             InitializeComponent();
             comboBox1_DropDown(null, null);
             label1.Text = mySerialPort.GetPortParam();
-            mySerialPort.DataReceived += myPocManager.ComPortDataReceivedEventHandler;
+            myFakeDevForm.Dispose();
             Subscribe(myPocManager);
-            myGrafForm.Show();
+           // myGrafForm.Show();
         }
 
         //***************************************************************************************************
@@ -64,9 +65,15 @@ namespace GUI_muscule
             if (mySerialPort.IsOpen)
             {
                 mySerialPort.Close();
-                logTextBox.AppendText("порт закрыт"  + '\n');
+                logTextBox.AppendText("порт закрыт" + '\n');
+                mySerialPort.NewByteReceived -= myPocManager.NewByteReceivedEventHandler;
             }
-            else logTextBox.AppendText(mySerialPort.OpenPort() + '\n');
+            else
+            {
+                logTextBox.AppendText(mySerialPort.OpenPort() + '\n');
+                // подключаем Менаджер Пакетов к com- порту
+                if (mySerialPort.IsOpen) mySerialPort.NewByteReceived += myPocManager.NewByteReceivedEventHandler;
+            }
         }
 
         private void timer1_Tick_1(object sender, EventArgs e)
@@ -96,10 +103,21 @@ namespace GUI_muscule
             mySerialPort.PortName = comboBox1.SelectedItem.ToString();
             label1.Text = mySerialPort.GetPortParam();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void fake_button_Click(object sender, EventArgs e)
         {
-            //var i=myLinkForm.myPokMan.add(4, 5);
-            //  myLinkForm.SetTxtBox(i.ToString());
+            if (myFakeDevForm.IsDisposed) 
+            {
+                myFakeDevForm = new FakeDevForm();
+                myFakeDevForm.Show();
+                myFakeDevForm.NewByteReceived += myPocManager.NewByteReceivedEventHandler;
+            }
+            else
+            {
+                myFakeDevForm.Dispose();
+            }
+
+             
+
         }
     }
 }

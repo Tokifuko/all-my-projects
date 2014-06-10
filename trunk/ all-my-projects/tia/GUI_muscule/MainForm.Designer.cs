@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.button1 = new System.Windows.Forms.Button();
+            this.fake_batton = new System.Windows.Forms.Button();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -38,15 +38,15 @@
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // button1
+            // fake_batton
             // 
-            this.button1.Location = new System.Drawing.Point(399, 323);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 45);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.fake_batton.Location = new System.Drawing.Point(221, 12);
+            this.fake_batton.Name = "fake_batton";
+            this.fake_batton.Size = new System.Drawing.Size(185, 23);
+            this.fake_batton.TabIndex = 0;
+            this.fake_batton.Text = "Подключить иммитатор";
+            this.fake_batton.UseVisualStyleBackColor = true;
+            this.fake_batton.Click += new System.EventHandler(this.fake_button_Click);
             // 
             // ConnectButton
             // 
@@ -111,7 +111,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ConnectButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.fake_batton);
             this.Location = new System.Drawing.Point(400, 300);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -123,7 +123,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button fake_batton;
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer1;
