@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using poc;
 
 namespace GUI_muscule
 {
-    public class MySerialPort : SerialPort
+    public interface ISerialByteSourse
     {
-        public delegate void GetNewByte(byte b);
-        public event GetNewByte NewByteReceived;
+        void AddReceiver(ISerialByteReciver receiver);
+        void DeleteReceiver(ISerialByteReciver receiver);
+    }
 
+    public class MySerialPort : SerialPort, ISerialByteSourse
+    {
         public MySerialPort()
         {
             BaudRate = 115200;
@@ -21,18 +25,30 @@ namespace GUI_muscule
             Handshake = Handshake.None;
             base.DataReceived += ComPortDataReceivedEventHandler;
         }
-        public string[] GetPortNamesList()
-        {
-            return SerialPort.GetPortNames();
-        }
         public string GetPortParam()
         {
             return "Порт:     " + this.PortName + '\n' +
                     "Скорость: " + this.BaudRate.ToString();
         }
+        /*********************************************************
+         * реализация интерфейса ISerialByteSourse                *
+          ********************************************************/
+        delegate void GetNewByte(byte b);
+        event GetNewByte NewByteReceived;
+        public void AddReceiver(ISerialByteReciver receiver)
+        {
+            NewByteReceived += receiver.NewByteReceivedEventHandler;
+        }
+        public void DeleteReceiver(ISerialByteReciver receiver)
+        {
+            NewByteReceived -= receiver.NewByteReceivedEventHandler;
+        }
+        /*----------------------------------------------------------/
+        /***********************************************************
+         * функции для работы с COM портом                            *
+         * *********************************************************/
         public string OpenPort(string sPortName = "defalut",int iBaudRate=0)
         {
-            
             object[] obj = SerialPort.GetPortNames();
             if (sPortName != "defalut") this.PortName = sPortName;
             if (!obj.Contains(this.PortName)) return "нет такого порта в системе";
@@ -41,8 +57,12 @@ namespace GUI_muscule
             Open();
             return "порт отрыт";
         }
+        public string[] GetPortNamesList()
+        {
+            return SerialPort.GetPortNames();
+        }
                // EventHandler from ComPort
-        public void ComPortDataReceivedEventHandler(Object sender, SerialDataReceivedEventArgs e)
+        private void ComPortDataReceivedEventHandler(Object sender, SerialDataReceivedEventArgs e)
         {
             byte b;
             while (base.BytesToRead!=0)

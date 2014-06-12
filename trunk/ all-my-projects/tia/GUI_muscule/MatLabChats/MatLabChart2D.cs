@@ -13,6 +13,7 @@ namespace GUI_muscule.MatLabChats
         public MatLabChart2D(IMatLabLib ChartInstance)
         {
             localMTLobj = ChartInstance;
+            localMTLobj.Init();
         }
 
         private void AddPoint(int data)

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GUI_muscule.MatLabChats;
 using poc;
 
 
@@ -49,11 +50,8 @@ namespace GUI_muscule
             // для доступа к контролу используется INVOKE
             label2.Invoke((Action)delegate
             {
+                label2.Text = i.ToString() +"    yay";
                 i++;
-                for (int count = 0; count <= 100; count++)
-                {
-                    label2.Text = i.ToString() + "  count  " + count.ToString() + "    yay";
-                }
             });
         }
 
@@ -66,13 +64,13 @@ namespace GUI_muscule
             {
                 mySerialPort.Close();
                 logTextBox.AppendText("порт закрыт" + '\n');
-                mySerialPort.NewByteReceived -= myPocManager.NewByteReceivedEventHandler;
+                mySerialPort.DeleteReceiver(myPocManager);
             }
             else
             {
                 logTextBox.AppendText(mySerialPort.OpenPort() + '\n');
                 // подключаем Менаджер Пакетов к com- порту
-                if (mySerialPort.IsOpen) mySerialPort.NewByteReceived += myPocManager.NewByteReceivedEventHandler;
+                if (mySerialPort.IsOpen) mySerialPort.AddReceiver(myPocManager);
             }
         }
 
@@ -109,15 +107,19 @@ namespace GUI_muscule
             {
                 myFakeDevForm = new FakeDevForm();
                 myFakeDevForm.Show();
-                myFakeDevForm.NewByteReceived += myPocManager.NewByteReceivedEventHandler;
+                myFakeDevForm.AddReceiver(myPocManager);
             }
             else
             {
                 myFakeDevForm.Dispose();
             }
+        }
 
-             
-
+        private void btShowChartButton_Click(object sender, EventArgs e)
+        {
+            MatLabAdapter myMatLabLib=new MatLabAdapter();
+            MatLabChart2D newChart = new MatLabChart2D(myMatLabLib);
+            newChart.Subscribe(myPocManager);
         }
     }
 }

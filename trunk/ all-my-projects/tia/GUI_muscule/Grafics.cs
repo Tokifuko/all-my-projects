@@ -48,13 +48,13 @@ namespace GUI_muscule
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int[] iMass=new int [50];
+         /*   int[] iMass=new int [50];
             for (i = 0; i < 50; i++)
             {
                 iMass[i] = i * i; 
             }
             myMTL.AddNewPoint(iMass);
-            myMTL.Repaint();
+            myMTL.Repaint();*/
         }
     }
 }

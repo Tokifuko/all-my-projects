@@ -9,7 +9,7 @@ namespace poc
     {
         public const byte POCKET_LO_PREFIX = 0x5A;
         public const byte POCKET_HI_PREFIX = 0xA5;
-        public const UInt32 POCKET_PREFIX = 0xA55A;
+        public const UInt16 POCKET_PREFIX = 0xA55A;
         public const int POCKET_LENGTH = 12;
     }
     public enum SmartDataBufState
@@ -51,7 +51,11 @@ namespace poc
             BitConverter.GetBytes(Data).CopyTo(bArray, 8);
             return bArray;
         }
-        public void FullCrcField()  {this.CRC16 = CalcCRC();}
+        public void FullCrcAndPrefixField()  
+        {
+            this.CRC16 = CalcCRC();
+            this.Pref = Constants.POCKET_PREFIX;
+        }
         public UInt16 CalcCRC() // возвращает CRC для текущего пакета
         {
             byte[] buf = new byte[Constants.POCKET_LENGTH];
@@ -127,8 +131,12 @@ namespace poc
             if (!(_observer == null)) _observers.Remove(_observer);
         }
     }
+    public interface ISerialByteReciver
+    {
+        void NewByteReceivedEventHandler(byte bDataByte);
+    }
  
-    public  class PocketManager :IObservable<DataPack_t>
+    public  class PocketManager :IObservable<DataPack_t> , ISerialByteReciver
     {
         // provider store references to observers
         List<IObserver<DataPack_t>> observers;
@@ -177,7 +185,6 @@ namespace poc
                 }
             }
         }//NewByteReceivedEventHandler
-
     }//class PocketManager
 
 }

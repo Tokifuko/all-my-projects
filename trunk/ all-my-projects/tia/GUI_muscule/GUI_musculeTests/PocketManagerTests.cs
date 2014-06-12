@@ -25,7 +25,7 @@ namespace poc.Tests
         {
             DataPack_t myDataPack = new DataPack_t(testPack);
             myDataPack.CRC16 = 0;
-            myDataPack.FullCrcField();
+            myDataPack.FullCrcAndPrefixField();
             Assert.IsTrue(myDataPack.CRC16 == 0x1718);
         }
         [Test()]
