@@ -1,6 +1,9 @@
-function Repaint
-global points;
-global  globalFigHandler 
-figure (globalFigHandler);
-%clf(globalFigHandler);
-plot(points);
+function Repaint (hFig)
+% global points;
+%global  globalFigHandler 
+%plot(points);
+
+hAxes= get(hFig,'CurrentAxes');
+points=get (hFig,'UserData');
+plot(hAxes,points);
+

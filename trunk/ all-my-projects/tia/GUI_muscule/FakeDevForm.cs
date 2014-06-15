@@ -14,6 +14,7 @@ namespace GUI_muscule
     public partial class FakeDevForm : Form ,ISerialByteSourse
     {
         DataPack_t lockalDataPack = new DataPack_t();
+        double dCounter;
         public FakeDevForm()
         {
             InitializeComponent();
@@ -50,8 +51,8 @@ namespace GUI_muscule
          *****************************************************/
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lockalDataPack.Command += 2;
-            double degrees = lockalDataPack.Command;
+            dCounter += 2;
+            double degrees = dCounter;
             double angle    = Math.PI * degrees / 180.0;
             double sinAngle = Math.Sin(angle);
             double temp = (sinAngle + 2) * 1000;

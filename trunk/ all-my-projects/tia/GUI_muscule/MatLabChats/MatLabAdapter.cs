@@ -29,26 +29,27 @@ namespace GUI_muscule.MatLabChats
         {
             iQueue.Add(i);
         }
-        public void Repaint()
-        {
-         /*   lock (threadLock)
-            {
-                mtlChartInstance.Repaint();
-            }*/
-        }
+
         private void ThreadMetod ()
         {
             int i;
             mtlChartInstance = new MTLChart();
-            mtlChartInstance.GetFigHandle();
+            MWArray hFigHandler = mtlChartInstance.GetFigHandle();
+            int[] iArray;
+            ConcurrentQueue<int> lockalQueue=new ConcurrentQueue<int>();
             while (true)
             {
                 // ждем новую точку
-                i = iQueue.Take();
-                mtlChartInstance.AddValue((MWArray)i);
+                lockalQueue.Enqueue(iQueue.Take());
+                //mtlChartInstance.AddValue(hFigHandler,(MWArray)i);
                 // забираем все имеющиеся точки
-                while (iQueue.TryTake(out i)) { mtlChartInstance.AddValue((MWArray)i); }
-                mtlChartInstance.Repaint(); // перерисовываем график
+
+                while (iQueue.TryTake(out i)) {lockalQueue.Enqueue(i); }
+                while (lockalQueue.Count > 500) { lockalQueue.TryDequeue(out i); }
+                iArray = lockalQueue.ToArray();
+                //mtlChartInstance.AddValue(hFigHandler, (MWArray)i); 
+                mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)iArray);
+                //mtlChartInstance.Repaint(hFigHandler); // перерисовываем график
             }
         }
 

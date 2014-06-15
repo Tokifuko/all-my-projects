@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3495710790" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="186621140" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>fibonachi2D</param.appname>
     <param.icon />
     <param.icons />
@@ -93,8 +93,8 @@
     </unset>
     <fileset.exports>
       <file>${PROJECT_ROOT}\AddValue.m</file>
-      <file>${PROJECT_ROOT}\Drive.m</file>
       <file>${PROJECT_ROOT}\GetFigHandle.m</file>
+      <file>${PROJECT_ROOT}\PlotArray.m</file>
       <file>${PROJECT_ROOT}\Repaint.m</file>
       <file>${PROJECT_ROOT}\test.m</file>
     </fileset.exports>
@@ -102,8 +102,8 @@
       <entity.package name="">
         <entity.class name="MTLChart">
           <file>${PROJECT_ROOT}\AddValue.m</file>
-          <file>${PROJECT_ROOT}\Drive.m</file>
           <file>${PROJECT_ROOT}\GetFigHandle.m</file>
+          <file>${PROJECT_ROOT}\PlotArray.m</file>
           <file>${PROJECT_ROOT}\Repaint.m</file>
           <file>${PROJECT_ROOT}\test.m</file>
         </entity.class>

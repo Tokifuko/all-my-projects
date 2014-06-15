@@ -37,7 +37,7 @@ namespace GUI_muscule
                 d = i * i;
                 myMTL.AddNewPoint((int)d);
             }
-            myMTL.Repaint();
+          //  myMTL.Repaint();
              
         }
 

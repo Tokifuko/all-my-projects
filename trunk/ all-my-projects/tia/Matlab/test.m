@@ -1,5 +1,6 @@
 function test
+hF=GetFigHandle();
 for s = (pi*20): -0.2: 0.0
-   AddValue(sin(s));
-   Repaint;
+   AddValue(hF,sin(s));
+   Repaint(hF);
 end 

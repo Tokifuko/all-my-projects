@@ -10,6 +10,5 @@ namespace GUI_muscule.MatLabChats
     {
         void Init();
         void AddNewPoint(int p);
-        void Repaint();
     }
 }
