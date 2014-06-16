@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace GUI_muscule.MatLabChats
 {
+    public delegate void FigClose();
     public interface IMatLabLib
     {
         void Init();
         void AddNewPoint(int p);
+        void SetCallback(FigClose pFuncCallback);
     }
 }

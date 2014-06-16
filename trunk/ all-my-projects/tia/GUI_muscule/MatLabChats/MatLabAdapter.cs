@@ -14,6 +14,7 @@ namespace GUI_muscule.MatLabChats
 {
     public class MatLabAdapter :IMatLabLib
     {
+        FigClose pFigCloseCallback;
         MTLChart mtlChartInstance;
         BlockingCollection<int> iQueue = new BlockingCollection<int>();
 
@@ -27,7 +28,15 @@ namespace GUI_muscule.MatLabChats
         }
         public void AddNewPoint(int i)
         {
-            iQueue.Add(i);
+
+            if (tMtlTread.IsAlive) iQueue.Add(i)
+            else {
+                if 
+            }
+        }
+        public void SetCallback(FigClose pFuncCallback)
+        {
+            pFigCloseCallback = pFuncCallback;
         }
 
         private void ThreadMetod ()
@@ -48,7 +57,14 @@ namespace GUI_muscule.MatLabChats
                 while (lockalQueue.Count > 500) { lockalQueue.TryDequeue(out i); }
                 iArray = lockalQueue.ToArray();
                 //mtlChartInstance.AddValue(hFigHandler, (MWArray)i); 
-                mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)iArray);
+                try
+                {
+                    mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)iArray);
+                }
+                catch 
+                {
+                    Thread.CurrentThread.Abort();
+                }
                 //mtlChartInstance.Repaint(hFigHandler); // перерисовываем график
             }
         }

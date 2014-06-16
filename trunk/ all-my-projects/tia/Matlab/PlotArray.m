@@ -1,4 +1,4 @@
-ifunction PlotArray(hFig, points)
+function PlotArray(hFig, points)
 hAxes= get(hFig,'CurrentAxes');
 plot(hAxes,points);
 
