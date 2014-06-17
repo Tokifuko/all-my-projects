@@ -28,11 +28,13 @@ namespace GUI_muscule.MatLabChats
         }
         public void AddNewPoint(int i)
         {
-
-            if (tMtlTread.IsAlive) iQueue.Add(i)
-            else {
-                if 
+            iQueue.Add(i);
+            if (!(tMtlTread.IsAlive))  // если окно закрто, то поток уничтожится.
+            {
+                if (pFigCloseCallback != null) pFigCloseCallback();
+                mtlChartInstance.Dispose();
             }
+
         }
         public void SetCallback(FigClose pFuncCallback)
         {
@@ -61,8 +63,8 @@ namespace GUI_muscule.MatLabChats
                 {
                     mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)iArray);
                 }
-                catch 
-                {
+                catch
+                {   // если было исключение, то скорее всего юзер закрыл окно с графиком
                     Thread.CurrentThread.Abort();
                 }
                 //mtlChartInstance.Repaint(hFigHandler); // перерисовываем график

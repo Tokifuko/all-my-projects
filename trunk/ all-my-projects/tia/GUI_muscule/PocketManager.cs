@@ -177,10 +177,14 @@ namespace poc
             {
                 if (pocket.GetStatus() == SmartDataBufState.READY)
                 {
-                    foreach(var observer in observers)
+                    for (int i = 0; i < observers.Count; i++)
+                    {
+                        observers[i].OnNext(pocket.DataPack);
+                    }
+                  /*foreach (var observer in observers)
                     {
                         observer.OnNext(pocket.DataPack);
-                    }
+                    }*/
                     pocket.ClearPocket();
                 }
             }

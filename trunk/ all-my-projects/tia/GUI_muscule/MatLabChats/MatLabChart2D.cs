@@ -14,11 +14,16 @@ namespace GUI_muscule.MatLabChats
         {
             localMTLobj = ChartInstance;
             localMTLobj.Init();
+            localMTLobj.SetCallback(ChartFormClose);
         }
 
         private void AddPoint(int data)
         {
             localMTLobj.AddNewPoint(data);
+        }
+        private void ChartFormClose() // когдапользователь закрыл окно с графиком
+        {
+            Unsubscribe();
         }
 
         //***************************************************************************************************
