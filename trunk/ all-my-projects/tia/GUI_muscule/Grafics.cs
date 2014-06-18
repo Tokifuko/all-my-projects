@@ -43,7 +43,7 @@ namespace GUI_muscule
 
         private void button2_Click(object sender, EventArgs e)
         {
-            myMTL.Init();
+           // myMTL.Init();
         }
 
         private void button3_Click(object sender, EventArgs e)

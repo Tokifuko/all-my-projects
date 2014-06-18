@@ -10,13 +10,13 @@ namespace GUI_muscule.MatLabChats
     public class MatLabChart2D : IObserver<DataPack_t>
     {
         IMatLabLib localMTLobj;
-        public MatLabChart2D(IMatLabLib ChartInstance)
+        public byte lockalAddr=Constants.ADDR_DEF;
+        public MatLabChart2D(IMatLabLib ChartInstance,string sName)
         {
             localMTLobj = ChartInstance;
-            localMTLobj.Init();
+            localMTLobj.Init(500, sName);
             localMTLobj.SetCallback(ChartFormClose);
         }
-
         private void AddPoint(int data)
         {
             localMTLobj.AddNewPoint(data);
@@ -43,7 +43,8 @@ namespace GUI_muscule.MatLabChats
         public virtual void OnNext(DataPack_t value)
         {
             // Метод вызывается из потока СОМ-порта
-            AddPoint((int)value.Data);
+            if (value.Addr == lockalAddr)   AddPoint((int)value.Data);
+
         }
 
 

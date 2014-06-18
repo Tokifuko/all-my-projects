@@ -10,6 +10,9 @@ using myMatlabLib;
 using MathWorks.MATLAB.NET.Utility;
 using MathWorks.MATLAB.NET.Arrays;
 
+
+
+
 namespace GUI_muscule.MatLabChats
 {
     public class MatLabAdapter :IMatLabLib
@@ -17,13 +20,16 @@ namespace GUI_muscule.MatLabChats
         FigClose pFigCloseCallback;
         MTLChart mtlChartInstance;
         BlockingCollection<int> iQueue = new BlockingCollection<int>();
-
+        int iLength;
+        string sName;
         private object threadLock = new object();
 
         Thread tMtlTread;
-        public void Init()
+        public void Init(int iLength, string sName)
         {
             tMtlTread = new Thread(ThreadMetod);
+            this.iLength = iLength;
+            this.sName = sName;
             tMtlTread.Start();
         }
         public void AddNewPoint(int i)
@@ -46,17 +52,17 @@ namespace GUI_muscule.MatLabChats
             int i;
             mtlChartInstance = new MTLChart();
             MWArray hFigHandler = mtlChartInstance.GetFigHandle();
+            mtlChartInstance.SetFigProp(hFigHandler, (MWCharArray)"Name", (MWCharArray)sName);
             int[] iArray;
             ConcurrentQueue<int> lockalQueue=new ConcurrentQueue<int>();
             while (true)
             {
                 // ждем новую точку
                 lockalQueue.Enqueue(iQueue.Take());
-                //mtlChartInstance.AddValue(hFigHandler,(MWArray)i);
                 // забираем все имеющиеся точки
-
                 while (iQueue.TryTake(out i)) {lockalQueue.Enqueue(i); }
-                while (lockalQueue.Count > 500) { lockalQueue.TryDequeue(out i); }
+                // обрезаем лишнее
+                while (lockalQueue.Count > iLength) { lockalQueue.TryDequeue(out i); }
                 iArray = lockalQueue.ToArray();
                 //mtlChartInstance.AddValue(hFigHandler, (MWArray)i); 
                 try
@@ -67,7 +73,6 @@ namespace GUI_muscule.MatLabChats
                 {   // если было исключение, то скорее всего юзер закрыл окно с графиком
                     Thread.CurrentThread.Abort();
                 }
-                //mtlChartInstance.Repaint(hFigHandler); // перерисовываем график
             }
         }
 

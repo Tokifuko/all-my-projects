@@ -1,14 +1,14 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="180838282" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="780780732" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>fibonachi2D</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Stefan</param.authnamewatermark>
     <param.email />
     <param.company />
-    <param.summary />
-    <param.description />
+    <param.summary>библиотека для построенияя графиков средствами МатЛаб</param.summary>
+    <param.description>Можно построить двумерный график.</param.description>
     <param.screenshot />
     <param.guid />
     <param.installpath.string>\fibonachi2D\</param.installpath.string>
@@ -51,11 +51,8 @@
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
       <param.email />
       <param.company />
-      <param.summary />
-      <param.description />
       <param.screenshot />
       <param.guid />
       <param.installpath.string />
@@ -96,6 +93,7 @@
       <file>${PROJECT_ROOT}\GetFigHandle.m</file>
       <file>${PROJECT_ROOT}\PlotArray.m</file>
       <file>${PROJECT_ROOT}\Repaint.m</file>
+      <file>${PROJECT_ROOT}\SetFigProp.m</file>
       <file>${PROJECT_ROOT}\test.m</file>
     </fileset.exports>
     <fileset.classes>
@@ -105,6 +103,7 @@
           <file>${PROJECT_ROOT}\GetFigHandle.m</file>
           <file>${PROJECT_ROOT}\PlotArray.m</file>
           <file>${PROJECT_ROOT}\Repaint.m</file>
+          <file>${PROJECT_ROOT}\SetFigProp.m</file>
           <file>${PROJECT_ROOT}\test.m</file>
         </entity.class>
       </entity.package>

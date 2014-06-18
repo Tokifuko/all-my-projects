@@ -11,6 +11,9 @@ namespace poc
         public const byte POCKET_HI_PREFIX = 0xA5;
         public const UInt16 POCKET_PREFIX = 0xA55A;
         public const int POCKET_LENGTH = 12;
+        public const byte ADDR_PREASURE = 2;
+        public const byte ADDR_TENZO = 4;
+        public const byte ADDR_DEF = 0;
     }
     public enum SmartDataBufState
     {
@@ -62,7 +65,7 @@ namespace poc
             buf = ConverToBytes();
             return CRC.CalcCrc16(buf, buf.Length, 4);
         }
-        public UInt16 Pref;
+        public UInt16 Pref; // перфикс 0xA55A
         public UInt16 CRC16;
         public byte Command;
         public byte Addr;

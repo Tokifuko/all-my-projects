@@ -37,6 +37,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.btShowChartButton = new System.Windows.Forms.Button();
+            this.btPreasureChart = new System.Windows.Forms.Button();
+            this.btTenzoButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -104,7 +106,7 @@
             // 
             // btShowChartButton
             // 
-            this.btShowChartButton.Location = new System.Drawing.Point(359, 77);
+            this.btShowChartButton.Location = new System.Drawing.Point(406, 72);
             this.btShowChartButton.Name = "btShowChartButton";
             this.btShowChartButton.Size = new System.Drawing.Size(104, 23);
             this.btShowChartButton.TabIndex = 8;
@@ -112,11 +114,33 @@
             this.btShowChartButton.UseVisualStyleBackColor = true;
             this.btShowChartButton.Click += new System.EventHandler(this.btShowChartButton_Click);
             // 
+            // btPreasureChart
+            // 
+            this.btPreasureChart.Location = new System.Drawing.Point(363, 159);
+            this.btPreasureChart.Name = "btPreasureChart";
+            this.btPreasureChart.Size = new System.Drawing.Size(164, 23);
+            this.btPreasureChart.TabIndex = 9;
+            this.btPreasureChart.Text = "График Давления";
+            this.btPreasureChart.UseVisualStyleBackColor = true;
+            this.btPreasureChart.Click += new System.EventHandler(this.btPreasureChart_Click);
+            // 
+            // btTenzoButton
+            // 
+            this.btTenzoButton.Location = new System.Drawing.Point(363, 210);
+            this.btTenzoButton.Name = "btTenzoButton";
+            this.btTenzoButton.Size = new System.Drawing.Size(164, 23);
+            this.btTenzoButton.TabIndex = 10;
+            this.btTenzoButton.Text = "График Нагрузки";
+            this.btTenzoButton.UseVisualStyleBackColor = true;
+            this.btTenzoButton.Click += new System.EventHandler(this.btTenzoButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(503, 380);
+            this.ClientSize = new System.Drawing.Size(574, 447);
+            this.Controls.Add(this.btTenzoButton);
+            this.Controls.Add(this.btPreasureChart);
             this.Controls.Add(this.btShowChartButton);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.comboBox1);
@@ -143,6 +167,8 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox logTextBox;
         private System.Windows.Forms.Button btShowChartButton;
+        private System.Windows.Forms.Button btPreasureChart;
+        private System.Windows.Forms.Button btTenzoButton;
     }
 }
 
