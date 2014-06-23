@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using System.IO.Ports;
 using System.Collections.Generic;
 using CRC16;
@@ -13,6 +14,7 @@ namespace poc
         public const int POCKET_LENGTH = 12;
         public const byte ADDR_PREASURE = 2;
         public const byte ADDR_TENZO = 4;
+        public const byte ADDR_LENGTH = 8;
         public const byte ADDR_DEF = 0;
     }
     public enum SmartDataBufState
@@ -26,7 +28,7 @@ namespace poc
         public  DataPack_t(UInt16 Prefix=0,UInt16 crc16=0, byte command=0, byte addr=0, UInt16 reserv=0,UInt32 data=0  )
         {
             Pref = Prefix; CRC16 = crc16; Command = command;
-            Addr = addr; Reserv = reserv; Data = data;
+            Addr = addr; Reserv = reserv; Data = data; //RxTime = new DateTime();
         }
         public  DataPack_t (byte[] byteBuf)
         {
@@ -34,6 +36,7 @@ namespace poc
             {
                 Pref = 0; CRC16 = 0; Command = 0;
                 Addr = 0; Reserv = 0; Data = 0;
+                //RxTime = new DateTime();
                 return;
             }
             Pref = BitConverter.ToUInt16(byteBuf, 0);
@@ -42,6 +45,7 @@ namespace poc
             Addr = byteBuf[5];
             Reserv = BitConverter.ToUInt16(byteBuf, 6);
             Data = BitConverter.ToUInt32(byteBuf, 8);
+            //RxTime = new DateTime();
         }
         public byte[] ConverToBytes()
         {
@@ -71,6 +75,8 @@ namespace poc
         public byte Addr;
         public UInt16 Reserv;  // нужен для выравнивания структуры по 32 бита
         public UInt32 Data;
+        //public DateTime RxTime;
+        
     }
     public class SmartDataBuf
     {
@@ -110,7 +116,11 @@ namespace poc
             if (bCounter == Constants.POCKET_LENGTH)
             {
                 DataPack = new DataPack_t(buf);
-                if (DataPack.CRC16 == DataPack.CalcCRC()) bStatus = SmartDataBufState.READY;
+                if (DataPack.CRC16 == DataPack.CalcCRC())
+                {
+                    bStatus = SmartDataBufState.READY;
+                    //DataPack.RxTime = DateTime.Now;
+                }
                 else ClearPocket();
             }
         }// AddNewByte

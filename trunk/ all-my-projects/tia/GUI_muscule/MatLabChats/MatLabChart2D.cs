@@ -19,7 +19,7 @@ namespace GUI_muscule.MatLabChats
         }
         private void AddPoint(int data)
         {
-            localMTLobj.AddNewPoint(data);
+            localMTLobj.AddPoint(data);
         }
         private void ChartFormClose() // когдапользователь закрыл окно с графиком
         {

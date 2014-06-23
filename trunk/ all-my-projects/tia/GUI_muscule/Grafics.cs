@@ -35,7 +35,7 @@ namespace GUI_muscule
             for (i = 0; i < 50; i++)
             {
                 d = i * i;
-                myMTL.AddNewPoint((int)d);
+                myMTL.AddPoint((int)d);
             }
           //  myMTL.Repaint();
              
@@ -53,7 +53,7 @@ namespace GUI_muscule
             {
                 iMass[i] = i * i; 
             }
-            myMTL.AddNewPoint(iMass);
+            myMTL.AddPoint(iMass);
             myMTL.Repaint();*/
         }
     }

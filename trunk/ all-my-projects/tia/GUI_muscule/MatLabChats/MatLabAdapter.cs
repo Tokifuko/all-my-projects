@@ -32,7 +32,7 @@ namespace GUI_muscule.MatLabChats
             this.sName = sName;
             tMtlTread.Start();
         }
-        public void AddNewPoint(int i)
+        public void AddPoint(int i)
         {
             iQueue.Add(i);
             if (!(tMtlTread.IsAlive))  // если окно закрто, то поток уничтожится.

@@ -31,7 +31,7 @@ namespace poc.Tests
         [Test()]
         public void DataPack_ConvertToBytes_correct()
         {
-            DataPack_t dp;
+            DataPack_t dp=new DataPack_t();
             dp.Pref = 0xA55A;
             dp.CRC16 = 0x1718;
             dp.Command = 0xff;
