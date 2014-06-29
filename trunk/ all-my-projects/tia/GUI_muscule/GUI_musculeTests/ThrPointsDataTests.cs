@@ -10,8 +10,8 @@ namespace GUI_muscule.Tests
     [TestFixture()]
     public class ThrPointsDataTests
     {
-        [Test()]
-        public void ThrPoints_Constract_AllPointsClear()
+      /*   [Test()]
+       public void ThrPoints_Constract_AllPointsClear()
         {
             ThrPointsData testObj = new ThrPointsData();
             int len = testObj.thrTimedData.Length;
@@ -20,7 +20,7 @@ namespace GUI_muscule.Tests
                 Assert.False(testObj.thrTimedData[i].bActual);
             }
 
-        }
+        }*/
 
         [Test()]
         public void SaveLastTest()

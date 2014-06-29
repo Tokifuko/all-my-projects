@@ -118,14 +118,14 @@ namespace GUI_muscule
         private void btShowChartButton_Click(object sender, EventArgs e)
         {
             MatLabAdapter myMatLabLib=new MatLabAdapter();
-            MatLabChart2D newChart = new MatLabChart2D(myMatLabLib,"Тест");
+            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib,"Тест");
             newChart.Subscribe(myPocManager);
         }
 
         private void btPreasureChart_Click(object sender, EventArgs e)
         {
             MatLabAdapter myMatLabLib = new MatLabAdapter();
-            MatLabChart2D newChart = new MatLabChart2D(myMatLabLib,"График давления");
+            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib,"График давления");
             newChart.lockalAddr = Constants.ADDR_PREASURE;
             newChart.Subscribe(myPocManager);
         }
@@ -133,7 +133,7 @@ namespace GUI_muscule
         private void btTenzoButton_Click(object sender, EventArgs e)
         {
             MatLabAdapter myMatLabLib = new MatLabAdapter();
-            MatLabChart2D newChart = new MatLabChart2D(myMatLabLib, "График наргузки");
+            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib, "График наргузки");
             newChart.lockalAddr = Constants.ADDR_TENZO;
             newChart.Subscribe(myPocManager);
         }

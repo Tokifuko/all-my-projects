@@ -32,6 +32,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.btTest3D = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,11 +62,22 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "label1";
             // 
+            // btTest3D
+            // 
+            this.btTest3D.Location = new System.Drawing.Point(304, 76);
+            this.btTest3D.Name = "btTest3D";
+            this.btTest3D.Size = new System.Drawing.Size(75, 23);
+            this.btTest3D.TabIndex = 3;
+            this.btTest3D.Text = "Тест 3D";
+            this.btTest3D.UseVisualStyleBackColor = true;
+            this.btTest3D.Click += new System.EventHandler(this.btTest3D_Click);
+            // 
             // FakeDevForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 255);
+            this.ClientSize = new System.Drawing.Size(400, 255);
+            this.Controls.Add(this.btTest3D);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);
             this.Name = "FakeDevForm";
@@ -81,5 +93,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btTest3D;
     }
 }

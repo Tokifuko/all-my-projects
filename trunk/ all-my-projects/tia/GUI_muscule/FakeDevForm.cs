@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using poc;
+using GUI_muscule.MatLabChats;
 
 namespace GUI_muscule
 {
@@ -31,6 +32,38 @@ namespace GUI_muscule
             {
                 if (NewByteReceived != null) NewByteReceived(b);
             }
+        }
+        /***********************************************************
+         * временные функции для тестирования 3Д графика
+         * *******************************************************/
+        MyCart<stPoint3D> TreadingChart;
+        MatLabChart3D ploter;
+        bool bChart3DInit=false;
+        void Create_chart3D()
+        {
+            TreadingChart=new MyCart<stPoint3D> ();
+            TreadingChart.sName = "test 3D chart";
+            ploter=new MatLabChart3D();
+            TreadingChart.SetChartPloter(ploter);
+            TreadingChart.StartTread();
+            //TreadingChart.bActivate = true;
+            bChart3DInit = true;
+        }
+        void Chart3D_IntegralTest()
+        {
+            if (bChart3DInit)   TreadingChart.AddPoint(GetRandomPoint()); 
+        }
+        stPoint3D GetRandomPoint()
+        {
+            Random rnd1 = new Random();
+            double dx = rnd1.Next(500);
+            double dy = rnd1.Next(900);
+            double dz = 100*Math.Sin(dx / 100) + 100*Math.Cos(dy / 100);
+            stPoint3D point;
+            point.uiX = (uint)dx;
+            point.uiY = (uint)dy;
+            point.uiZ = (uint)dz;
+            return point;
         }
         /*********************************************************
         * реализация интерфейса ISerialByteSourse                *
@@ -61,12 +94,24 @@ namespace GUI_muscule
             lockalDataPack.Addr = Constants.ADDR_PREASURE;
             lockalDataPack.FullCrcAndPrefixField();
             SendDataPack(lockalDataPack);
+            // для тестирования 3д графика
+            Chart3D_IntegralTest();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label1.Text = trackBar1.Value.ToString();
             timer1.Interval = trackBar1.Value;
+        }
+
+        private void btTest3D_Click(object sender, EventArgs e)
+        {
+            Create_chart3D();
+        }
+
+        private void tmTimer3D_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -7,11 +7,11 @@ using poc;
 
 namespace GUI_muscule.MatLabChats
 {
-    public class MatLabChart2D : IObserver<DataPack_t>
+    public class MatLabChart2D_old : IObserver<DataPack_t>
     {
         IMatLabLib localMTLobj;
         public byte lockalAddr=Constants.ADDR_DEF;
-        public MatLabChart2D(IMatLabLib ChartInstance,string sName)
+        public MatLabChart2D_old(IMatLabLib ChartInstance,string sName)
         {
             localMTLobj = ChartInstance;
             localMTLobj.Init(500, sName);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +28,20 @@ namespace GUI_muscule.Tests
         }
 
         [Test()]
-        public void SendDataPack_CallSend_expectCallDelegate()
+        public void temp_test()
         {
+            int i;
            // var func = Substitute.For<Func<void>(byte>();
-            Assert.Fail();
+            ConcurrentQueue<int> qi = new ConcurrentQueue<int>();
+            ConcurrentQueue<int> qtemp;
+            qi.Enqueue(2);
+            qi.Enqueue(3);
+            qi.Enqueue(4);
+            qtemp = qi;
+            Assert.AreEqual(qtemp.Count, 3);
+            qtemp.TryDequeue(out i);
+            Assert.AreEqual(qi.Count, 2);
+           
         }
     }
 }

@@ -21,7 +21,7 @@ namespace GUI_muscule.MatLabChats.Tests
             DataPack_t myDataPack = new DataPack_t();
             myDataPack.Data = 1234;
             IMatLabLib FakeMTLlib = Substitute.For<IMatLabLib>();
-            MatLabChart2D testChart = new MatLabChart2D(FakeMTLlib,"fake");
+            MatLabChart2D_old testChart = new MatLabChart2D_old(FakeMTLlib,"fake");
             testChart.OnNext(myDataPack);
             FakeMTLlib.Received().AddPoint(1234);
         }
