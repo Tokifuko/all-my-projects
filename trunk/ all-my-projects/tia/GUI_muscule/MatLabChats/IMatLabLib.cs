@@ -26,7 +26,7 @@ namespace GUI_muscule.MatLabChats
 
 
 
-
+    /*
     public interface IMatLabLib
     {
         void Init(int iLength, string sName);
@@ -37,4 +37,5 @@ namespace GUI_muscule.MatLabChats
     {
         void AddSurfPoint(int iX, int iY, int iZ);
     }
+     * */
 }

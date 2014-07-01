@@ -19,26 +19,15 @@ namespace GUI_muscule
 {
     public partial class Grafics : Form
     {
-        MatLabAdapter myMTL ;
-        int i = 0;
+  
         public Grafics()
         {
-            InitializeComponent();
-            myMTL = new MatLabAdapter();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            
-            double d;
-            for (i = 0; i < 50; i++)
-            {
-                d = i * i;
-                myMTL.AddPoint((int)d);
-            }
-          //  myMTL.Repaint();
-             
+   
         }
 
         private void button2_Click(object sender, EventArgs e)

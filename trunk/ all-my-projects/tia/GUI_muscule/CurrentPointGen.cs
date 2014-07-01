@@ -15,40 +15,44 @@ namespace GUI_muscule
      * --------------------------------------------------------------------*/
     public class CurrentPointGen : IObserver<DataPack_t>
     {
-        IMatLabLib3D SurfChart3D;
+        IChart<stPoint3D> SurfChart3D;
         const byte typeX = Constants.ADDR_PREASURE;
         const byte typeY = Constants.ADDR_TENZO;
         const byte typeZ = Constants.ADDR_LENGTH;
 
-        UInt32 uiX, uiY, uiZ;
+        stPoint3D tLastPoint;
         bool bX, bY, bZ;
-        public CurrentPointGen(IMatLabLib3D MTLChart3D)
+        public CurrentPointGen(IChart<stPoint3D> MTLChart3D)
         {
             SurfChart3D = MTLChart3D;
+            SurfChart3D.pCloseCallback = ChartFormClose;
         }
         private void PointProcces(byte bAddr, UInt32 uiData)
         {
             switch (bAddr)
             {
                 case typeX:
-                    uiX = uiData;
+                    tLastPoint.uiX = uiData;
                     bX = true;
                     break;
                 case typeY:
-                    uiY = uiData;
+                    tLastPoint.uiY = uiData;
                     bY = true;
                     break;
                 case typeZ:
-                    uiZ = uiData;
+                    tLastPoint.uiZ = uiData;
                     bZ = true;
                     break;
             }
             if (bX & bY & bZ)
             {
-                SurfChart3D.AddSurfPoint((int)uiX, (int)uiY, (int)uiZ);
+                SurfChart3D.AddPoint(tLastPoint);
                 bX = false; bY = false; bZ = false;
             }
-
+        }
+        private void ChartFormClose() // когдапользователь закрыл окно с графиком
+        {
+            Unsubscribe();
         }
 
         //***************************************************************************************************

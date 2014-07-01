@@ -7,15 +7,16 @@ using poc;
 
 namespace GUI_muscule.MatLabChats
 {
-    public class MatLabChart2D_old : IObserver<DataPack_t>
+    public class ChartsPoint2dSource : IObserver<DataPack_t>
     {
-        IMatLabLib localMTLobj;
+        IChart<int> localMTLobj;
         public byte lockalAddr=Constants.ADDR_DEF;
-        public MatLabChart2D_old(IMatLabLib ChartInstance,string sName)
+        public ChartsPoint2dSource(IChart<int> ChartInstance, string sName)
         {
             localMTLobj = ChartInstance;
-            localMTLobj.Init(500, sName);
-            localMTLobj.SetCallback(ChartFormClose);
+            localMTLobj.iLength = 500;
+            localMTLobj.sName = sName;
+            localMTLobj.pCloseCallback=ChartFormClose;
         }
         private void AddPoint(int data)
         {

@@ -36,9 +36,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
-            this.btShowChartButton = new System.Windows.Forms.Button();
+            this.btLenChart = new System.Windows.Forms.Button();
             this.btPreasureChart = new System.Windows.Forms.Button();
             this.btTenzoButton = new System.Windows.Forms.Button();
+            this.btSurfButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -78,7 +79,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(322, 119);
+            this.label2.Location = new System.Drawing.Point(376, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 17);
             this.label2.TabIndex = 5;
@@ -104,15 +105,15 @@
             this.logTextBox.Size = new System.Drawing.Size(242, 115);
             this.logTextBox.TabIndex = 7;
             // 
-            // btShowChartButton
+            // btLenChart
             // 
-            this.btShowChartButton.Location = new System.Drawing.Point(406, 72);
-            this.btShowChartButton.Name = "btShowChartButton";
-            this.btShowChartButton.Size = new System.Drawing.Size(104, 23);
-            this.btShowChartButton.TabIndex = 8;
-            this.btShowChartButton.Text = "Show Chart";
-            this.btShowChartButton.UseVisualStyleBackColor = true;
-            this.btShowChartButton.Click += new System.EventHandler(this.btShowChartButton_Click);
+            this.btLenChart.Location = new System.Drawing.Point(363, 116);
+            this.btLenChart.Name = "btLenChart";
+            this.btLenChart.Size = new System.Drawing.Size(164, 23);
+            this.btLenChart.TabIndex = 8;
+            this.btLenChart.Text = "График Длинны";
+            this.btLenChart.UseVisualStyleBackColor = true;
+            this.btLenChart.Click += new System.EventHandler(this.btShowChartButton_Click);
             // 
             // btPreasureChart
             // 
@@ -134,14 +135,25 @@
             this.btTenzoButton.UseVisualStyleBackColor = true;
             this.btTenzoButton.Click += new System.EventHandler(this.btTenzoButton_Click);
             // 
+            // btSurfButton
+            // 
+            this.btSurfButton.Location = new System.Drawing.Point(331, 290);
+            this.btSurfButton.Name = "btSurfButton";
+            this.btSurfButton.Size = new System.Drawing.Size(196, 23);
+            this.btSurfButton.TabIndex = 11;
+            this.btSurfButton.Text = "Поверхность по точкам";
+            this.btSurfButton.UseVisualStyleBackColor = true;
+            this.btSurfButton.Click += new System.EventHandler(this.btSurfButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 447);
+            this.Controls.Add(this.btSurfButton);
             this.Controls.Add(this.btTenzoButton);
             this.Controls.Add(this.btPreasureChart);
-            this.Controls.Add(this.btShowChartButton);
+            this.Controls.Add(this.btLenChart);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label2);
@@ -166,9 +178,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox logTextBox;
-        private System.Windows.Forms.Button btShowChartButton;
+        private System.Windows.Forms.Button btLenChart;
         private System.Windows.Forms.Button btPreasureChart;
         private System.Windows.Forms.Button btTenzoButton;
+        private System.Windows.Forms.Button btSurfButton;
     }
 }
 

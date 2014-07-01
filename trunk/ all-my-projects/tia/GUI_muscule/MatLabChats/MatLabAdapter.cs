@@ -28,9 +28,7 @@ namespace GUI_muscule.MatLabChats
      * 
      *  ***********************************************************************/
 
-
-    //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!! я могу протестировать это !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public class MyCart<T> : IChart<T>
+    public class TreadedChart<T> : IChart<T>
     {
         BlockingCollection<T> tQueue = new BlockingCollection<T>();
         Thread tTread;
@@ -42,7 +40,7 @@ namespace GUI_muscule.MatLabChats
         public int iLength { set; get; }
         public string sName { set; get; }
         // bActivate управляет потоком, запускает его или останавливает 
-        public bool bActivate  { set; get; }
+        public bool bActivate { set; get; }
         /*{ 
             set
             {
@@ -69,7 +67,7 @@ namespace GUI_muscule.MatLabChats
             {
                 if (pCloseCallback != null) pCloseCallback();
                 ChartPloter.DisposeChart();
-                bActivate=false;
+                bActivate = false;
             }
         }
         public void SetChartPloter(IChartPloter<T> pChartPloter) { ChartPloter = pChartPloter; }
@@ -84,7 +82,7 @@ namespace GUI_muscule.MatLabChats
             T i;
             lockalQueue = new Queue<T>();
             ChartPloter.InitChart();
-            ChartPloter.SetName(sName); 
+            ChartPloter.SetName(sName);
             while (true)
             {
                 lockalQueue.Enqueue(tQueue.Take());// ждем новую точку
@@ -110,10 +108,10 @@ namespace GUI_muscule.MatLabChats
     } //MyCart
 
     /*******************************************************************************
-     * MatLabChar - содержит реализацию взаимодействия с библиотекой
+     * BaseMatLabChart - содержит реализацию взаимодействия с библиотекой
      * общую для всех матлабовскх графиков.
      * ****************************************************************************/
-    public class MatLabChart
+    public class BaseMatLabChart
     {
         protected MTLChart mtlChartInstance;
         protected MWArray hFigHandler;
@@ -121,7 +119,6 @@ namespace GUI_muscule.MatLabChats
         {
             mtlChartInstance = new MTLChart();
             hFigHandler = mtlChartInstance.GetFigHandle();
-            mtlChartInstance.test();
         }
         virtual public void SetName(string sName)
         {
@@ -130,19 +127,19 @@ namespace GUI_muscule.MatLabChats
         virtual public void DisposeChart() { mtlChartInstance.Dispose(); }
         virtual public void Process() { }
     }
-    //public class MatLabChart
+    //public class BaseMatLabChart
     public struct stPoint3D
     {
         public UInt32 uiX;
         public UInt32 uiY;
         public UInt32 uiZ;
     }
-    /********************************************************************************
+    /*****************************  3D  ********************************************
      * MatLabChart3D - конкретная реализация процедур Iniit, Dispose и
-     * Process - которая выводит последовательность Queue на график
+     * Process - которая выводит последовательность Queue на график  3D
      * все методы вызываются из отдельного потока, создавшего матлабовский обьект.
      * ****************************************************************************/
-    public class MatLabChart3D : MatLabChart, IChartPloter<stPoint3D>
+    public class MatLabChart3D : BaseMatLabChart, IChartPloter<stPoint3D>
     {
         public void Process(Queue<stPoint3D> tDataQueue)
         {
@@ -159,74 +156,25 @@ namespace GUI_muscule.MatLabChats
                 qY.Enqueue((int)p.uiY);
                 qZ.Enqueue((int)p.uiZ);
             }
-            XArray=qX.ToArray();
-            YArray=qY.ToArray();
-            ZArray=qZ.ToArray();
+            XArray = qX.ToArray();
+            YArray = qY.ToArray();
+            ZArray = qZ.ToArray();
             mtlChartInstance.PlotArray3D(hFigHandler, (MWNumericArray)XArray, (MWNumericArray)YArray, (MWNumericArray)ZArray);
         }
     }
-
-
-    public class MatLabAdapter :IMatLabLib
+    /********************************   2D   *************************************
+    * MatLabChart2D - конкретная реализация процедур Iniit, Dispose и
+    * Process - которая выводит последовательность Queue на график  2D
+    * все методы вызываются из отдельного потока, создавшего матлабовский обьект.
+    * ****************************************************************************/
+    public class MatLabChart2D : BaseMatLabChart, IChartPloter<int>
     {
-        FigClose pFigCloseCallback;
-        MTLChart mtlChartInstance;
-        BlockingCollection<int> iQueue = new BlockingCollection<int>();
-        int iLength;
-        string sName;
-        private object threadLock = new object();
-
-        Thread tMtlTread;
-        public void Init(int iLength, string sName)
+        public void Process(Queue<int> tDataQueue)
         {
-            tMtlTread = new Thread(ThreadMetod);
-            this.iLength = iLength;
-            this.sName = sName;
-            tMtlTread.Start();
+            base.Process();
+            int[] ZArray = tDataQueue.ToArray();
+            mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)ZArray);
         }
-        public void AddPoint(int i)
-        {
-            iQueue.Add(i);
-            if (!(tMtlTread.IsAlive))  // если окно закрто, то поток уничтожится.
-            {
-                if (pFigCloseCallback != null) pFigCloseCallback();
-                mtlChartInstance.Dispose();
-            }
-
-        }
-        public void SetCallback(FigClose pFuncCallback)
-        {
-            pFigCloseCallback = pFuncCallback;
-        }
-
-        private void ThreadMetod ()
-        {
-            int i;
-            mtlChartInstance = new MTLChart();
-            MWArray hFigHandler = mtlChartInstance.GetFigHandle();
-            mtlChartInstance.SetFigProp(hFigHandler, (MWCharArray)"Name", (MWCharArray)sName);
-            int[] iArray;
-            ConcurrentQueue<int> lockalQueue=new ConcurrentQueue<int>();
-            while (true)
-            {
-                // ждем новую точку
-                lockalQueue.Enqueue(iQueue.Take());
-                // забираем все имеющиеся точки
-                while (iQueue.TryTake(out i)) {lockalQueue.Enqueue(i); }
-                // обрезаем лишнее
-                while (lockalQueue.Count > iLength) { lockalQueue.TryDequeue(out i); }
-                iArray = lockalQueue.ToArray();
-                //mtlChartInstance.AddValue(hFigHandler, (MWArray)i); 
-                try
-                {
-                    mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)iArray);
-                }
-                catch
-                {   // если было исключение, то скорее всего юзер закрыл окно с графиком
-                    Thread.CurrentThread.Abort();
-                }
-            }
-        }
-
     }
+    /* ****************************************************************************/
 }

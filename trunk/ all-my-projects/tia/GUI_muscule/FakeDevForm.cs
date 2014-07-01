@@ -15,15 +15,29 @@ namespace GUI_muscule
     public partial class FakeDevForm : Form ,ISerialByteSourse
     {
         DataPack_t lockalDataPack = new DataPack_t();
-        double dCounter1;
-        double dCounter2;
+        double dwPresCounter;
+        double dwTenzoCounter;
+        double dwLenCounter;   //!!!!!!!!!!потому что длинна вычисляется
         public FakeDevForm()
         {
             InitializeComponent();
             lockalDataPack.Command = 0;
-            trackBar1.Value = trackBar1.Maximum;
-            timer1.Interval = trackBar1.Value;
-            label1.Text = trackBar1.Value.ToString();
+
+            trackBarPres.Value = trackBarPres.Maximum;
+            timerPres.Interval = trackBarPres.Value;
+            lPres.Text = trackBarPres.Value.ToString();
+
+            trackBarTenzo.Value = trackBarTenzo.Maximum;
+            timerTenzo.Interval = trackBarTenzo.Value;
+            lTenzo.Text = trackBarTenzo.Value.ToString();
+
+            trackBarLen.Value = trackBarLen.Maximum;
+            timerLen.Interval = trackBarLen.Value;
+            lLen.Text = trackBarLen.Value.ToString();
+
+            trackBarTest3D.Value = trackBarTest3D.Maximum;
+            timerTest3D.Interval = trackBarTest3D.Value;
+            lTest3D.Text = trackBarTest3D.Value.ToString();
         }
         public void SendDataPack(DataPack_t p)
         {
@@ -36,12 +50,12 @@ namespace GUI_muscule
         /***********************************************************
          * временные функции для тестирования 3Д графика
          * *******************************************************/
-        MyCart<stPoint3D> TreadingChart;
+        TreadedChart<stPoint3D> TreadingChart;
         MatLabChart3D ploter;
         bool bChart3DInit=false;
         void Create_chart3D()
         {
-            TreadingChart=new MyCart<stPoint3D> ();
+            TreadingChart=new TreadedChart<stPoint3D> ();
             TreadingChart.sName = "test 3D chart";
             ploter=new MatLabChart3D();
             TreadingChart.SetChartPloter(ploter);
@@ -83,35 +97,78 @@ namespace GUI_muscule
         /***********************************************************
          *    обработчики контролов                                 *
          *****************************************************/
-        private void timer1_Tick(object sender, EventArgs e)
+        private double GetSinData(double dwCounter)
         {
-            dCounter1 += 2;
-            double degrees = dCounter1;
-            double angle    = Math.PI * degrees / 180.0;
+            double degrees = dwCounter;
+            double angle = Math.PI * degrees / 180.0;
             double sinAngle = Math.Sin(angle);
-            double temp = (sinAngle + 2) * 1000;
-            lockalDataPack.Data = (uint)temp;
-            lockalDataPack.Addr = Constants.ADDR_PREASURE;
-            lockalDataPack.FullCrcAndPrefixField();
-            SendDataPack(lockalDataPack);
-            // для тестирования 3д графика
-            Chart3D_IntegralTest();
+            return (sinAngle + 2) * 1000;
+        }
+        private void trackBarPres_Scroll(object sender, EventArgs e)
+        {
+            lPres.Text = trackBarPres.Value.ToString();
+            timerPres.Interval = trackBarPres.Value;
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        private void trackBarTenzo_Scroll(object sender, EventArgs e)
         {
-            label1.Text = trackBar1.Value.ToString();
-            timer1.Interval = trackBar1.Value;
+            lTenzo.Text = trackBarTenzo.Value.ToString();
+            timerTenzo.Interval = trackBarTenzo.Value;
+        }
+
+        private void trackBarLen_Scroll(object sender, EventArgs e)
+        {
+            lLen.Text = trackBarLen.Value.ToString();
+            timerLen.Interval = trackBarLen.Value;
+        }
+
+        private void trackBarTest3D_Scroll(object sender, EventArgs e)
+        {
+            lTest3D.Text = trackBarTest3D.Value.ToString();
+            timerTest3D.Interval = trackBarTest3D.Value;
         }
 
         private void btTest3D_Click(object sender, EventArgs e)
         {
             Create_chart3D();
         }
-
-        private void tmTimer3D_Tick(object sender, EventArgs e)
+        private void timerPres_Tick(object sender, EventArgs e)
         {
-
+            dwPresCounter += 2;
+            lockalDataPack.Data = (uint)GetSinData(dwPresCounter);
+            lockalDataPack.Addr = Constants.ADDR_PREASURE;
+            lockalDataPack.FullCrcAndPrefixField();
+            SendDataPack(lockalDataPack);
         }
+        private void timerTenzo_Tick(object sender, EventArgs e)
+        {
+            dwTenzoCounter += 2;
+            lockalDataPack.Data = (uint)GetSinData(dwTenzoCounter);
+            lockalDataPack.Addr = Constants.ADDR_TENZO;
+            lockalDataPack.FullCrcAndPrefixField();
+            SendDataPack(lockalDataPack);
+        }
+
+        private void timerLen_Tick(object sender, EventArgs e)
+        {
+            //dwLenCounter += 2;
+           // lockalDataPack.Data = (uint)GetSinData(dwLenCounter);
+            double dwLen, dwTenzo, dwPres;
+            dwTenzo = GetSinData(dwTenzoCounter);
+            dwPres = GetSinData(dwPresCounter);
+            dwLen = Math.Sin(dwTenzo / 240) + Math.Cos(dwPres / 200);
+            lockalDataPack.Data = (uint)((dwLen+2)*1000);
+            lockalDataPack.Addr = Constants.ADDR_LENGTH;
+            lockalDataPack.FullCrcAndPrefixField();
+            SendDataPack(lockalDataPack);
+        }
+
+        private void timerTest3D_Tick(object sender, EventArgs e)
+        {
+            // для тестирования 3д графика
+            Chart3D_IntegralTest();
+        }
+
+
     }
 }

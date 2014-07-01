@@ -114,28 +114,48 @@ namespace GUI_muscule
                 myFakeDevForm.Dispose();
             }
         }
-
         private void btShowChartButton_Click(object sender, EventArgs e)
         {
-            MatLabAdapter myMatLabLib=new MatLabAdapter();
-            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib,"Тест");
+            MatLabChart2D plotter = new MatLabChart2D();
+            TreadedChart<int> myChart2D = new TreadedChart<int>();
+            myChart2D.SetChartPloter(plotter);
+            myChart2D.StartTread();
+            ChartsPoint2dSource newChart = new ChartsPoint2dSource(myChart2D, "Длинна");
             newChart.Subscribe(myPocManager);
+            newChart.lockalAddr = Constants.ADDR_LENGTH;
         }
 
         private void btPreasureChart_Click(object sender, EventArgs e)
         {
-            MatLabAdapter myMatLabLib = new MatLabAdapter();
-            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib,"График давления");
-            newChart.lockalAddr = Constants.ADDR_PREASURE;
+            MatLabChart2D plotter = new MatLabChart2D();
+            TreadedChart<int> myChart2D = new TreadedChart<int>();
+            myChart2D.SetChartPloter(plotter);
+            myChart2D.StartTread();
+            ChartsPoint2dSource newChart = new ChartsPoint2dSource(myChart2D, "График давления");
             newChart.Subscribe(myPocManager);
+            newChart.lockalAddr = Constants.ADDR_PREASURE;
         }
 
         private void btTenzoButton_Click(object sender, EventArgs e)
         {
-            MatLabAdapter myMatLabLib = new MatLabAdapter();
-            MatLabChart2D_old newChart = new MatLabChart2D_old(myMatLabLib, "График наргузки");
-            newChart.lockalAddr = Constants.ADDR_TENZO;
+            MatLabChart2D plotter = new MatLabChart2D();
+            TreadedChart<int> myChart2D = new TreadedChart<int>();
+            myChart2D.SetChartPloter(plotter);
+            myChart2D.StartTread();
+            ChartsPoint2dSource newChart = new ChartsPoint2dSource(myChart2D, "График наргузки");
             newChart.Subscribe(myPocManager);
+            newChart.lockalAddr = Constants.ADDR_TENZO;
         }
+
+        private void btSurfButton_Click(object sender, EventArgs e)
+        {
+            MatLabChart3D plotter = new MatLabChart3D();
+            TreadedChart<stPoint3D> myChart3D = new TreadedChart<stPoint3D>();
+            myChart3D.SetChartPloter(plotter);
+            myChart3D.StartTread();
+            CurrentPointGen point3Dgenerator = new CurrentPointGen(myChart3D);
+            myChart3D.sName = "График наргузки";
+            point3Dgenerator.Subscribe(myPocManager);
+         }
     }
 }
