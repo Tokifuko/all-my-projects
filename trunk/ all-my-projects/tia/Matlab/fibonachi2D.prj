@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="408539404" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="1401849708" file="C:\all-my-projects\tia\Matlab\fibonachi2D.prj" location="C:\all-my-projects\tia\Matlab" name="fibonachi2D" preferred-package-location="C:\all-my-projects\tia\Matlab\fibonachi2D\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>fibonachi2D</param.appname>
     <param.icon />
     <param.icons />
@@ -110,7 +110,10 @@
         </entity.class>
       </entity.package>
     </fileset.classes>
-    <fileset.resources />
+    <fileset.resources>
+      <file>${PROJECT_ROOT}\PolyfitnTools\polyfitn.m</file>
+      <file>${PROJECT_ROOT}\PolyfitnTools\polyvaln.m</file>
+    </fileset.resources>
     <fileset.package />
     <build-deliverables>
       <file location="${PROJECT_ROOT}\fibonachi2D\for_testing" name="myMatlabLib_overview.html" optional="false">C:\all-my-projects\tia\Matlab\fibonachi2D\for_testing\myMatlabLib_overview.html</file>
