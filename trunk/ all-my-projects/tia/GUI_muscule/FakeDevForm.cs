@@ -99,10 +99,12 @@ namespace GUI_muscule
          *****************************************************/
         private double GetSinData(double dwCounter)
         {
+            Random rnd = new Random();
+            double delta = rnd.Next(200);
             double degrees = dwCounter;
             double angle = Math.PI * degrees / 180.0;
             double sinAngle = Math.Sin(angle);
-            return (sinAngle + 2) * 1000;
+            return ((sinAngle + 2) * 1000)+delta;
         }
         private void trackBarPres_Scroll(object sender, EventArgs e)
         {
@@ -153,11 +155,13 @@ namespace GUI_muscule
         {
             //dwLenCounter += 2;
            // lockalDataPack.Data = (uint)GetSinData(dwLenCounter);
+            Random rnd = new Random();
+            double delta = rnd.Next(250);
             double dwLen, dwTenzo, dwPres;
             dwTenzo = GetSinData(dwTenzoCounter);
             dwPres = GetSinData(dwPresCounter);
             dwLen = Math.Sin(dwTenzo / 240) + Math.Cos(dwPres / 200);
-            lockalDataPack.Data = (uint)((dwLen+2)*1000);
+            lockalDataPack.Data = (uint)(((dwLen + 2) * 1000) + delta);
             lockalDataPack.Addr = Constants.ADDR_LENGTH;
             lockalDataPack.FullCrcAndPrefixField();
             SendDataPack(lockalDataPack);
