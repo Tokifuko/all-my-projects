@@ -53,7 +53,7 @@ void calipers_t::Task(void)
 	if (bGetDataFlag)
 	{
 		bGetDataFlag=false;
-		if(Callback != 0) Callback(0);
+		if(Callback != 0) Callback(iTemp);
 	}
 
 }

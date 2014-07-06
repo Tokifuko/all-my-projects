@@ -20,6 +20,19 @@
 
 #define CRC16_INIT		0x00
 
+
+/*«начение пол€ Addr:
+	2 Ц в Data передаетс€ давление
+	4 Ц в Data передаетс€ усилие
+	8 Ц в Data передаетс€ длинна
+	16 Ц в Data передаетс€ температура
+ */
+#define DATA_PACK_ADDR_TEST			0x00
+#define DATA_PACK_ADDR_PRES			0x02
+#define DATA_PACK_ADDR_TENZO		0x04
+#define DATA_PACK_ADDR_LENGTH		0x08
+#define DATA_PACK_ADDR_TEMP			0x0F
+
 struct DataPack_t {
 	uint16_t Pref;
     uint16_t CRC16;
