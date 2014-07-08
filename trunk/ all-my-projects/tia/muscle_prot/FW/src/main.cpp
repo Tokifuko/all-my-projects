@@ -78,11 +78,11 @@ int main(void)
 	Delay.Reset(&iUserBattonTimer);
     while(1)
     {
-     ad7799.Task();
-   	ms5803.Task();
+    	ad7799.Task();
+    	ms5803.Task();
     	//Delay.ms(500);
-  	  calipers.Task();
-  	uplink.Task();
+     	 calipers.Task();
+     	 uplink.Task();
     	//i2cMgr.Task();
 // --------------- user button start callibration process --------------
     	if (UserButtonPressed())
@@ -91,7 +91,7 @@ int main(void)
     		{
     			iUserBattonFlag=1;
     			Delay.Reset(&iUserBattonTimer);
-    			ad7799.StartZeroCalibration();
+    		//	ad7799.StartZeroCalibration();
     			//i2cMgr.AddCmd(comReset);  // Reset command
 				tTestData.Addr=0x11;
 				tTestData.Command=0xFF;
@@ -107,7 +107,7 @@ int main(void)
     	else if (Delay.Elapsed(&iUserBattonTimer,USER_BATTON_TIMEOUT))
 				{
 					iUserBattonFlag=0;
-					ad7799.PswPinOff();
+					//ad7799.PswPinOff();
 				}
  //-------------------------------------------------------------------------
  //------------ debug led and e.t.c. ---------------------------------------
@@ -119,9 +119,9 @@ int main(void)
     				flag=1;
 
     				//GPIO_ResetBits(GPIOB,GPIO_Pin_12);
-    				ms5803.SendReset();
+    				//ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
-    				ad7799.PswPinOn();
+    				//ad7799.PswPinOn();
 
 
     			}
@@ -134,7 +134,7 @@ int main(void)
     			  //  Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
-    				ad7799.PswPinOff();
+    				//ad7799.PswPinOff();
     			}
     	}
 //-------------------------------------------------------------------------
@@ -193,7 +193,7 @@ void Ad7799Callback(uint32_t iData)
 	iTemp=0;
 	}
 */
-	DbgUART.SendPrintF("Tenzo=%d \n",iData);
+	//DbgUART.SendPrintF("Tenzo=%d \n",iData);
 }
 void Ms5803Callback(uint32_t iData)
 {
@@ -201,7 +201,7 @@ void Ms5803Callback(uint32_t iData)
 	DataPack_t sDataPack;
 	sDataPack.Addr=DATA_PACK_ADDR_PRES;
 	sDataPack.Data=iData;
-	uplink.Send(&sDataPack);
+	//uplink.Send(&sDataPack);
 }
 
 void CallBackCalipers(uint32_t iData)

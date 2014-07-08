@@ -38,8 +38,8 @@
 
 #define MS5803_RESET_COMAND 		0x1E
 #define MS5803_READ_COEF_COMAND 	0xA0
-#define MS5803_TEMP_CONV_COMAND 	0x58 ///!!!!!!!!!!!!! поменял
-#define MS5803_PRES_CONV_COMAND		0x48
+#define MS5803_TEMP_CONV_COMAND 	0x58
+#define MS5803_PRES_CONV_COMAND		0x48   // примерно 8ms на измерение = 12Hz
 #define MS5803_ADC_READ_COMAND		0x00
 
 void MS5803_Class :: Init(void)
@@ -153,7 +153,7 @@ void MS5803_Class :: Task(void)
 	//long long a,b,c,i,dT,c1,c2,c3,c4,d1,off,sens,p;
 	if (DMA_GetFlagStatus(SPI_MASTER_Rx_DMA_FLAG))
 	{
-		if (bResetFlag) // we can send RESET command anytime
+		if (bResetFlag) // we can send RESET command any time
 		{
 			bWaitDevReadyFlag=false;
 			MS5803_state=START_RESET_STEP;
@@ -279,8 +279,8 @@ void MS5803_Class :: Task(void)
 			i64=i64-OFF;
 			i64=i64>>15;
 			Presure=i64;
-			//MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
-			MS5803_state=0; // stop
+			MS5803_state=CONV_TEMP_STEP;  //for best performance, don`t measure temp every time.
+			//MS5803_state=0; // stop
 			Callback(Presure);
 			break;
 		}
