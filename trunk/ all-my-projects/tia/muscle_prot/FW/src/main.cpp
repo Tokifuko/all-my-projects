@@ -121,7 +121,7 @@ int main(void)
     				//GPIO_ResetBits(GPIOB,GPIO_Pin_12);
     				//ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
-    				//ad7799.PswPinOn();
+    				ad7799.PswPinOn();
 
 
     			}
@@ -134,7 +134,7 @@ int main(void)
     			  //  Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
-    				//ad7799.PswPinOff();
+    				ad7799.PswPinOff();
     			}
     	}
 //-------------------------------------------------------------------------
@@ -201,7 +201,7 @@ void Ms5803Callback(uint32_t iData)
 	DataPack_t sDataPack;
 	sDataPack.Addr=DATA_PACK_ADDR_PRES;
 	sDataPack.Data=iData;
-	//uplink.Send(&sDataPack);
+	uplink.Send(&sDataPack);
 }
 
 void CallBackCalipers(uint32_t iData)
