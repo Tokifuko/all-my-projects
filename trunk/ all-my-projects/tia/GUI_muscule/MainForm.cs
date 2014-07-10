@@ -19,7 +19,7 @@ namespace GUI_muscule
         PocketManager myPocManager = new PocketManager();
         MySerialPort mySerialPort = new MySerialPort();
         FakeDevForm myFakeDevForm =new FakeDevForm();
-        StatisticForm myStatForm;
+        StatisticForm myStatForm = new StatisticForm();
        // Grafics myGrafForm = new Grafics();
         public MainForm()
         {
@@ -28,6 +28,7 @@ namespace GUI_muscule
             label1.Text = mySerialPort.GetPortParam();
             myFakeDevForm.Dispose();
             Subscribe(myPocManager);
+            myStatForm.Subscribe(myPocManager);
            // myGrafForm.Show();
         }
 
@@ -66,12 +67,17 @@ namespace GUI_muscule
                 mySerialPort.Close();
                 logTextBox.AppendText("порт закрыт" + '\n');
                 mySerialPort.DeleteReceiver(myPocManager);
+                mySerialPort.DeleteReceiver(myStatForm);
             }
             else
             {
                 logTextBox.AppendText(mySerialPort.OpenPort() + '\n');
                 // подключаем Менаджер Пакетов к com- порту
-                if (mySerialPort.IsOpen) mySerialPort.AddReceiver(myPocManager);
+                if (mySerialPort.IsOpen)
+                {
+                    mySerialPort.AddReceiver(myPocManager);
+                    mySerialPort.AddReceiver(myStatForm);
+                }
             }
         }
 
@@ -109,6 +115,7 @@ namespace GUI_muscule
                 myFakeDevForm = new FakeDevForm();
                 myFakeDevForm.Show();
                 myFakeDevForm.AddReceiver(myPocManager);
+                myFakeDevForm.AddReceiver(myStatForm);
             }
             else
             {
@@ -161,10 +168,7 @@ namespace GUI_muscule
 
         private void btStatistic_Click(object sender, EventArgs e)
         {
-            myStatForm = new StatisticForm();
             myStatForm.Show();
-            mySerialPort.AddReceiver(myStatForm);
-            myStatForm.Subscribe(myPocManager);
         }
     }
 }

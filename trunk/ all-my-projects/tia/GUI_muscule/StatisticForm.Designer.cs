@@ -54,6 +54,8 @@
             this.lbTotalBytesSec = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lbKbitSec = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tmSecTimer
@@ -64,7 +66,7 @@
             // 
             // btClearButton
             // 
-            this.btClearButton.Location = new System.Drawing.Point(198, 185);
+            this.btClearButton.Location = new System.Drawing.Point(399, 181);
             this.btClearButton.Name = "btClearButton";
             this.btClearButton.Size = new System.Drawing.Size(75, 23);
             this.btClearButton.TabIndex = 0;
@@ -279,11 +281,31 @@
             this.label9.TabIndex = 23;
             this.label9.Text = "всего";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 181);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(129, 17);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "Скорость кбит/сек";
+            // 
+            // lbKbitSec
+            // 
+            this.lbKbitSec.AutoSize = true;
+            this.lbKbitSec.Location = new System.Drawing.Point(257, 181);
+            this.lbKbitSec.Name = "lbKbitSec";
+            this.lbKbitSec.Size = new System.Drawing.Size(16, 17);
+            this.lbKbitSec.TabIndex = 25;
+            this.lbKbitSec.Text = "0";
+            // 
             // StatisticForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 216);
+            this.Controls.Add(this.lbKbitSec);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.lbOtherPocketSec);
@@ -342,5 +364,7 @@
         private System.Windows.Forms.Label lbTotalBytesSec;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lbKbitSec;
     }
 }
