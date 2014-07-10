@@ -19,6 +19,7 @@ namespace GUI_muscule
         PocketManager myPocManager = new PocketManager();
         MySerialPort mySerialPort = new MySerialPort();
         FakeDevForm myFakeDevForm =new FakeDevForm();
+        StatisticForm myStatForm;
        // Grafics myGrafForm = new Grafics();
         public MainForm()
         {
@@ -157,5 +158,13 @@ namespace GUI_muscule
             myChart3D.sName = "График наргузки";
             point3Dgenerator.Subscribe(myPocManager);
          }
+
+        private void btStatistic_Click(object sender, EventArgs e)
+        {
+            myStatForm = new StatisticForm();
+            myStatForm.Show();
+            mySerialPort.AddReceiver(myStatForm);
+            myStatForm.Subscribe(myPocManager);
+        }
     }
 }
