@@ -14,8 +14,13 @@ namespace GUI_muscule
     public partial class StatisticForm : Form, ISerialByteReciver, IObserver<DataPack_t>
     {
         // счетчики
-        int iTotalBytes, iTotalPocket, iPresPocket, iTenzoPocket, iLengthPocket, iTempPocket, iOtherPocket;
-        int iTotalBytes_old, iTotalPocket_old, iPresPocket_old, iTenzoPocket_old, iLengthPocket_old, iTempPocket_old, iOtherPocket_old;
+        SpeedMeasurement myTotalBytes = new SpeedMeasurement();
+        SpeedMeasurement myTotalPocket = new SpeedMeasurement();
+        SpeedMeasurement myPresPocket = new SpeedMeasurement();
+        SpeedMeasurement myTenzoPocket = new SpeedMeasurement();
+        SpeedMeasurement myLengthPocket = new SpeedMeasurement();
+        SpeedMeasurement myTempPocket = new SpeedMeasurement();
+        SpeedMeasurement myOtherPocket = new SpeedMeasurement();
         public StatisticForm()
         {
             InitializeComponent();
@@ -23,11 +28,13 @@ namespace GUI_muscule
         }
         void ClearCounter()
         {
-            iTotalBytes = 0; iTotalPocket = 0; iPresPocket = 0;
-            iTenzoPocket = 0; iLengthPocket = 0; iTempPocket = 0; iOtherPocket = 0;
-            iTotalBytes_old = 0; iTotalPocket_old = 0; iPresPocket_old = 0;
-            iTenzoPocket_old = 0; iLengthPocket_old = 0; iTempPocket_old = 0; iOtherPocket_old = 0;
-
+            myTotalBytes.ClearCounters();
+            myTotalPocket.ClearCounters();
+            myPresPocket.ClearCounters();
+            myTenzoPocket.ClearCounters();
+            myLengthPocket.ClearCounters();
+            myTempPocket.ClearCounters();
+            myOtherPocket.ClearCounters();
         }
 
         //***************************************************************************************************
@@ -46,24 +53,24 @@ namespace GUI_muscule
         public virtual void OnError(Exception error) { }// Do nothing.
         public virtual void OnNext(DataPack_t value)
         {
-            iTotalPocket++;
+            myTotalPocket.NewSample();
             switch(value.Addr)
             {
                      //iTenzoPocket, iLengthPocket, iTempPocket, iOtherPocket;
                 case Constants.ADDR_PREASURE:
-                    iTenzoPocket++;
+                    myPresPocket.NewSample();
                     break;
                 case Constants.ADDR_TENZO:
-                    iPresPocket++;
+                    myTenzoPocket.NewSample();
                     break;
                 case Constants.ADDR_LENGTH:
-                    iLengthPocket++;
+                    myLengthPocket.NewSample();
                     break;
                 /*case Constants.:
                     iTempPocket++;
                     break;*/
                 default:
-                    iOtherPocket++;
+                    myOtherPocket.NewSample();
                     break;
             }
         }
@@ -71,7 +78,7 @@ namespace GUI_muscule
         //*******************  ISerialByteReciver ***************
         public void NewByteReceivedEventHandler(byte bDataByte)
         {
-            iTotalBytes++;
+            myTotalBytes.NewSample();
         }
         //*******************************************************
 
@@ -87,31 +94,25 @@ namespace GUI_muscule
 
         private void tmSecTimer_Tick(object sender, EventArgs e)
         {
-            lbTotalBytes.Text = iTotalBytes.ToString();
-            lbTotalPocket.Text = iTotalPocket.ToString();
-            lbPresPocket.Text = iPresPocket.ToString();
-            lbTenzoPocket.Text = iTenzoPocket.ToString();
-            lbLengthPocket.Text = iLengthPocket.ToString();
-            lbTempPocket.Text = iTempPocket.ToString();
-            lbOtherPocket.Text = iOtherPocket.ToString();
 
-            lbTotalBytesSec.Text = (iTotalBytes - iTotalBytes_old).ToString();
-            lbTotalPocketSec.Text = (iTotalPocket-iTotalPocket_old).ToString();
-            lbPresPocketSec.Text = (iPresPocket - iPresPocket_old).ToString();
-            lbTenzoPocketSec.Text = (iTenzoPocket - iTenzoPocket_old).ToString();
-            lbLengthPocketSec.Text = (iLengthPocket - iLengthPocket_old).ToString();
-            lbTempPocketSec.Text = (iTempPocket - iTempPocket_old).ToString();
-            lbOtherPocketSec.Text = (iOtherPocket - iOtherPocket_old).ToString();
+            lbTotalBytes.Text = myTotalBytes.iTotal.ToString();
+            lbTotalPocket.Text = myTotalPocket.iTotal.ToString();
+            lbPresPocket.Text = myPresPocket.iTotal.ToString();
+            lbTenzoPocket.Text = myTenzoPocket.iTotal.ToString();
+            lbLengthPocket.Text = myLengthPocket.iTotal.ToString();
+            lbTempPocket.Text = myTempPocket.iTotal.ToString();
+            lbOtherPocket.Text = myOtherPocket.iTotal.ToString();
 
-            lbKbitSec.Text = ((iTotalBytes - iTotalBytes_old)*8).ToString();
 
-            iTotalBytes_old = iTotalBytes; 
-            iTotalPocket_old = iTotalPocket; 
-            iPresPocket_old = iPresPocket;
-            iTenzoPocket_old = iTenzoPocket; 
-            iLengthPocket_old = iLengthPocket; 
-            iTempPocket_old = iTempPocket; 
-            iOtherPocket_old = iOtherPocket;
+            lbTotalBytesSec.Text = myTotalBytes.iSamplePerSecond.ToString();
+            lbTotalPocketSec.Text = myTotalPocket.dFreqMed.ToString();
+            lbPresPocketSec.Text = myPresPocket.dFreqMed.ToString();
+            lbTenzoPocketSec.Text = myTenzoPocket.dFreqMed.ToString();
+            lbLengthPocketSec.Text = myLengthPocket.dFreqMed.ToString();
+            lbTempPocketSec.Text = myTempPocket.dFreqMed.ToString();
+            lbOtherPocketSec.Text = myOtherPocket.dFreqMed.ToString();
+
+            lbKbitSec.Text = (myTotalBytes.iSamplePerSecond * 8).ToString();
         }
     }
 }
