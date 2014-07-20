@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabChats
 {
@@ -23,19 +24,16 @@ namespace GUI_muscule.MatLabChats
         void DisposeChart();
         void Process(Queue<T> tDataQueue);
     }
-
-
-
-    /*
-    public interface IMatLabLib
+    public interface IChartAxes
     {
-        void Init(int iLength, string sName);
-        void AddPoint(int p);
-        void SetCallback(FigClose pFuncCallback);
+        int iLength { set; get; }
+        void SetAxesPropety(string sName, string sValue);
+        void SetAxesHandler(MWArray hAxes);
+        void DisposeAxes();
     }
-    public interface IMatLabLib3D:IMatLabLib
+    public interface IPointRecever<T>
     {
-        void AddSurfPoint(int iX, int iY, int iZ);
+        void AddPoint(T tPoint);
+        FigClose pCloseCallback { set; get; }
     }
-     * */
 }

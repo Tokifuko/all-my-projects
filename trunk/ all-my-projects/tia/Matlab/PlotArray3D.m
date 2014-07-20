@@ -1,6 +1,4 @@
 function PlotArray3D(hAxes, X,Y,Z)
-%hAxes= get(hFig,'CurrentAxes');
-
 %Invalid or deleted object.
 if (strcmp(get(hAxes,'BeingDeleted'),'on' )) 
     return

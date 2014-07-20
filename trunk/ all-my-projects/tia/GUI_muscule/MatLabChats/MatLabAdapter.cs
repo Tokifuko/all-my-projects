@@ -200,4 +200,158 @@ namespace GUI_muscule.MatLabChats
         }
     }
     /* ****************************************************************************/
+
+
+    /************************ MatLabFigure  ***************************************
+    * MatLabFigure - 
+     * 1. сначала добавляются готовые оси в список
+     * 2. Устанавливаются свойства "области рисунка"
+     * 3. Запускается поток, в котором создается "область рисунка" и графики
+     * 4. Указатели на графики передаются в обьекты осей через SetAxesHandler,
+     *      что запусккает потоки осей.
+     * 5. поток продолжает отслеживать момент закрытия окна
+     * 6. после закрытия окна вызывает DisposeAxes для обектов осей
+     *      метод AddAxes - добавляет график на область рисунка. (до 4-х)
+     *                      возвращает указатель на новые оси
+    * ****************************************************************************/
+    // TO DO:  сделать поддержку нескольких осей
+    public class MatLabFigure
+    {
+        List<IChartAxes> AxesList = new List<IChartAxes>(); 
+        public IChartAxes MtlAxes;
+        MWArray hFigHandler;
+        MTLChart mtlChartInstance;
+        Thread tThread;
+        StringPropertiySetter myPropSetter = new StringPropertiySetter();
+        public void AddAxes(IChartAxes MtlAxes)
+        {
+            AxesList.Add(MtlAxes);
+        }
+        public void SetFigPropety(string sName, string sValue)
+        {
+            myPropSetter.SetParam(sName, sValue);
+        }
+        public void Start()
+        {
+            tThread = new Thread(ThreadMetod);
+            tThread.Start();
+        }
+        void ThreadMetod()
+        {
+            if (AxesList.Count == 0) return;
+            mtlChartInstance = new MTLChart();
+            hFigHandler = mtlChartInstance.GetFigHandle();
+            // TO DO:  сделать поддержку нескольких осей
+            MWArray hAxesHandler = mtlChartInstance.GetAxesHandle(hFigHandler);
+            AxesList[0].SetAxesHandler(hAxesHandler);
+            myPropSetter.Init(mtlChartInstance, hFigHandler);
+            while (true)
+            {
+                Thread.Sleep(500);
+                // для проверки закрытия окна пытаемся получить указатель на оси
+                try  
+                {
+                    mtlChartInstance.GetAxesHandle(hFigHandler);
+                }
+                catch  //!!!!!!!!!!!!!!!!!!!!!!!! хорошо бы ловить не все, а только одно конкретное исключение. да.
+                {   // если было исключение, то скорее всего юзер закрыл окно с графиком
+                    // Invalid or deleted object.
+                    foreach (IChartAxes axes in AxesList)
+                    {
+                        axes.DisposeAxes();
+                    }
+                    Thread.CurrentThread.Abort();
+                }
+            }
+        }
+    }
+
+    /************************ MatLabBaseAxes  ***************************************
+    * MatLabBaseAxes - 
+     * 
+    * ****************************************************************************/
+    public class MatLabBaseAxes<T> : IChartAxes, IPointRecever<T>
+    {
+        BlockingCollection<T> tInputQueue = new BlockingCollection<T>();
+        Thread tTread;
+        protected MWArray hAxesHandler;
+        protected MTLChart mtlChartInstance;
+        StringPropertiySetter myPropSetter=new StringPropertiySetter();
+        virtual public void Process(Queue<T> q) { }
+        /********************************************************************
+         * реализация интерфейса        IChartAxes
+         * *****************************************************************/
+        public int iLength { set; get; }
+        //virtual public void SetAxesPropety(string sName, string sValue);
+        public void SetAxesHandler(MWArray hAxes) 
+        {
+            hAxesHandler = hAxes;
+            SetAxesPropety("NextPlot","replacechildren");// Remove all child objects, but do not reset axes properties
+            tTread = new Thread(ThreadMetod);
+            tTread.Start(); 
+        }
+        public void SetAxesPropety(string sName, string sValue)
+        {
+            myPropSetter.SetParam(sName, sValue);
+        }
+        virtual public void DisposeAxes()
+        {
+            tTread.Abort();
+            if (pCloseCallback != null) pCloseCallback();
+        }
+        /********************************************************************
+         * реализация интерфейса        IPointRecever<T>
+         * *****************************************************************/
+        public void AddPoint(T tPoint) { tInputQueue.Add(tPoint); }
+        public FigClose pCloseCallback { set; get; }
+        /*******************************************************************/
+
+        //------------------------------------------------------------
+        //-------- поток в котором принимаются данные и вызываются ----
+        //-------- метод PLOT, выводящий данные на график
+        //------------------------------------------------------------
+        private void ThreadMetod()
+        {
+            T i;
+            mtlChartInstance = new MTLChart();
+            Queue<T> lockalQueue = new Queue<T>();
+            myPropSetter.Init(mtlChartInstance, hAxesHandler);
+            while (true)
+            {
+                lockalQueue.Enqueue(tInputQueue.Take());// ждем новую точку
+                while (tInputQueue.TryTake(out i)) // забираем все имеющиеся точки
+                {
+                    lockalQueue.Enqueue(i);
+                }
+                if (iLength != 0)// если нужно - обрезаем лишнее
+                {
+                    while (lockalQueue.Count > iLength) { lockalQueue.Dequeue(); }
+                }
+                try
+                {
+                    Process(lockalQueue);
+                }
+                catch  //!!!!!!!!!!!!!!!!!!!!!!!! хорошо бы ловить не все, а только одно конкретное исключение. да.
+                {   // если было исключение, то скорее всего юзер закрыл окно с графиком
+                    // Invalid or deleted object.
+                   Thread.CurrentThread.Abort();
+                }
+            }
+        } // ThreadMetod
+    }
+    /********************************   2D   *************************************
+    * MatLabAxes2D - конкретная реализация процедуры Process -
+    * - которая выводит последовательность Queue на график  
+     * Работаем с простой последовательностью INT
+    * ****************************************************************************/
+    public class MatLabAxes2D : MatLabBaseAxes<int>
+    {
+        override public void Process(Queue<int> tDataQueue)
+        {
+            base.Process(tDataQueue);
+            int[] ZArray = tDataQueue.ToArray();
+            mtlChartInstance.PlotArray(hAxesHandler, (MWNumericArray)ZArray);
+        }
+    }
+    
 }

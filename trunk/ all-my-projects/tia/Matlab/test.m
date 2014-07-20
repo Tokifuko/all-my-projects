@@ -13,8 +13,10 @@ z=z*(-1);
 x=x';
 y=y';
 z=z';
-% PlotArray(hA,x);
-PlotSpectr(hA,2,z);
+ PlotArray(hA,x);
+ 
+%PlotSpectr(hA,2,z);
+
 %PlotArray3D(hA,x*1000,y*1000,z*1000);
 
 end 

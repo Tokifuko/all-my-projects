@@ -19,7 +19,7 @@ namespace GUI_muscule.Tests
         {
             DataPack_t tPack = new DataPack_t();
             IChart<stPoint3D> fakeChart3D = Substitute.For<IChart<stPoint3D>>();
-            CurrentPointGen myPointGen = new CurrentPointGen(fakeChart3D);
+            Pointsource3D myPointGen = new Pointsource3D(fakeChart3D);
             tPack.Addr = Constants.ADDR_PREASURE;
             tPack.Data = 500;
             tPack.FullCrcAndPrefixField();

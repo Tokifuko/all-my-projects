@@ -72,8 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatLabChats\StringPropertiySetter.cs" />
     <Compile Include="SpeedMeasurement.cs" />
-    <Compile Include="CurrentPointGen.cs" />
     <Compile Include="FakeDevForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,7 +88,7 @@
     </Compile>
     <Compile Include="MatLabChats\MatLabAdapter.cs" />
     <Compile Include="MatLabChats\IMatLabLib.cs" />
-    <Compile Include="MatLabChats\MatLabChart2D.cs" />
+    <Compile Include="MatLabChats\PointSource.cs" />
     <Compile Include="MySerialPort.cs">
       <SubType>Component</SubType>
     </Compile>
