@@ -100,6 +100,7 @@ namespace GUI_muscule.MatLabChats
                 }
                 catch  //!!!!!!!!!!!!!!!!!!!!!!!! хорошо бы ловить не все, а только одно конкретное исключение. да.
                 {   // если было исключение, то скорее всего юзер закрыл окно с графиком
+                    // Invalid or deleted object.
                     bActivate = false;
                     Thread.CurrentThread.Abort();
                 }
@@ -111,21 +112,24 @@ namespace GUI_muscule.MatLabChats
      * BaseMatLabChart - содержит реализацию взаимодействия с библиотекой
      * общую для всех матлабовскх графиков.
      * ****************************************************************************/
-    public class BaseMatLabChart
+    // todo добавить функцию установки подписей над осями
+    public class BaseMatLabChart<T>: IChartPloter<T>
     {
         protected MTLChart mtlChartInstance;
         protected MWArray hFigHandler;
+        protected MWArray hAxesHandler;
         virtual public void InitChart()
         {
             mtlChartInstance = new MTLChart();
             hFigHandler = mtlChartInstance.GetFigHandle();
+            hAxesHandler = mtlChartInstance.GetAxesHandle(hFigHandler);
         }
         virtual public void SetName(string sName)
         {
             mtlChartInstance.SetFigProp(hFigHandler, (MWCharArray)"Name", (MWCharArray)sName);
         }
         virtual public void DisposeChart() { mtlChartInstance.Dispose(); }
-        virtual public void Process() { }
+        virtual public void Process(Queue<T> q) { }
     }
     //public class BaseMatLabChart
     public struct stPoint3D
@@ -139,11 +143,11 @@ namespace GUI_muscule.MatLabChats
      * Process - которая выводит последовательность Queue на график  3D
      * все методы вызываются из отдельного потока, создавшего матлабовский обьект.
      * ****************************************************************************/
-    public class MatLabChart3D : BaseMatLabChart, IChartPloter<stPoint3D>
+    public class MatLabChart3D : BaseMatLabChart<stPoint3D>//, IChartPloter<stPoint3D>
     {
-        public void Process(Queue<stPoint3D> tDataQueue)
+        override public void Process(Queue<stPoint3D> tDataQueue)
         {
-            base.Process();
+            base.Process(tDataQueue);
             Queue<int> qX = new Queue<int>();
             Queue<int> qY = new Queue<int>();
             Queue<int> qZ = new Queue<int>();
@@ -159,7 +163,7 @@ namespace GUI_muscule.MatLabChats
             XArray = qX.ToArray();
             YArray = qY.ToArray();
             ZArray = qZ.ToArray();
-            mtlChartInstance.PlotArray3D(hFigHandler, (MWNumericArray)XArray, (MWNumericArray)YArray, (MWNumericArray)ZArray);
+            mtlChartInstance.PlotArray3D(hAxesHandler, (MWNumericArray)XArray, (MWNumericArray)YArray, (MWNumericArray)ZArray);
         }
     }
     /********************************   2D   *************************************
@@ -167,13 +171,32 @@ namespace GUI_muscule.MatLabChats
     * Process - которая выводит последовательность Queue на график  2D
     * все методы вызываются из отдельного потока, создавшего матлабовский обьект.
     * ****************************************************************************/
-    public class MatLabChart2D : BaseMatLabChart, IChartPloter<int>
+    public class MatLabChart2D : BaseMatLabChart<int>//, IChartPloter<int>
     {
-        public void Process(Queue<int> tDataQueue)
+        override public void Process(Queue<int> tDataQueue)
         {
-            base.Process();
+            base.Process(tDataQueue);
             int[] ZArray = tDataQueue.ToArray();
-            mtlChartInstance.PlotArray(hFigHandler, (MWNumericArray)ZArray);
+            mtlChartInstance.PlotArray(hAxesHandler, (MWNumericArray)ZArray);
+        }
+    }
+
+    /**************************   MatLabChartSpectr   *************************************
+    * MatLabChartSpectr - конкретная реализация процедур Iniit, Dispose и
+    * Process - которая выводит спектр сигнала, представленного отсчетами в Queue
+     * с частотой дискретизации dFreq
+    * все методы вызываются из отдельного потока, создавшего матлабовский обьект.
+    * ****************************************************************************/
+    public class MatLabChartSpectr : BaseMatLabChart<int>//, IChartPloter<int>
+    {
+
+        SpeedMeasurement cSpeed = new SpeedMeasurement();
+        override public void Process(Queue<int> tDataQueue)
+        {
+            base.Process(tDataQueue);
+            int[] ZArray = tDataQueue.ToArray();
+            cSpeed.ManySample(tDataQueue.Count);// для подсчета частоты дискретизации
+            mtlChartInstance.PlotSpectr(hAxesHandler, (MWNumericArray)cSpeed.dFreqMed, (MWNumericArray)ZArray);
         }
     }
     /* ****************************************************************************/

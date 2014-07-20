@@ -170,5 +170,16 @@ namespace GUI_muscule
         {
             myStatForm.Show();
         }
+
+        private void btLengthSpectr_Click(object sender, EventArgs e)
+        {
+            MatLabChartSpectr plotter = new MatLabChartSpectr();
+            TreadedChart<int> myChartSpectr = new TreadedChart<int>();
+            myChartSpectr.SetChartPloter(plotter);
+            myChartSpectr.StartTread();
+            ChartsPoint2dSource newChart = new ChartsPoint2dSource(myChartSpectr, "Спектр сигнала от штангенциркуля");
+            newChart.Subscribe(myPocManager);
+            newChart.lockalAddr = Constants.ADDR_LENGTH;
+        }
     }
 }

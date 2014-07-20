@@ -1,6 +1,7 @@
 function test
 
 hF=GetFigHandle();
+hA=GetAxesHandle(hF);
 % x=0:pi/10:pi*8;
 % y=0:pi/20:pi*4;
 % z=sin(x)+cos(y);
@@ -12,7 +13,8 @@ z=z*(-1);
 x=x';
 y=y';
 z=z';
-
-PlotArray3D(hF,x*1000,y*1000,z*1000);
+% PlotArray(hA,x);
+PlotSpectr(hA,2,z);
+%PlotArray3D(hA,x*1000,y*1000,z*1000);
 
 end 

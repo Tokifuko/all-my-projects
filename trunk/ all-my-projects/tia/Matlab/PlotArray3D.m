@@ -1,8 +1,10 @@
-function PlotArray3D(hFig, X,Y,Z)
-hAxes= get(hFig,'CurrentAxes');
+function PlotArray3D(hAxes, X,Y,Z)
+%hAxes= get(hFig,'CurrentAxes');
 
 %Invalid or deleted object.
-
+if (strcmp(get(hAxes,'BeingDeleted'),'on' )) 
+    return
+end
 plot3(hAxes,X,Y,Z,'.');
 order=5;
 if (length(X)<23)order=4; end;

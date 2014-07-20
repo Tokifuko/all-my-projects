@@ -41,6 +41,7 @@
             this.btTenzoButton = new System.Windows.Forms.Button();
             this.btSurfButton = new System.Windows.Forms.Button();
             this.btStatistic = new System.Windows.Forms.Button();
+            this.btLengthSpectr = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -156,11 +157,22 @@
             this.btStatistic.UseVisualStyleBackColor = true;
             this.btStatistic.Click += new System.EventHandler(this.btStatistic_Click);
             // 
+            // btLengthSpectr
+            // 
+            this.btLengthSpectr.Location = new System.Drawing.Point(363, 248);
+            this.btLengthSpectr.Name = "btLengthSpectr";
+            this.btLengthSpectr.Size = new System.Drawing.Size(164, 23);
+            this.btLengthSpectr.TabIndex = 13;
+            this.btLengthSpectr.Text = "Спектр Длинны";
+            this.btLengthSpectr.UseVisualStyleBackColor = true;
+            this.btLengthSpectr.Click += new System.EventHandler(this.btLengthSpectr_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 447);
+            this.Controls.Add(this.btLengthSpectr);
             this.Controls.Add(this.btStatistic);
             this.Controls.Add(this.btSurfButton);
             this.Controls.Add(this.btTenzoButton);
@@ -195,6 +207,7 @@
         private System.Windows.Forms.Button btTenzoButton;
         private System.Windows.Forms.Button btSurfButton;
         private System.Windows.Forms.Button btStatistic;
+        private System.Windows.Forms.Button btLengthSpectr;
     }
 }
 

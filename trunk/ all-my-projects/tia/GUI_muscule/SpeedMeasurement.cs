@@ -55,6 +55,11 @@ namespace GUI_muscule
             iTotal++;
             iSamplePerSecond_counter++;
         }
+        public void ManySample(int count)
+        {
+            iTotal += count;
+            iSamplePerSecond_counter += count;
+        }
         public void ClearCounters()
         {
             iTotal = 0;

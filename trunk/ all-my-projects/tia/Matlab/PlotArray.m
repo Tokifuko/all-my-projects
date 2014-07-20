@@ -1,4 +1,6 @@
-function PlotArray(hFig, points)
-hAxes= get(hFig,'CurrentAxes');
+function PlotArray(hAxes, points)
+%hAxes= get(hFig,'CurrentAxes');
+if (strcmp(get(hAxes,'BeingDeleted'),'on' )) 
+    return
+end
 plot(hAxes,points);
-
