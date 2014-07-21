@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="2811954937" file="C:\all-my-projects\tia\Matlab\myMatlabLib.prj" location="C:\all-my-projects\tia\Matlab" name="myMatlabLib" preferred-package-location="C:\all-my-projects\tia\Matlab\myMatlabLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="3067046465" file="C:\all-my-projects\tia\Matlab\myMatlabLib.prj" location="C:\all-my-projects\tia\Matlab" name="myMatlabLib" preferred-package-location="C:\all-my-projects\tia\Matlab\myMatlabLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>myMatlabLib</param.appname>
     <param.icon />
     <param.icons />
@@ -95,8 +95,8 @@
       <file>${PROJECT_ROOT}\PlotArray.m</file>
       <file>${PROJECT_ROOT}\PlotArray3D.m</file>
       <file>${PROJECT_ROOT}\PlotSpectr.m</file>
-      <file>${PROJECT_ROOT}\SetFigProp.m</file>
       <file>${PROJECT_ROOT}\SetObjProp.m</file>
+      <file>${PROJECT_ROOT}\SplitFigure.m</file>
     </fileset.exports>
     <fileset.classes>
       <entity.package name="">
@@ -106,8 +106,8 @@
           <file>${PROJECT_ROOT}\PlotArray.m</file>
           <file>${PROJECT_ROOT}\PlotArray3D.m</file>
           <file>${PROJECT_ROOT}\PlotSpectr.m</file>
-          <file>${PROJECT_ROOT}\SetFigProp.m</file>
           <file>${PROJECT_ROOT}\SetObjProp.m</file>
+          <file>${PROJECT_ROOT}\SplitFigure.m</file>
         </entity.class>
       </entity.package>
     </fileset.classes>

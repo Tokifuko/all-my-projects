@@ -56,6 +56,7 @@
     <Compile Include="CurrentPointGenTests.cs" />
     <Compile Include="FakeDevFormTests.cs" />
     <Compile Include="MatLabChats\MatLabChart2DTests.cs" />
+    <Compile Include="MatLabChats\SplitFigTests.cs" />
     <Compile Include="PocketManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

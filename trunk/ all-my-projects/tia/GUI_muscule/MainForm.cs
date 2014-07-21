@@ -31,7 +31,7 @@ namespace GUI_muscule
             myStatForm.Subscribe(myPocManager);
            // myGrafForm.Show();
         }
-        void CreateSimpleChart(string sFigName, string sAxesTitle, int iChartLength,byte iPocketAddr)
+        void CreateSimpleChart(string sFigName, string sAxesTitle, int iChartLength, byte iPocketAddr)
         {
             // создаем оси
             MatLabAxes2D myAxes = new MatLabAxes2D();
@@ -41,11 +41,41 @@ namespace GUI_muscule
             PointSource2D myPointSource = new PointSource2D(myAxes);
             myPointSource.Subscribe(myPocManager);
             myPointSource.lockalAddr = iPocketAddr;
+
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
             myFigure.SetObjectPropety("Name", sFigName);
             // помещаем оси на рисунок
             myFigure.AddAxes(myAxes);
+            // Запускаем полученную конструкцию
+            myFigure.Start();
+        }
+        void CreateDouble_ChartAndSpectr(string sFigName, string sAxesTitle, int iChartLength, byte iPocketAddr)
+        {
+            // создаем оси
+            MatLabAxes2D myAxesLine = new MatLabAxes2D();
+            myAxesLine.SetObjectPropety("Title", sAxesTitle);
+            myAxesLine.iLength = iChartLength;
+            // создаем оси
+            MatLabAxesSpectr myAxesSpectr = new MatLabAxesSpectr();
+            myAxesSpectr.SetObjectPropety("Title", sAxesTitle+" -спектр");
+            myAxesSpectr.iLength = iChartLength;
+
+            // подключаем источник точек
+            PointSource2D myPointSourceLine = new PointSource2D(myAxesLine);
+            myPointSourceLine.Subscribe(myPocManager);
+            myPointSourceLine.lockalAddr = iPocketAddr;
+            // подключаем источник точек
+            PointSource2D myPointSourcSpectr = new PointSource2D(myAxesSpectr);
+            myPointSourcSpectr.Subscribe(myPocManager);
+            myPointSourcSpectr.lockalAddr = iPocketAddr;
+
+            // создаем область рисунка
+            MatLabFigure myFigure = new MatLabFigure();
+            myFigure.SetObjectPropety("Name", sFigName);
+            // помещаем оси на рисунок
+            myFigure.AddAxes(myAxesLine);
+            myFigure.AddAxes(myAxesSpectr);
             // Запускаем полученную конструкцию
             myFigure.Start();
         }
@@ -140,7 +170,7 @@ namespace GUI_muscule
         }
         private void btShowChartButton_Click(object sender, EventArgs e)
         {
-            CreateSimpleChart("График длинны", "График изменения длинны", 500, Constants.ADDR_LENGTH);  
+            CreateDouble_ChartAndSpectr("График длинны", "График изменения длинны", 500, Constants.ADDR_LENGTH);  
         }
 
         private void btPreasureChart_Click(object sender, EventArgs e)

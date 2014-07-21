@@ -54,7 +54,7 @@
     </Reference>
     <Reference Include="myMatlabLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Matlab\fibonachi2D\for_testing\myMatlabLib.dll</HintPath>
+      <HintPath>..\Matlab\myMatlabLib\for_testing\myMatlabLib.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatLabChats\MatLabFigure.cs" />
     <Compile Include="MatLabChats\StringPropertiySetter.cs" />
     <Compile Include="SpeedMeasurement.cs" />
     <Compile Include="FakeDevForm.cs">
@@ -86,7 +87,7 @@
     <Compile Include="Grafics.Designer.cs">
       <DependentUpon>Grafics.cs</DependentUpon>
     </Compile>
-    <Compile Include="MatLabChats\MatLabAdapter.cs" />
+    <Compile Include="MatLabChats\MatLabAxes.cs" />
     <Compile Include="MatLabChats\IMatLabLib.cs" />
     <Compile Include="MatLabChats\PointSource.cs" />
     <Compile Include="MySerialPort.cs">
