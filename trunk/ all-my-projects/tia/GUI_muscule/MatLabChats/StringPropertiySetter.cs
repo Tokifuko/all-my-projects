@@ -57,11 +57,14 @@ namespace GUI_muscule.MatLabChats
         }
         public void SetParam(MWArray hObject, string sName, string sValue)
         {
-            stObjNameValue st;
-            st.hObject = hObject;
-            st.sName = sName;
-            st.sValue = sValue;
-            tInputQueue.Add(st);
+            lock (this)
+            {
+                stObjNameValue st;
+                st.hObject = hObject;
+                st.sName = sName;
+                st.sValue = sValue;
+                tInputQueue.Add(st);
+            }
         }
         private static void Init()
         {

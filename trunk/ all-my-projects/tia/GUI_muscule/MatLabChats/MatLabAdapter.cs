@@ -28,6 +28,7 @@ namespace GUI_muscule.MatLabChats
     public class MatLabBaseObject
     {
        protected MWArray hThisObject = null;
+       StringPropertiySetter hPropSetter = StringPropertiySetter.Instance;
        protected  BlockingCollection<stNameValue> tParamQueue = new BlockingCollection<stNameValue>();
        public void SetObjectPropety(string sName, string sValue)
        {
@@ -39,8 +40,8 @@ namespace GUI_muscule.MatLabChats
                tParamQueue.Add(st);
            }
            else
-           { 
-               StringPropertiySetter.Instance.SetParam(hThisObject, sName, sValue); 
+           {
+               hPropSetter.SetParam(hThisObject, sName, sValue); 
            }
        }
        protected void SendPropFromQueue()
@@ -49,7 +50,7 @@ namespace GUI_muscule.MatLabChats
            stNameValue st;
            while (tParamQueue.TryTake(out st))
            {
-               StringPropertiySetter.Instance.SetParam(hThisObject, st.sName, st.sValue);
+               hPropSetter.SetParam(hThisObject, st.sName, st.sValue);
            }
        }
     }

@@ -78,7 +78,7 @@ namespace GUI_muscule.MatLabChats
             myPointRecever = tPointReciver;
             myPointRecever.pCloseCallback = ChartFormClose;
         }
-        private void PointProcces(byte bAddr, UInt32 uiData)
+        override protected void PointProcces(byte bAddr, UInt32 uiData)
         {
             switch (bAddr)
             {

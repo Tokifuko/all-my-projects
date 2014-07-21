@@ -111,7 +111,6 @@ namespace GUI_muscule
                 ConnectButton.Text = "Открыть COM порт";
             }
         }
-
         private void comboBox1_DropDown(object sender, EventArgs e)
         {
             comboBox1.Items.Clear();
@@ -178,12 +177,10 @@ namespace GUI_muscule
         }
         private void btLengthSpectr_Click(object sender, EventArgs e)
         {
-            
-                 // создаем оси
+            // создаем оси
             MatLabAxesSpectr myAxes = new MatLabAxesSpectr();
             myAxes.SetObjectPropety("Title", "Спектр длинны");
             myAxes.iLength =500;
-            // подключаем источник точек
             // подключаем источник точек
             PointSource2D myPointSource = new PointSource2D(myAxes);
             myPointSource.Subscribe(myPocManager);
@@ -195,15 +192,11 @@ namespace GUI_muscule
             myFigure.AddAxes(myAxes);
             // Запускаем полученную конструкцию
             myFigure.Start();
-          /*  MatLabChartSpectr plotter = new MatLabChartSpectr();
-            TreadedChart<int> myChartSpectr = new TreadedChart<int>();
-            myChartSpectr.SetChartPloter(plotter);
-            myChartSpectr.StartTread();
-            myChartSpectr.sName = "Спектр сигнала от штангенциркуля";
-            PointSource2D newChart = new PointSource2D(myChartSpectr);
-            newChart.Subscribe(myPocManager);
-            newChart.lockalAddr = Constants.ADDR_LENGTH;
-           * */
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            StringPropertiySetter.Instance.Dispose(); ;
         }
     }
 }
