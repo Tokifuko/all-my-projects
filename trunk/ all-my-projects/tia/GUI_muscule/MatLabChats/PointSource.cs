@@ -7,51 +7,57 @@ using poc;
 
 namespace GUI_muscule.MatLabChats
 {
-    public class PointSource2D : IObserver<DataPack_t>
+    /*---------------------------- PointSourceBase -----------------------------
+        * Базовый класс, содержит реализацию итерфейса Наблюдатель
+     * PointProcces переопределяется в потомках
+        * --------------------------------------------------------------------*/
+    public class PointSourceBase <T>: IObserver<DataPack_t>
+     {
+         protected IPointRecever<T> myPointRecever;
+         virtual protected void PointProcces(byte bAddr, UInt32 uiData) { }
+         protected void ChartFormClose() // когдапользователь закрыл окно с графиком
+         {
+             Unsubscribe();
+         }
+         //***************************************************************************************************
+         //                          реализация интерфейса IObserver
+         //***************************************************************************************************
+         private IDisposable unsubscriber;
+         public virtual void Subscribe(IObservable<DataPack_t> provider)
+         {
+             unsubscriber = provider.Subscribe(this);
+         }
+         public virtual void Unsubscribe()
+         {
+             unsubscriber.Dispose();
+         }
+         public virtual void OnCompleted() { }// Do nothing.
+         public virtual void OnError(Exception error) { }// Do nothing.
+         public virtual void OnNext(DataPack_t value)
+         {
+             // Метод вызывается из потока СОМ-порта
+             PointProcces(value.Addr, value.Data);
+         }
+     }
+     /*---------------------------- Pointsource2D -----------------------------
+     * класс получает от источника пакет данных, сравнивает поле Addr с lockalAddr
+      * если совпадает  - отправляет данные приемнику
+     * --------------------------------------------------------------------*/
+     public class PointSource2D : PointSourceBase<int>
     {
-        IChart<int> localMTLobj;
-        IPointRecever<int> rec;
         public byte lockalAddr=Constants.ADDR_DEF;
-        public PointSource2D(IChart<int> ChartInstance)
-        {
-            localMTLobj = ChartInstance;
-            localMTLobj.pCloseCallback = ChartFormClose;
-        }
         public PointSource2D(IPointRecever<int> tPointReciver)
         {
-            rec = tPointReciver;
-            rec.pCloseCallback = ChartFormClose;
+            myPointRecever = tPointReciver;
+            myPointRecever.pCloseCallback = ChartFormClose;
         }
-        private void AddPoint(int data)
-        {
-            if (localMTLobj != null) localMTLobj.AddPoint(data);
-            if (rec != null) rec.AddPoint(data);
-        }
-        private void ChartFormClose() // когдапользователь закрыл окно с графиком
-        {
-            Unsubscribe();
-        }
-
-        //***************************************************************************************************
-        //                          реализация интерфейса IObserver
-        //***************************************************************************************************
-        private IDisposable unsubscriber;
-        public virtual void Subscribe(IObservable<DataPack_t> provider)
-        {
-            unsubscriber = provider.Subscribe(this);
-        }
-        public virtual void Unsubscribe()
-        {
-            unsubscriber.Dispose();
-        }
-        public virtual void OnCompleted() { }// Do nothing.
-        public virtual void OnError(Exception error) { }// Do nothing.
-        public virtual void OnNext(DataPack_t value)
-        {
-            // Метод вызывается из потока СОМ-порта
-            if (value.Addr == lockalAddr)   AddPoint((int)value.Data);
-
-        }
+        override protected void PointProcces(byte bAddr, UInt32 uiData)
+         {
+             if (bAddr == lockalAddr)
+             {
+                 if (myPointRecever!=null) myPointRecever.AddPoint((int)uiData);
+             }
+         }      
     }
 
     /*---------------------------- Pointsource3D -----------------------------
@@ -59,19 +65,18 @@ namespace GUI_muscule.MatLabChats
     * давлении нагрузке и длинне. На основании имеющихся данных отправляет 
     * точку на график поверхности
     * --------------------------------------------------------------------*/
-    public class Pointsource3D : IObserver<DataPack_t>
+     public class Pointsource3D : PointSourceBase<stPoint3D>
     {
-        IChart<stPoint3D> SurfChart3D;
         const byte typeX = Constants.ADDR_PREASURE;
         const byte typeY = Constants.ADDR_TENZO;
         const byte typeZ = Constants.ADDR_LENGTH;
 
         stPoint3D tLastPoint;
         bool bX, bY, bZ;
-        public Pointsource3D(IChart<stPoint3D> MTLChart3D)
+        public Pointsource3D(IPointRecever<stPoint3D> tPointReciver)
         {
-            SurfChart3D = MTLChart3D;
-            SurfChart3D.pCloseCallback = ChartFormClose;
+            myPointRecever = tPointReciver;
+            myPointRecever.pCloseCallback = ChartFormClose;
         }
         private void PointProcces(byte bAddr, UInt32 uiData)
         {
@@ -92,33 +97,9 @@ namespace GUI_muscule.MatLabChats
             }
             if (bX & bY & bZ)
             {
-                SurfChart3D.AddPoint(tLastPoint);
+                myPointRecever.AddPoint(tLastPoint);
                 bX = false; bY = false; bZ = false;
             }
-        }
-        private void ChartFormClose() // когдапользователь закрыл окно с графиком
-        {
-            Unsubscribe();
-        }
-
-        //***************************************************************************************************
-        //                          реализация интерфейса IObserver
-        //***************************************************************************************************
-        private IDisposable unsubscriber;
-        public virtual void Subscribe(IObservable<DataPack_t> provider)
-        {
-            unsubscriber = provider.Subscribe(this);
-        }
-        public virtual void Unsubscribe()
-        {
-            unsubscriber.Dispose();
-        }
-        public virtual void OnCompleted() { }// Do nothing.
-        public virtual void OnError(Exception error) { }// Do nothing.
-        public virtual void OnNext(DataPack_t value)
-        {
-            // Метод вызывается из потока СОМ-порта
-            PointProcces(value.Addr, value.Data);
         }
     }
 }

@@ -31,7 +31,24 @@ namespace GUI_muscule
             myStatForm.Subscribe(myPocManager);
            // myGrafForm.Show();
         }
-
+        void CreateSimpleChart(string sFigName, string sAxesTitle, int iChartLength,byte iPocketAddr)
+        {
+            // создаем оси
+            MatLabAxes2D myAxes = new MatLabAxes2D();
+            myAxes.SetObjectPropety("Title", sAxesTitle);
+            myAxes.iLength = iChartLength;
+            // подключаем источник точек
+            PointSource2D myPointSource = new PointSource2D(myAxes);
+            myPointSource.Subscribe(myPocManager);
+            myPointSource.lockalAddr = iPocketAddr;
+            // создаем область рисунка
+            MatLabFigure myFigure = new MatLabFigure();
+            myFigure.SetObjectPropety("Name", sFigName);
+            // помещаем оси на рисунок
+            myFigure.AddAxes(myAxes);
+            // Запускаем полученную конструкцию
+            myFigure.Start();
+        }
         //***************************************************************************************************
         //                          реализация интерфейса IObserver
         //***************************************************************************************************
@@ -124,65 +141,35 @@ namespace GUI_muscule
         }
         private void btShowChartButton_Click(object sender, EventArgs e)
         {
-            // создаем оси
-            MatLabAxes2D myAxes = new MatLabAxes2D();
-            myAxes.SetAxesPropety("Title", "График изменения длинны");
-            myAxes.iLength = 500;
-            // подключаем источник точек
-            PointSource2D myPointSource = new PointSource2D(myAxes);
-            myPointSource.Subscribe(myPocManager);
-            myPointSource.lockalAddr = Constants.ADDR_LENGTH;
-            // создаем область рисунка
-            MatLabFigure myFigure = new MatLabFigure();
-            myFigure.SetFigPropety("Name", "графическое окно");
-            // помещаем оси на рисунок
-            myFigure.AddAxes(myAxes);
-            // Запускаем полученную конструкцию
-            myFigure.Start();
-
-            /*MatLabChart2D plotter = new MatLabChart2D();
-            TreadedChart<int> myChart2D = new TreadedChart<int>();
-            myChart2D.SetChartPloter(plotter);
-            myChart2D.StartTread();
-            myChart2D.sName="Длинна";
-            PointSource2D newChart = new PointSource2D(myChart2D );
-            newChart.Subscribe(myPocManager);
-            newChart.lockalAddr = Constants.ADDR_LENGTH;*/
+            CreateSimpleChart("График длинны", "График изменения длинны", 500, Constants.ADDR_LENGTH);  
         }
 
         private void btPreasureChart_Click(object sender, EventArgs e)
         {
-            MatLabChart2D plotter = new MatLabChart2D();
-            TreadedChart<int> myChart2D = new TreadedChart<int>();
-            myChart2D.SetChartPloter(plotter);
-            myChart2D.StartTread();
-            myChart2D.sName = "График давления";
-            PointSource2D newChart = new PointSource2D(myChart2D);
-            newChart.Subscribe(myPocManager);
-            newChart.lockalAddr = Constants.ADDR_PREASURE;
+            CreateSimpleChart("График давления", "Изменение давления", 500, Constants.ADDR_PREASURE);
         }
 
         private void btTenzoButton_Click(object sender, EventArgs e)
         {
-            MatLabChart2D plotter = new MatLabChart2D();
-            TreadedChart<int> myChart2D = new TreadedChart<int>();
-            myChart2D.SetChartPloter(plotter);
-            myChart2D.StartTread();
-            myChart2D.sName = "График наргузки";
-            PointSource2D newChart = new PointSource2D(myChart2D);
-            newChart.Subscribe(myPocManager);
-            newChart.lockalAddr = Constants.ADDR_TENZO;
+            CreateSimpleChart("График наргузки", "Нагрузка", 500, Constants.ADDR_TENZO);
         }
 
         private void btSurfButton_Click(object sender, EventArgs e)
         {
-            MatLabChart3D plotter = new MatLabChart3D();
-            TreadedChart<stPoint3D> myChart3D = new TreadedChart<stPoint3D>();
-            myChart3D.SetChartPloter(plotter);
-            myChart3D.StartTread();
-            Pointsource3D point3Dgenerator = new Pointsource3D(myChart3D);
-            myChart3D.sName = "График наргузки";
-            point3Dgenerator.Subscribe(myPocManager);
+          // создаем оси
+            MatLabAxes3D myAxes = new MatLabAxes3D();
+            myAxes.SetObjectPropety("Title", "три дээээ");
+            myAxes.iLength =0;
+            // подключаем источник точек
+            Pointsource3D myPointSource = new Pointsource3D(myAxes);
+            myPointSource.Subscribe(myPocManager);
+            // создаем область рисунка
+            MatLabFigure myFigure = new MatLabFigure();
+            myFigure.SetObjectPropety("Name", "поверхность");
+            // помещаем оси на рисунок
+            myFigure.AddAxes(myAxes);
+            // Запускаем полученную конструкцию
+            myFigure.Start();
          }
 
         private void btStatistic_Click(object sender, EventArgs e)
@@ -191,7 +178,24 @@ namespace GUI_muscule
         }
         private void btLengthSpectr_Click(object sender, EventArgs e)
         {
-            MatLabChartSpectr plotter = new MatLabChartSpectr();
+            
+                 // создаем оси
+            MatLabAxesSpectr myAxes = new MatLabAxesSpectr();
+            myAxes.SetObjectPropety("Title", "Спектр длинны");
+            myAxes.iLength =500;
+            // подключаем источник точек
+            // подключаем источник точек
+            PointSource2D myPointSource = new PointSource2D(myAxes);
+            myPointSource.Subscribe(myPocManager);
+            myPointSource.lockalAddr = Constants.ADDR_LENGTH;
+            // создаем область рисунка
+            MatLabFigure myFigure = new MatLabFigure();
+            myFigure.SetObjectPropety("Name", "Спектр");
+            // помещаем оси на рисунок
+            myFigure.AddAxes(myAxes);
+            // Запускаем полученную конструкцию
+            myFigure.Start();
+          /*  MatLabChartSpectr plotter = new MatLabChartSpectr();
             TreadedChart<int> myChartSpectr = new TreadedChart<int>();
             myChartSpectr.SetChartPloter(plotter);
             myChartSpectr.StartTread();
@@ -199,6 +203,7 @@ namespace GUI_muscule
             PointSource2D newChart = new PointSource2D(myChartSpectr);
             newChart.Subscribe(myPocManager);
             newChart.lockalAddr = Constants.ADDR_LENGTH;
+           * */
         }
     }
 }

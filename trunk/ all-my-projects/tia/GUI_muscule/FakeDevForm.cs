@@ -47,38 +47,6 @@ namespace GUI_muscule
                 if (NewByteReceived != null) NewByteReceived(b);
             }
         }
-        /***********************************************************
-         * временные функции для тестирования 3Д графика
-         * *******************************************************/
-        TreadedChart<stPoint3D> TreadingChart;
-        MatLabChart3D ploter;
-        bool bChart3DInit=false;
-        void Create_chart3D()
-        {
-            TreadingChart=new TreadedChart<stPoint3D> ();
-            TreadingChart.sName = "test 3D chart";
-            ploter=new MatLabChart3D();
-            TreadingChart.SetChartPloter(ploter);
-            TreadingChart.StartTread();
-            //TreadingChart.bActivate = true;
-            bChart3DInit = true;
-        }
-        void Chart3D_IntegralTest()
-        {
-            if (bChart3DInit)   TreadingChart.AddPoint(GetRandomPoint()); 
-        }
-        stPoint3D GetRandomPoint()
-        {
-            Random rnd1 = new Random();
-            double dx = rnd1.Next(500);
-            double dy = rnd1.Next(900);
-            double dz = 100*Math.Sin(dx / 100) + 100*Math.Cos(dy / 100);
-            stPoint3D point;
-            point.uiX = (uint)dx;
-            point.uiY = (uint)dy;
-            point.uiZ = (uint)dz;
-            return point;
-        }
         /*********************************************************
         * реализация интерфейса ISerialByteSourse                *
         ********************************************************/
@@ -132,7 +100,6 @@ namespace GUI_muscule
 
         private void btTest3D_Click(object sender, EventArgs e)
         {
-            Create_chart3D();
         }
         private void timerPres_Tick(object sender, EventArgs e)
         {
@@ -169,8 +136,6 @@ namespace GUI_muscule
 
         private void timerTest3D_Tick(object sender, EventArgs e)
         {
-            // для тестирования 3д графика
-            Chart3D_IntegralTest();
         }
 
 

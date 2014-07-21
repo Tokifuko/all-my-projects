@@ -18,7 +18,7 @@ namespace GUI_muscule.Tests
         public void PointGen_GetCorrectDataCollection_PointGenerate()
         {
             DataPack_t tPack = new DataPack_t();
-            IChart<stPoint3D> fakeChart3D = Substitute.For<IChart<stPoint3D>>();
+            IPointRecever<stPoint3D> fakeChart3D = Substitute.For<IPointRecever<stPoint3D>>();
             Pointsource3D myPointGen = new Pointsource3D(fakeChart3D);
             tPack.Addr = Constants.ADDR_PREASURE;
             tPack.Data = 500;

@@ -11,43 +11,72 @@ using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabChats
 {
-    public struct stStringParameter
+    public struct stNameValue
     {
         public string sName;
         public string sValue;
     }
+    struct stObjNameValue
+    {
+        public MWArray hObject;
+        public string sName;
+        public string sValue;
+    }
     /********************************   StringPropertiySetter   *************************************
+     * Паттерн Singleton
     * StringPropertiySetter - класс для изменения свойств матлабовских обьектов
      * пары значений накапливаются в буфере и отправляются в библиотеку из
      * отделього потока.
     * ****************************************************************************/
     public class StringPropertiySetter
     {
-        MTLChart mtlChartInstance; // экземпляр библиотечного обьекта
-        BlockingCollection<stStringParameter> tInputQueue = new BlockingCollection<stStringParameter>();
-        MWArray hObject; // для этого обьекта изменяются свойства
-        Thread tTread;
-        public void SetParam(string sName, string sValue)
+        static BlockingCollection<stObjNameValue> tInputQueue = new BlockingCollection<stObjNameValue>();
+        static Thread tTread;
+        /*****************************************************************
+         * реализация паттерна Singleton
+         * *****************************************************************/
+        private static StringPropertiySetter theInstance = null;
+        private StringPropertiySetter() {  }
+        public static StringPropertiySetter Instance
         {
-            stStringParameter st;
+            get
+            {
+                if (theInstance == null)
+                {
+                    theInstance = new StringPropertiySetter();
+                    Init();
+                }
+                    
+                return theInstance;
+            }
+        }
+        /******************************************************************/
+        public void Dispose()
+        {
+            tTread.Abort();
+        }
+        public void SetParam(MWArray hObject, string sName, string sValue)
+        {
+            stObjNameValue st;
+            st.hObject = hObject;
             st.sName = sName;
             st.sValue = sValue;
             tInputQueue.Add(st);
         }
-        public void Init(MTLChart mtlInstance, MWArray hHandler)
+        private static void Init()
         {
-            mtlChartInstance = mtlInstance;
-            hObject = hHandler;
             tTread = new Thread(ThreadedMetod);
+            tTread.Name = "StringPropertiySetter";
             tTread.Start();
         }
-        void ThreadedMetod()
+        static void ThreadedMetod()
         {
-            stStringParameter stPar;
+            stObjNameValue stPar;
+            MTLChart mtlInstance = new MTLChart();
             while (true)
             {
                 stPar = tInputQueue.Take();
-                mtlChartInstance.SetObjProp(hObject, (MWCharArray)stPar.sName, (MWCharArray)stPar.sValue);
+                mtlInstance.SetObjProp(stPar.hObject, (MWCharArray)stPar.sName, (MWCharArray)stPar.sValue);
             }
         }
 
