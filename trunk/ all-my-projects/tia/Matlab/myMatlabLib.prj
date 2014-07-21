@@ -1,29 +1,29 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="448839814" file="C:\all-my-projects\tia\Matlab\drawgraph.prj" location="C:\all-my-projects\tia\Matlab" name="drawgraph" preferred-package-location="C:\all-my-projects\tia\Matlab\drawgraph\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
-    <param.appname>drawgraph</param.appname>
+  <configuration build-checksum="2811954937" file="C:\all-my-projects\tia\Matlab\myMatlabLib.prj" location="C:\all-my-projects\tia\Matlab" name="myMatlabLib" preferred-package-location="C:\all-my-projects\tia\Matlab\myMatlabLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+    <param.appname>myMatlabLib</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.authnamewatermark>Stefan</param.authnamewatermark>
     <param.email />
     <param.company />
-    <param.summary />
-    <param.description />
+    <param.summary>библиотека для построенияя графиков средствами МатЛаб</param.summary>
+    <param.description>Можно построить график.</param.description>
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\drawgraph\</param.installpath.string>
+    <param.installpath.string>\myMatlabLib\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\drawgraph\for_testing</param.intermediate>
-    <param.output>${PROJECT_ROOT}\drawgraph\for_redistribution</param.output>
+    <param.intermediate>${PROJECT_ROOT}\myMatlabLib\for_testing</param.intermediate>
+    <param.output>${PROJECT_ROOT}\myMatlabLib\for_redistribution</param.output>
     <param.user.defined.mcr.options />
     <param.embed.ctf>true</param.embed.ctf>
-    <param.server.ctf>${PROJECT_ROOT}\drawgraph\for_testing\PlotComp.ctf</param.server.ctf>
-    <param.server.readme>${PROJECT_ROOT}\drawgraph\for_testing\readme.txt</param.server.readme>
+    <param.server.ctf>${PROJECT_ROOT}\myMatlabLib\for_testing\myMatlabLib.ctf</param.server.ctf>
+    <param.server.readme>${PROJECT_ROOT}\myMatlabLib\for_testing\readme.txt</param.server.readme>
     <param.target.type>subtarget.net.component</param.target.type>
     <param.support.packages />
-    <param.namespace>PlotComp</param.namespace>
+    <param.namespace>myMatlabLib</param.namespace>
     <param.classorg />
     <param.function.data />
     <param.web.mcr>true</param.web.mcr>
@@ -36,26 +36,23 @@
     <param.create.log>false</param.create.log>
     <param.log.file />
     <param.user.only.registration>false</param.user.only.registration>
-    <param.net.framework>option.net.framework.default</param.net.framework>
+    <param.net.framework>option.net.framework.4.0</param.net.framework>
     <param.assembly.type>false</param.assembly.type>
     <param.encryption.key.file />
     <param.net.enable.remoting>false</param.net.enable.remoting>
     <param.net.tsa.enable>false</param.net.tsa.enable>
-    <param.net.tsa.assembly />
+    <param.net.tsa.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.assembly>
     <param.net.tsa.interface />
-    <param.net.tsa.namespace>PlotComp</param.net.tsa.namespace>
-    <param.net.tsa.superclass>Plotter</param.net.tsa.superclass>
+    <param.net.tsa.namespace>myMatlabLib</param.net.tsa.namespace>
+    <param.net.tsa.superclass>MTLChart</param.net.tsa.superclass>
     <param.net.tsa.metadata />
-    <param.net.tsa.metadata.assembly>C:\Users\Stefan\Documents\MATLAB</param.net.tsa.metadata.assembly>
+    <param.net.tsa.metadata.assembly>C:\all-my-projects\tia\GUI_muscule\PocketManager.cs</param.net.tsa.metadata.assembly>
     <unset>
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
       <param.email />
       <param.company />
-      <param.summary />
-      <param.description />
       <param.screenshot />
       <param.guid />
       <param.installpath.string />
@@ -69,6 +66,7 @@
       <param.server.ctf />
       <param.server.readme />
       <param.support.packages />
+      <param.namespace />
       <param.classorg />
       <param.function.data />
       <param.web.mcr />
@@ -81,12 +79,10 @@
       <param.create.log />
       <param.log.file />
       <param.user.only.registration />
-      <param.net.framework />
       <param.assembly.type />
       <param.encryption.key.file />
       <param.net.enable.remoting />
       <param.net.tsa.enable />
-      <param.net.tsa.assembly />
       <param.net.tsa.interface />
       <param.net.tsa.namespace />
       <param.net.tsa.superclass />
@@ -94,22 +90,37 @@
       <param.net.tsa.metadata.assembly />
     </unset>
     <fileset.exports>
-      <file>${PROJECT_ROOT}\drawgraph.m</file>
+      <file>${PROJECT_ROOT}\GetAxesHandle.m</file>
+      <file>${PROJECT_ROOT}\GetFigHandle.m</file>
+      <file>${PROJECT_ROOT}\PlotArray.m</file>
+      <file>${PROJECT_ROOT}\PlotArray3D.m</file>
+      <file>${PROJECT_ROOT}\PlotSpectr.m</file>
+      <file>${PROJECT_ROOT}\SetFigProp.m</file>
+      <file>${PROJECT_ROOT}\SetObjProp.m</file>
     </fileset.exports>
     <fileset.classes>
       <entity.package name="">
-        <entity.class name="Plotter">
-          <file>${PROJECT_ROOT}\drawgraph.m</file>
+        <entity.class name="MTLChart">
+          <file>${PROJECT_ROOT}\GetAxesHandle.m</file>
+          <file>${PROJECT_ROOT}\GetFigHandle.m</file>
+          <file>${PROJECT_ROOT}\PlotArray.m</file>
+          <file>${PROJECT_ROOT}\PlotArray3D.m</file>
+          <file>${PROJECT_ROOT}\PlotSpectr.m</file>
+          <file>${PROJECT_ROOT}\SetFigProp.m</file>
+          <file>${PROJECT_ROOT}\SetObjProp.m</file>
         </entity.class>
       </entity.package>
     </fileset.classes>
-    <fileset.resources />
+    <fileset.resources>
+      <file>${PROJECT_ROOT}\PolyfitnTools\polyfitn.m</file>
+      <file>${PROJECT_ROOT}\PolyfitnTools\polyvaln.m</file>
+    </fileset.resources>
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\drawgraph\for_testing" name="PlotComp_overview.html" optional="false">C:\all-my-projects\tia\Matlab\drawgraph\for_testing\PlotComp_overview.html</file>
-      <file location="${PROJECT_ROOT}\drawgraph\for_testing" name="PlotCompNative.dll" optional="false">C:\all-my-projects\tia\Matlab\drawgraph\for_testing\PlotCompNative.dll</file>
-      <file location="${PROJECT_ROOT}\drawgraph\for_testing" name="readme.txt" optional="true">C:\all-my-projects\tia\Matlab\drawgraph\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\drawgraph\for_testing" name="PlotComp.dll" optional="false">C:\all-my-projects\tia\Matlab\drawgraph\for_testing\PlotComp.dll</file>
+      <file location="${PROJECT_ROOT}\myMatlabLib\for_testing" name="myMatlabLib.dll" optional="false">C:\all-my-projects\tia\Matlab\myMatlabLib\for_testing\myMatlabLib.dll</file>
+      <file location="${PROJECT_ROOT}\myMatlabLib\for_testing" name="myMatlabLibNative.dll" optional="false">C:\all-my-projects\tia\Matlab\myMatlabLib\for_testing\myMatlabLibNative.dll</file>
+      <file location="${PROJECT_ROOT}\myMatlabLib\for_testing" name="myMatlabLib_overview.html" optional="false">C:\all-my-projects\tia\Matlab\myMatlabLib\for_testing\myMatlabLib_overview.html</file>
+      <file location="${PROJECT_ROOT}\myMatlabLib\for_testing" name="readme.txt" optional="true">C:\all-my-projects\tia\Matlab\myMatlabLib\for_testing\readme.txt</file>
     </build-deliverables>
     <workflow />
     <matlab>

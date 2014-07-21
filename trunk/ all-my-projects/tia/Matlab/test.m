@@ -14,7 +14,11 @@ x=x';
 y=y';
 z=z';
  PlotArray(hA,x);
- 
+ SetObjProp(hA,'Title','yfdfafs');
+ SetObjProp(hA,'Title','yfdfafs');
+ SetObjProp(hA,'Title','yfdfafs');
+ SetObjProp(hA,'Title','yfdfafs');
+% SetObjProp(hF,'Name','name');
 %PlotSpectr(hA,2,z);
 
 %PlotArray3D(hA,x*1000,y*1000,z*1000);
