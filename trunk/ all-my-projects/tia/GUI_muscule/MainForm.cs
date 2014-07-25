@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GUI_muscule.MatLabChats;
-using poc;
+using GUI_muscule.PacketManager;
 
 
 namespace GUI_muscule
@@ -16,7 +16,7 @@ namespace GUI_muscule
     public partial class MainForm : Form , IObserver<DataPack_t>
     {
         UInt32 i;
-        PocketManager myPocManager = new PocketManager();
+        PacketReciver myPocManager = new PacketReciver();
         MySerialPort mySerialPort = new MySerialPort();
         FakeDevForm myFakeDevForm =new FakeDevForm();
         StatisticForm myStatForm = new StatisticForm();

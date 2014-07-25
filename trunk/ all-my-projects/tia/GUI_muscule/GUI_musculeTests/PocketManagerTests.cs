@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using poc;
+using PacketManager;
 using NUnit.Framework;
-namespace poc.Tests
+namespace PacketManager.Tests
 {
     [TestFixture()]
     public class DataPack_tTests
