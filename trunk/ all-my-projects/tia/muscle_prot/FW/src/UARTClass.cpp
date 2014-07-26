@@ -132,7 +132,7 @@ void UART_Class :: UART_Init(USART_TypeDef* UART)
     NVIC_Init(&NVIC_InitStructure);
 
     /* Enable USART Receive interrupt */
-   // USART_ITConfig( UART, USART_IT_RXNE, ENABLE );
+    USART_ITConfig( UART, USART_IT_RXNE, ENABLE );
 
     /* Enable the USART */
     USART_Cmd(UART, ENABLE);
@@ -196,6 +196,7 @@ void UART_Class :: UART_InterruptHandler(void)
 	{
 	      cChar = USART_ReceiveData( pUART );
 	      FIFO_RxData.WriteByte(cChar);
+	     // if (Callback!=NULL) Callback(cChar);
           if (eco_in_flag) SendByte(cChar);
 	}
 }

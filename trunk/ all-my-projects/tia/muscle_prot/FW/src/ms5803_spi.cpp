@@ -223,14 +223,14 @@ void MS5803_Class :: Task(void)
 		case CALC_TEMP_STEP: // calc temp and coefficients
 			//------------------ temp ------------------
 			iD2=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
-			DbgUART->SendPrintF("Adc_2=%d \n",iD2);
+			//DbgUART->SendPrintF("Adc_2=%d \n",iD2);
 			dT=iD2-(MS5803_coefficients[5]<<8);
 			//DbgUART->SendPrintF("dT=%i \n",dT);
 			i32=MS5803_coefficients[6];
 			smult64_32_x_32(&dT,&i32, &i64);
 			i64=i64>>23;
 			TEMP=2000+i64;
-			DbgUART->SendPrintF("Temp_i=%i \n",TEMP);
+			//DbgUART->SendPrintF("Temp_i=%i \n",TEMP);
 //
 			//-------------- OFFset--------------------------
 			i32=MS5803_coefficients[4];
@@ -247,7 +247,7 @@ void MS5803_Class :: Task(void)
 			ui64=MS5803_coefficients[1];
 			ui64=ui64<<17;
 			SENS=ui64+SENS;
-			DbgUART->SendPrintF("Sens=%lld \n",SENS);
+			//DbgUART->SendPrintF("Sens=%lld \n",SENS);
 			if (SENS<0)
 				{
 					bSignMinus_SENS=true;
@@ -265,7 +265,7 @@ void MS5803_Class :: Task(void)
 			//Presure=(((iD1*SENS)>>21)-OFF)>>15;
 			iD1=SPI_MASTER_Buffer_Rx[3]+(SPI_MASTER_Buffer_Rx[2]<<8)+(SPI_MASTER_Buffer_Rx[1]<<16);
 			// показания АЦП - 24 бита.
-			DbgUART->SendPrintF("Adc_1=%d \n",iD1);
+			//DbgUART->SendPrintF("Adc_1=%d \n",iD1);
 			ui64=iD1;
 			// чтобы корректно умножить iD1 (24 бита) на SENS (41 бит) приводим их к 64 битам
 			// и умножаем методом Карацубы

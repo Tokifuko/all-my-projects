@@ -27,7 +27,8 @@
 void GeneralInit(void);
 void Ad7799Callback(uint32_t iData);
 void Ms5803Callback(uint32_t iData);
-void CallBackCalipers(uint32_t iData);
+void UplinkCallback(uint32_t iData);
+void CalipersCallBack(uint32_t iData);
 
 UART_Class DbgUART;
 UART_Class ComportUART;
@@ -62,15 +63,19 @@ int main(void)
 	ComportUART.UART_Init(USART3);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
+
 	ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
 	ms5803.DbgUART=&DbgUART;
 
+	//uplink.DbgUART=&DbgUART;
 	uplink.Init(0);
 	uplink.SetUart(&ComportUART);
+	uplink.Callback=UplinkCallback;
+
 	//i2cMgr.Init();
 	calipers.Init();
-	calipers.Callback=CallBackCalipers;
+	calipers.Callback=CalipersCallBack;
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
@@ -197,21 +202,25 @@ void Ad7799Callback(uint32_t iData)
 }
 void Ms5803Callback(uint32_t iData)
 {
-	DbgUART.SendPrintF("Pres=%d \n",(int32_t) iData);
+	//DbgUART.SendPrintF("Pres=%d \n",(int32_t) iData);
 	DataPack_t sDataPack;
 	sDataPack.Addr=DATA_PACK_ADDR_PRES;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 }
 
-void CallBackCalipers(uint32_t iData)
+void CalipersCallBack(uint32_t iData)
 {
-	DbgUART.SendPrintF("Calip=%d \n",iData);
+	//DbgUART.SendPrintF("Calip=%d \n",iData);
 	DataPack_t sDataPack;
 	sDataPack.Addr=DATA_PACK_ADDR_LENGTH;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 	//ComportUART.SendPrintF("Calip2=%d \n",i);
 	//ComportUART.SendByte('a');
+}
+void UplinkCallback(uint32_t iData)
+{
+	DbgUART.SendPrintF("Recived coommand=%d \n",iData);
 }
 

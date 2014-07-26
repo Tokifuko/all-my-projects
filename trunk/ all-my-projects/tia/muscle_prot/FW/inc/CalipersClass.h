@@ -44,7 +44,7 @@ private:
 public:
 	int32_t iSpiDataRx;
 	int32_t iTemp;
-    ftVoid_Void Callback;
+    ftVoid_uint32 Callback;
     void Init(void);
     void Task(void);
     void SCL_IRQ(void);

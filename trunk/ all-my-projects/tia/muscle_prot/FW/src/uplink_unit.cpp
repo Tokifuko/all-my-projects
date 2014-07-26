@@ -22,7 +22,26 @@ uint8_t UplinkClass :: Init(uint16_t iSize)
 
 void UplinkClass :: Task(void)
 {
-	while (!(pUART->FIFO_RxData.IsEmpty())) Recive(pUART->FIFO_RxData.SimpleReadByte());
+	// обрабатываем текущие буферы
+	uint8_t i=0;
+	DataPack_t* dpPack;
+	while (i<BUF_NAMBER)
+	{
+		if (BufArray[i].IsValidCommand()) // в буфере находится команда
+		{
+			//DbgUART->SendPrintF("IsValidCommand=true n=%d \n",i);
+			dpPack=BufArray[i].GetCommand();
+			if (Callback!=NULL) Callback(dpPack->Command);
+			BufArray[i].Clear();
+		}
+		i++;
+	}
+	// обрабатывам входящий байт
+	while (!(pUART->FIFO_RxData.IsEmpty()))
+	{
+		Recive(pUART->FIFO_RxData.SimpleReadByte());
+	}
+
 }
 
 void UplinkClass :: Send (DataPack_t* pDataPack)
@@ -74,19 +93,24 @@ void UplinkClass :: Recive(uint8_t chDataByte)
 	}// if
 }
 
-
 void SmartBufClass :: Insert(uint8_t chDataByte)
 {
 	if (IsValidCommand()) return; // buffer full
+	bEmptyFlag=false;
 	// check second prefix byte
 	if ((chByteCounter==1) & (chDataByte!=LO_DATA_PACK_PREF_BYTE))
 	{
 		Clear();
 		return;
 	}
-	*((uint8_t*)(&DataPack+chByteCounter))=chDataByte; // insert data byte in buffer of bytes
+	// insert data byte in buffer of bytes
+	uint8_t* pByte;
+	pByte=(uint8_t*)&DataPack;
+	pByte=pByte+chByteCounter;
+	*pByte=chDataByte;
 	chByteCounter++;
-	bEmptyFlag=false;
+
+
 	// processing data
 	if (chByteCounter==DATA_PACK_SIZE)
 	{
@@ -103,3 +127,4 @@ void SmartBufClass :: Clear(void)
 	bEmptyFlag=true;
 	bValidCommand=false;
 }
+

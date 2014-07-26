@@ -45,7 +45,7 @@ private:
 
 public:
     UART_Class* DbgUART;
-    ftVoid_Void Callback;
+    ftVoid_uint32 Callback;
     void Init(void);
     void Task (void);
     void StartTxRx(uint8_t chDataSize);

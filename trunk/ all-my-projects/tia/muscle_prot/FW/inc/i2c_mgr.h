@@ -62,7 +62,7 @@ struct I2C_Cmd_t {
     Buf8_t DataToWrite, DataToRead;     // Buffers of data to read or write
     uint8_t Address;                    // Device address
     CmdState_t State;
-    ftVoid_Void Callback;
+    ftVoid_uint32 Callback;
 };
 
 class i2cMgr_t {

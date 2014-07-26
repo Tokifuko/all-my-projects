@@ -233,7 +233,7 @@ namespace GUI_muscule
         }
        private void btComPortTest_Click(object sender, EventArgs e)
         {
-            myPacketTransmitter.SendPacket(34);                
+            myPacketTransmitter.SendPacket(34);
         }
     }
 }

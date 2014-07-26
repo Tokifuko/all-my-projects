@@ -16,7 +16,7 @@ typedef struct {
 typedef Buf8_t* Buf8_p;
 */
 // Functional types
-typedef void (*ftVoid_Void)(uint32_t iData);
+typedef void (*ftVoid_uint32)(uint32_t iData);
 
 //
 // Params:

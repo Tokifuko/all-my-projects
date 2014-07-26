@@ -9,6 +9,7 @@
 // Library configuration file.
 #include "stm32f10x_conf.h"
 #include "FIFOClass.h"
+//#include "common.h"
 #include <stdio.h>
 
 #define USART1_CLK      	RCC_APB2Periph_USART1
@@ -46,12 +47,6 @@
 #define UART3_BITS                  USART_StopBits_2
 
 #define PRINTF_BUF_SIZE		255
-//
-//typedef struct
-//{
-//    signed portCHAR* pData;
-//    portBASE_TYPE   iSize;
-//} MessageBuf_t;
 
 class UART_Class {
 private:
@@ -63,6 +58,7 @@ public:
     uint16_t        eco_out_flag;// флаг включающий эхо (то что выходит - подается на вход)
     FIFO_Class FIFO_TxData;
     FIFO_Class FIFO_RxData;
+ //   ftVoid_uint32 Callback;
     void UART_Init(USART_TypeDef* UART);
     void UART_StartTx(void);
     void UART_StartRx(void);
@@ -75,7 +71,7 @@ public:
     void SendBuf(uint16_t iDataSize, uint8_t* chData );
     void UART_InterruptHandler(void);
     void UART_DeInit();
-    // ~UART_Class(void); // деструктор
+    // ~UART_Class(void);
 };
 
 extern UART_Class* pUART1;
