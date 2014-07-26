@@ -13,8 +13,11 @@ namespace GUI_muscule
         void AddReceiver(ISerialByteReciver receiver);
         void DeleteReceiver(ISerialByteReciver receiver);
     }
-
-    public class MySerialPort : SerialPort, ISerialByteSourse
+    public interface ISerialByteTransmitter
+    {
+        void WriteData(byte[] buf);
+    }
+    public class MySerialPort : SerialPort, ISerialByteSourse, ISerialByteTransmitter
     {
         public MySerialPort()
         {
@@ -30,6 +33,15 @@ namespace GUI_muscule
             return "Порт:     " + this.PortName + '\n' +
                     "Скорость: " + this.BaudRate.ToString();
         }
+
+        /*********************************************************
+         * реализация интерфейса ISerialByteTransmitter          *
+          ********************************************************/
+        public void WriteData(byte[] buf)
+        {
+            base.Write(buf, 0, buf.Length);
+        }
+
         /*********************************************************
          * реализация интерфейса ISerialByteSourse                *
           ********************************************************/

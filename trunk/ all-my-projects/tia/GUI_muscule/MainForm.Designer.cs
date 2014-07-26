@@ -42,6 +42,7 @@
             this.btSurfButton = new System.Windows.Forms.Button();
             this.btStatistic = new System.Windows.Forms.Button();
             this.btLengthSpectr = new System.Windows.Forms.Button();
+            this.btComPortTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -167,11 +168,22 @@
             this.btLengthSpectr.UseVisualStyleBackColor = true;
             this.btLengthSpectr.Click += new System.EventHandler(this.btLengthSpectr_Click);
             // 
+            // btComPortTest
+            // 
+            this.btComPortTest.Location = new System.Drawing.Point(12, 147);
+            this.btComPortTest.Name = "btComPortTest";
+            this.btComPortTest.Size = new System.Drawing.Size(106, 23);
+            this.btComPortTest.TabIndex = 14;
+            this.btComPortTest.Text = "Com port test";
+            this.btComPortTest.UseVisualStyleBackColor = true;
+            this.btComPortTest.Click += new System.EventHandler(this.btComPortTest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 447);
+            this.Controls.Add(this.btComPortTest);
             this.Controls.Add(this.btLengthSpectr);
             this.Controls.Add(this.btStatistic);
             this.Controls.Add(this.btSurfButton);
@@ -209,6 +221,7 @@
         private System.Windows.Forms.Button btSurfButton;
         private System.Windows.Forms.Button btStatistic;
         private System.Windows.Forms.Button btLengthSpectr;
+        private System.Windows.Forms.Button btComPortTest;
     }
 }
 

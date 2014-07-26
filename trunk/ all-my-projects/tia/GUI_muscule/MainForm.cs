@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GUI_muscule.MatLabChats;
+using System.IO;
 using GUI_muscule.PacketManager;
 
 
@@ -16,8 +17,9 @@ namespace GUI_muscule
     public partial class MainForm : Form , IObserver<DataPack_t>
     {
         UInt32 i;
-        PacketReciver myPocManager = new PacketReciver();
         MySerialPort mySerialPort = new MySerialPort();
+        PacketTransmitter myPacketTransmitter = new PacketTransmitter();
+        PacketReciver myPacketReciver = new PacketReciver();  
         FakeDevForm myFakeDevForm =new FakeDevForm();
         StatisticForm myStatForm = new StatisticForm();
        // Grafics myGrafForm = new Grafics();
@@ -27,9 +29,8 @@ namespace GUI_muscule
             comboBox1_DropDown(null, null);
             label1.Text = mySerialPort.GetPortParam();
             myFakeDevForm.Dispose();
-            Subscribe(myPocManager);
-            myStatForm.Subscribe(myPocManager);
-           // myGrafForm.Show();
+            Subscribe(myPacketReciver);
+            myStatForm.Subscribe(myPacketReciver);
         }
         void CreateSimpleChart(string sFigName, string sAxesTitle, int iChartLength, byte iPocketAddr)
         {
@@ -39,7 +40,7 @@ namespace GUI_muscule
             myAxes.iLength = iChartLength;
             // подключаем источник точек
             PointSource2D myPointSource = new PointSource2D(myAxes);
-            myPointSource.Subscribe(myPocManager);
+            myPointSource.Subscribe(myPacketReciver);
             myPointSource.lockalAddr = iPocketAddr;
 
             // создаем область рисунка
@@ -63,11 +64,11 @@ namespace GUI_muscule
 
             // подключаем источник точек
             PointSource2D myPointSourceLine = new PointSource2D(myAxesLine);
-            myPointSourceLine.Subscribe(myPocManager);
+            myPointSourceLine.Subscribe(myPacketReciver);
             myPointSourceLine.lockalAddr = iPocketAddr;
             // подключаем источник точек
             PointSource2D myPointSourcSpectr = new PointSource2D(myAxesSpectr);
-            myPointSourcSpectr.Subscribe(myPocManager);
+            myPointSourcSpectr.Subscribe(myPacketReciver);
             myPointSourcSpectr.lockalAddr = iPocketAddr;
 
             // создаем область рисунка
@@ -113,8 +114,9 @@ namespace GUI_muscule
             {
                 mySerialPort.Close();
                 logTextBox.AppendText("порт закрыт" + '\n');
-                mySerialPort.DeleteReceiver(myPocManager);
+                mySerialPort.DeleteReceiver(myPacketReciver);
                 mySerialPort.DeleteReceiver(myStatForm);
+                myPacketTransmitter.SetByteTransmitter(null);
             }
             else
             {
@@ -122,8 +124,9 @@ namespace GUI_muscule
                 // подключаем Менаджер Пакетов к com- порту
                 if (mySerialPort.IsOpen)
                 {
-                    mySerialPort.AddReceiver(myPocManager);
+                    mySerialPort.AddReceiver(myPacketReciver);
                     mySerialPort.AddReceiver(myStatForm);
+                    myPacketTransmitter.SetByteTransmitter(mySerialPort);
                 }
             }
         }
@@ -160,7 +163,7 @@ namespace GUI_muscule
             {
                 myFakeDevForm = new FakeDevForm();
                 myFakeDevForm.Show();
-                myFakeDevForm.AddReceiver(myPocManager);
+                myFakeDevForm.AddReceiver(myPacketReciver);
                 myFakeDevForm.AddReceiver(myStatForm);
             }
             else
@@ -191,7 +194,7 @@ namespace GUI_muscule
             myAxes.iLength =0;
             // подключаем источник точек
             Pointsource3D myPointSource = new Pointsource3D(myAxes);
-            myPointSource.Subscribe(myPocManager);
+            myPointSource.Subscribe(myPacketReciver);
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
             myFigure.SetObjectPropety("Name", "поверхность");
@@ -213,7 +216,7 @@ namespace GUI_muscule
             myAxes.iLength =500;
             // подключаем источник точек
             PointSource2D myPointSource = new PointSource2D(myAxes);
-            myPointSource.Subscribe(myPocManager);
+            myPointSource.Subscribe(myPacketReciver);
             myPointSource.lockalAddr = Constants.ADDR_LENGTH;
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
@@ -223,10 +226,14 @@ namespace GUI_muscule
             // Запускаем полученную конструкцию
             myFigure.Start();
         }
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            StringPropertiySetter.Instance.Dispose(); ;
+            StringPropertiySetter.Instance.Dispose();
+            myPacketTransmitter.Dispose();
+        }
+       private void btComPortTest_Click(object sender, EventArgs e)
+        {
+            myPacketTransmitter.SendPacket(34);                
         }
     }
 }
