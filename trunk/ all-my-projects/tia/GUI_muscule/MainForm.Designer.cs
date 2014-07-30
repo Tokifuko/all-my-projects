@@ -43,6 +43,7 @@
             this.btStatistic = new System.Windows.Forms.Button();
             this.btLengthSpectr = new System.Windows.Forms.Button();
             this.btComPortTest = new System.Windows.Forms.Button();
+            this.btValveControl = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -82,7 +83,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(376, 69);
+            this.label2.Location = new System.Drawing.Point(189, 102);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 17);
             this.label2.TabIndex = 5;
@@ -178,11 +179,22 @@
             this.btComPortTest.UseVisualStyleBackColor = true;
             this.btComPortTest.Click += new System.EventHandler(this.btComPortTest_Click);
             // 
+            // btValveControl
+            // 
+            this.btValveControl.Location = new System.Drawing.Point(331, 389);
+            this.btValveControl.Name = "btValveControl";
+            this.btValveControl.Size = new System.Drawing.Size(196, 23);
+            this.btValveControl.TabIndex = 15;
+            this.btValveControl.Text = "Управление клапанами";
+            this.btValveControl.UseVisualStyleBackColor = true;
+            this.btValveControl.Click += new System.EventHandler(this.btValveControl_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(574, 447);
+            this.Controls.Add(this.btValveControl);
             this.Controls.Add(this.btComPortTest);
             this.Controls.Add(this.btLengthSpectr);
             this.Controls.Add(this.btStatistic);
@@ -222,6 +234,7 @@
         private System.Windows.Forms.Button btStatistic;
         private System.Windows.Forms.Button btLengthSpectr;
         private System.Windows.Forms.Button btComPortTest;
+        private System.Windows.Forms.Button btValveControl;
     }
 }
 

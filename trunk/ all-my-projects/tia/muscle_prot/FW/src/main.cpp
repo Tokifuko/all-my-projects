@@ -15,6 +15,7 @@
 #include "kl_lib.h"
 #include "CalipersClass.h"
 #include "uplink_unit.h"
+#include "ValveControlClass.h"
 
 #include "UARTClass.h"
 
@@ -41,6 +42,9 @@ UART_Class* pUART5;
 AD7799_Class ad7799;
 MS5803_Class ms5803;
 UplinkClass uplink;
+ValveControlClass ValveControl;
+
+
 //i2cMgr_t i2cMgr;
 uint32_t iTemp;
 calipers_t calipers;
@@ -76,6 +80,9 @@ int main(void)
 	//i2cMgr.Init();
 	calipers.Init();
 	calipers.Callback=CalipersCallBack;
+
+	ValveControl.Init();
+	uint8_t bPWM=20;
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
 
@@ -120,6 +127,8 @@ int main(void)
     	{
     		if (flag==0)
     			{
+    				ValveControl.SetCh1(bPWM);
+    				bPWM+=10;
     				BLedDiscOn();
     				flag=1;
 

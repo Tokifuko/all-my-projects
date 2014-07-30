@@ -85,12 +85,6 @@
     <Compile Include="FakeDevForm.Designer.cs">
       <DependentUpon>FakeDevForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Grafics.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Grafics.Designer.cs">
-      <DependentUpon>Grafics.cs</DependentUpon>
-    </Compile>
     <Compile Include="MatLabChats\MatLabAxes.cs" />
     <Compile Include="MatLabChats\IMatLabLib.cs" />
     <Compile Include="MatLabChats\PointSource.cs" />
@@ -112,11 +106,14 @@
     <Compile Include="StatisticForm.Designer.cs">
       <DependentUpon>StatisticForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValveControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValveControl.Designer.cs">
+      <DependentUpon>ValveControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FakeDevForm.resx">
       <DependentUpon>FakeDevForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Grafics.resx">
-      <DependentUpon>Grafics.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -133,6 +130,9 @@
     </Compile>
     <EmbeddedResource Include="StatisticForm.resx">
       <DependentUpon>StatisticForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValveControl.resx">
+      <DependentUpon>ValveControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
