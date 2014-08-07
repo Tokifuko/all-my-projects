@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GUI_muscule.PacketManager;
 using PacketManager;
 using NUnit.Framework;
 namespace PacketManager.Tests
@@ -91,6 +92,9 @@ namespace PacketManager.Tests
             Assert.IsTrue(myDataPack.Addr == p.DataPack.Addr);
             Assert.IsTrue(myDataPack.Reserv == p.DataPack.Reserv);
             Assert.IsTrue(myDataPack.Data == p.DataPack.Data);
+            byte[] array;// = new byte[Constants.POCKET_LENGTH];
+            array = myDataPack.ConverToBytes();
+            Assert.IsTrue(array.SequenceEqual(testPack));
         }
     }
 }

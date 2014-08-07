@@ -7,7 +7,7 @@ using GUI_muscule.MatLabChats;
 using NUnit.Framework;
 using NSubstitute;
 
-using PacketManager;
+using GUI_muscule.PacketManager;
 
 namespace GUI_muscule.MatLabChats.Tests
 {
@@ -20,10 +20,10 @@ namespace GUI_muscule.MatLabChats.Tests
         {
             DataPack_t myDataPack = new DataPack_t();
             myDataPack.Data = 1234;
-            myDataPack.Addr = Constants.ADDR_LENGTH;
+            myDataPack.Addr = Constants.COMM_RX_LENGTH;
             IPointRecever<int> FakeMTLlib = Substitute.For<IPointRecever<int>>();
             PointSource2D testChart = new PointSource2D(FakeMTLlib);
-            testChart.lockalAddr = Constants.ADDR_LENGTH;
+            testChart.lockalCommand = Constants.COMM_RX_LENGTH;
             testChart.OnNext(myDataPack);
             FakeMTLlib.Received().AddPoint(1234);
         }

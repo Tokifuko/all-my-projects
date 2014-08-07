@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GUI_muscule;
-using PacketManager;
+using GUI_muscule.PacketManager;
 using GUI_muscule.MatLabChats;
 using NUnit.Framework;
 using NSubstitute;
@@ -20,17 +20,17 @@ namespace GUI_muscule.Tests
             DataPack_t tPack = new DataPack_t();
             IPointRecever<stPoint3D> fakeChart3D = Substitute.For<IPointRecever<stPoint3D>>();
             Pointsource3D myPointGen = new Pointsource3D(fakeChart3D);
-            tPack.Addr = Constants.ADDR_PREASURE;
+            tPack.Addr = Constants.COMM_RX_PREASURE;
             tPack.Data = 500;
             tPack.FullCrcAndPrefixField();
             myPointGen.OnNext(tPack);
 
-            tPack.Addr = Constants.ADDR_TENZO;
+            tPack.Addr = Constants.COMM_RX_TENZO;
             tPack.Data = 700;
             tPack.FullCrcAndPrefixField();
             myPointGen.OnNext(tPack);
 
-            tPack.Addr = Constants.ADDR_LENGTH;
+            tPack.Addr = Constants.COMM_RX_LENGTH;
             tPack.Data = 123;
             tPack.FullCrcAndPrefixField();
             myPointGen.OnNext(tPack);
@@ -42,12 +42,12 @@ namespace GUI_muscule.Tests
             tTestPoint.uiZ=123;
 
 
-            tPack.Addr = Constants.ADDR_TENZO;
+            tPack.Addr = Constants.COMM_RX_TENZO;
             tPack.Data = 500;
             tPack.FullCrcAndPrefixField();
             myPointGen.OnNext(tPack);
 
-            tPack.Addr = Constants.ADDR_PREASURE;
+            tPack.Addr = Constants.COMM_RX_PREASURE;
             tPack.Data = 700;
             tPack.FullCrcAndPrefixField();
             myPointGen.OnNext(tPack);

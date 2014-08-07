@@ -196,7 +196,9 @@ void GeneralInit(void) {
 void Ad7799Callback(uint32_t iData)
 {
 	DataPack_t sDataPack;
-	sDataPack.Addr=DATA_PACK_ADDR_TENZO;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_ADDR_TENZO;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 	/*iTemp++;
@@ -213,7 +215,9 @@ void Ms5803Callback(uint32_t iData)
 {
 	//DbgUART.SendPrintF("Pres=%d \n",(int32_t) iData);
 	DataPack_t sDataPack;
-	sDataPack.Addr=DATA_PACK_ADDR_PRES;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_ADDR_PRES;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 }
@@ -222,7 +226,9 @@ void CalipersCallBack(uint32_t iData)
 {
 	//DbgUART.SendPrintF("Calip=%d \n",iData);
 	DataPack_t sDataPack;
-	sDataPack.Addr=DATA_PACK_ADDR_LENGTH;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_ADDR_LENGTH;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 	//ComportUART.SendPrintF("Calip2=%d \n",i);

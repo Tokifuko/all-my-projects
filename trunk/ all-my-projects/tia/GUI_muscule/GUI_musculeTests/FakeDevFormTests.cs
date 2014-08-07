@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using GUI_muscule;
 using NUnit.Framework;
 using NSubstitute;
-using PacketManager;
+using GUI_muscule.PacketManager;
 
 namespace GUI_muscule.Tests
 {

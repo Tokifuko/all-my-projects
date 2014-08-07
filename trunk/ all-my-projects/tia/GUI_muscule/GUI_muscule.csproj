@@ -112,6 +112,7 @@
     <Compile Include="ValveControl.Designer.cs">
       <DependentUpon>ValveControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValveDriver.cs" />
     <EmbeddedResource Include="FakeDevForm.resx">
       <DependentUpon>FakeDevForm.cs</DependentUpon>
     </EmbeddedResource>

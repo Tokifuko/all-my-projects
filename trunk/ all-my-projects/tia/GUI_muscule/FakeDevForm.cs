@@ -105,7 +105,7 @@ namespace GUI_muscule
         {
             dwPresCounter += 2;
             lockalDataPack.Data = (uint)GetSinData(dwPresCounter);
-            lockalDataPack.Addr = Constants.ADDR_PREASURE;
+            lockalDataPack.Command = Constants.COMM_RX_PREASURE;
             lockalDataPack.FullCrcAndPrefixField();
             SendDataPack(lockalDataPack);
         }
@@ -113,7 +113,7 @@ namespace GUI_muscule
         {
             dwTenzoCounter += 2;
             lockalDataPack.Data = (uint)GetSinData(dwTenzoCounter);
-            lockalDataPack.Addr = Constants.ADDR_TENZO;
+            lockalDataPack.Command = Constants.COMM_RX_TENZO;
             lockalDataPack.FullCrcAndPrefixField();
             SendDataPack(lockalDataPack);
         }
@@ -129,7 +129,7 @@ namespace GUI_muscule
             dwPres = GetSinData(dwPresCounter);
             dwLen = Math.Sin(dwTenzo / 240) + Math.Cos(dwPres / 200);
             lockalDataPack.Data = (uint)(((dwLen + 2) * 1000) + delta);
-            lockalDataPack.Addr = Constants.ADDR_LENGTH;
+            lockalDataPack.Command = Constants.COMM_RX_LENGTH;
             lockalDataPack.FullCrcAndPrefixField();
             SendDataPack(lockalDataPack);
         }

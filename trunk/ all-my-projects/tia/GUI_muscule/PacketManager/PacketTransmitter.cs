@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace GUI_muscule.PacketManager
 {
-    public class PacketTransmitter
+    public interface IPacketTransmitter
+    {
+        void SendPacket(byte bCommand = 0, byte bAddr = Constants.COMM_RX_DEF, UInt32 uiData = 0, UInt16 uiReserv = 0);
+    }
+    public class PacketTransmitter : IPacketTransmitter
     {
         BlockingCollection<DataPack_t> tTxQueue = new BlockingCollection<DataPack_t>();
         Thread tTread;
@@ -17,7 +21,7 @@ namespace GUI_muscule.PacketManager
         {
             tTread = new Thread(ThreadMetod);
             tTread.Name = "PacketTransmitter";
-            tTread.Start(); 
+            tTread.Start();
         }
         public void Dispose()
         {
@@ -27,7 +31,7 @@ namespace GUI_muscule.PacketManager
         {
             myByteTransmitter = SerialByteTransmitter;
         }
-        public void SendPacket(byte bCommand=0, byte bAddr=Constants.ADDR_DEF, UInt32 uiData=0, UInt16 uiReserv=0)
+        public void SendPacket(byte bCommand = 0, byte bAddr = Constants.COMM_RX_DEF, UInt32 uiData = 0, UInt16 uiReserv = 0)
         {
             DataPack_t myNewPack = new DataPack_t();
             myNewPack.Command = bCommand;
@@ -44,7 +48,7 @@ namespace GUI_muscule.PacketManager
             while (true)
             {
                 dpPackToSend = tTxQueue.Take();
-                buf=dpPackToSend.ConverToBytes();
+                buf = dpPackToSend.ConverToBytes();
                 if (myByteTransmitter != null) myByteTransmitter.WriteData(buf);
             }
         }

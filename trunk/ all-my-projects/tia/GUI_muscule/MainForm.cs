@@ -42,7 +42,7 @@ namespace GUI_muscule
             // подключаем источник точек
             PointSource2D myPointSource = new PointSource2D(myAxes);
             myPointSource.Subscribe(myPacketReciver);
-            myPointSource.lockalAddr = iPocketAddr;
+            myPointSource.lockalCommand = iPocketAddr;
 
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
@@ -66,11 +66,11 @@ namespace GUI_muscule
             // подключаем источник точек
             PointSource2D myPointSourceLine = new PointSource2D(myAxesLine);
             myPointSourceLine.Subscribe(myPacketReciver);
-            myPointSourceLine.lockalAddr = iPocketAddr;
+            myPointSourceLine.lockalCommand = iPocketAddr;
             // подключаем источник точек
             PointSource2D myPointSourcSpectr = new PointSource2D(myAxesSpectr);
             myPointSourcSpectr.Subscribe(myPacketReciver);
-            myPointSourcSpectr.lockalAddr = iPocketAddr;
+            myPointSourcSpectr.lockalCommand = iPocketAddr;
 
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
@@ -116,7 +116,7 @@ namespace GUI_muscule
                 mySerialPort.Close();
                 logTextBox.AppendText("порт закрыт" + '\n');
                 mySerialPort.DeleteReceiver(myPacketReciver);
-                mySerialPort.DeleteReceiver(myStatForm);
+                mySerialPort.DeleteReceiver(myStatForm); // только для подсчета байт
                 myPacketTransmitter.SetByteTransmitter(null);
             }
             else
@@ -126,7 +126,7 @@ namespace GUI_muscule
                 if (mySerialPort.IsOpen)
                 {
                     mySerialPort.AddReceiver(myPacketReciver);
-                    mySerialPort.AddReceiver(myStatForm);
+                    mySerialPort.AddReceiver(myStatForm); // только для подсчета байт
                     myPacketTransmitter.SetByteTransmitter(mySerialPort);
                 }
             }
@@ -174,17 +174,17 @@ namespace GUI_muscule
         }
         private void btShowChartButton_Click(object sender, EventArgs e)
         {
-            CreateDouble_ChartAndSpectr("График длинны", "График изменения длинны", 500, Constants.ADDR_LENGTH);  
+            CreateDouble_ChartAndSpectr("График длинны", "График изменения длинны", 500, Constants.COMM_RX_LENGTH);  
         }
 
         private void btPreasureChart_Click(object sender, EventArgs e)
         {
-            CreateSimpleChart("График давления", "Изменение давления", 500, Constants.ADDR_PREASURE);
+            CreateSimpleChart("График давления", "Изменение давления", 500, Constants.COMM_RX_PREASURE);
         }
 
         private void btTenzoButton_Click(object sender, EventArgs e)
         {
-            CreateSimpleChart("График наргузки", "Нагрузка", 500, Constants.ADDR_TENZO);
+            CreateDouble_ChartAndSpectr("График наргузки", "Нагрузка", 500, Constants.COMM_RX_TENZO);
         }
 
         private void btSurfButton_Click(object sender, EventArgs e)
@@ -218,7 +218,7 @@ namespace GUI_muscule
             // подключаем источник точек
             PointSource2D myPointSource = new PointSource2D(myAxes);
             myPointSource.Subscribe(myPacketReciver);
-            myPointSource.lockalAddr = Constants.ADDR_LENGTH;
+            myPointSource.lockalCommand = Constants.COMM_RX_LENGTH;
             // создаем область рисунка
             MatLabFigure myFigure = new MatLabFigure();
             myFigure.SetObjectPropety("Name", "Спектр");

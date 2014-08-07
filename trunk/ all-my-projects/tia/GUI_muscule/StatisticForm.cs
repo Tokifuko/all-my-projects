@@ -54,16 +54,16 @@ namespace GUI_muscule
         public virtual void OnNext(DataPack_t value)
         {
             myTotalPocket.NewSample();
-            switch(value.Addr)
+            switch(value.Command)
             {
                      //iTenzoPocket, iLengthPocket, iTempPocket, iOtherPocket;
-                case Constants.ADDR_PREASURE:
+                case Constants.COMM_RX_PREASURE:
                     myPresPocket.NewSample();
                     break;
-                case Constants.ADDR_TENZO:
+                case Constants.COMM_RX_TENZO:
                     myTenzoPocket.NewSample();
                     break;
-                case Constants.ADDR_LENGTH:
+                case Constants.COMM_RX_LENGTH:
                     myLengthPocket.NewSample();
                     break;
                 /*case Constants.:

@@ -36,24 +36,24 @@ namespace GUI_muscule.MatLabChats
          public virtual void OnNext(DataPack_t value)
          {
              // Метод вызывается из потока СОМ-порта
-             PointProcces(value.Addr, value.Data);
+             PointProcces(value.Command, value.Data);
          }
      }
      /*---------------------------- Pointsource2D -----------------------------
-     * класс получает от источника пакет данных, сравнивает поле Addr с lockalAddr
+     * класс получает от источника пакет данных, сравнивает поле Addr с lockalCommand
       * если совпадает  - отправляет данные приемнику
      * --------------------------------------------------------------------*/
      public class PointSource2D : PointSourceBase<int>
     {
-        public byte lockalAddr=Constants.ADDR_DEF;
+        public byte lockalCommand=Constants.COMM_RX_DEF;
         public PointSource2D(IPointRecever<int> tPointReciver)
         {
             myPointRecever = tPointReciver;
             myPointRecever.pCloseCallback = ChartFormClose;
         }
-        override protected void PointProcces(byte bAddr, UInt32 uiData)
+        override protected void PointProcces(byte bCommand, UInt32 uiData)
          {
-             if (bAddr == lockalAddr)
+             if (bCommand == lockalCommand)
              {
                  if (myPointRecever!=null) myPointRecever.AddPoint((int)uiData);
              }
@@ -67,9 +67,9 @@ namespace GUI_muscule.MatLabChats
     * --------------------------------------------------------------------*/
      public class Pointsource3D : PointSourceBase<stPoint3D>
     {
-        const byte typeX = Constants.ADDR_PREASURE;
-        const byte typeY = Constants.ADDR_TENZO;
-        const byte typeZ = Constants.ADDR_LENGTH;
+        const byte typeX = Constants.COMM_RX_PREASURE;
+        const byte typeY = Constants.COMM_RX_TENZO;
+        const byte typeZ = Constants.COMM_RX_LENGTH;
 
         stPoint3D tLastPoint;
         bool bX, bY, bZ;
@@ -78,9 +78,9 @@ namespace GUI_muscule.MatLabChats
             myPointRecever = tPointReciver;
             myPointRecever.pCloseCallback = ChartFormClose;
         }
-        override protected void PointProcces(byte bAddr, UInt32 uiData)
+        override protected void PointProcces(byte bCommand, UInt32 uiData)
         {
-            switch (bAddr)
+            switch (bCommand)
             {
                 case typeX:
                     tLastPoint.uiX = uiData;
