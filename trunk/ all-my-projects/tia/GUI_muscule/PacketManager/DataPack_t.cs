@@ -13,10 +13,17 @@ namespace GUI_muscule.PacketManager
         public const byte POCKET_HI_PREFIX = 0xA5;
         public const UInt16 POCKET_PREFIX = 0xA55A;
         public const int POCKET_LENGTH = 12;
-        public const byte ADDR_PREASURE = 2;
-        public const byte ADDR_TENZO = 4;
-        public const byte ADDR_LENGTH = 8;
-        public const byte ADDR_DEF = 0;
+        public const byte COMM_RX_PREASURE = 0x02;
+        public const byte COMM_RX_TENZO = 0x04;
+        public const byte COMM_RX_LENGTH = 0x08;
+        public const byte COMM_RX_TEMP = 0x0f;
+        public const byte COMM_RX_DEF = 0;
+        public const byte COMM_TX_VALVE_UP_DRIVE = 0x12;
+        public const byte COMM_TX_VALVE_DOWN_DRIVE = 0x14;
+        public const byte COMM_TX_VALVE_UP_GET_STATE = 0x22;
+        public const byte COMM_TX_VALVE_DOWN_GET_STATE = 0x24;
+        public const byte COMM_RX_VALVE_UP_STATE = 0x42;
+        public const byte COMM_RX_VALVE_DOWN_STATE = 0x44;
     }
 
     public struct DataPack_t
