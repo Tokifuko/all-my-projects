@@ -51,7 +51,7 @@ private:
 	uint8_t chByteCounter;
 public:
 	void Insert(uint8_t chDataByte);
-	void Process(void);
+	//void Process(void);
 	void Clear (void);
 	bool IsValidCommand (void) {return bValidCommand;};
 	bool IsEmpty (void) {return bEmptyFlag;};

@@ -54,19 +54,19 @@ void UplinkClass :: Send (DataPack_t* pDataPack)
 	return;
 }
 
-DataPack_t* UplinkClass :: GetCommand (void)
-{
-	uint8_t i=0;
-	while (i<BUF_NAMBER)
-	{
-		if (/*IsValidCommand()*/1)
-		{
-			/*gjfgjhfghj*/;
-		}
-		i++;
-	}
-	return NULL;
-}
+//DataPack_t* UplinkClass :: GetCommand (void)
+//{
+//	uint8_t i=0;
+//	while (i<BUF_NAMBER)
+//	{
+//		if (/*IsValidCommand()*/1)
+//		{
+//			/*gjfgjhfghj*/;
+//		}
+//		i++;
+//	}
+//	return NULL;
+//}
 
 void UplinkClass :: Recive(uint8_t chDataByte)
 {
