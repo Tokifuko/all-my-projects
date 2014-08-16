@@ -28,7 +28,7 @@
 void GeneralInit(void);
 void Ad7799Callback(uint32_t iData);
 void Ms5803Callback(uint32_t iData);
-void UplinkCallback(uint32_t iData);
+void UplinkCallback(DataPack_t* pDataPack);
 void CalipersCallBack(uint32_t iData);
 
 UART_Class DbgUART;
@@ -42,7 +42,9 @@ UART_Class* pUART5;
 AD7799_Class ad7799;
 MS5803_Class ms5803;
 UplinkClass uplink;
-ValveControlClass ValveControl;
+DoubleChanelPwmClass DoubleChanelPwm;
+ValveControlClass ValveIn;
+ValveControlClass ValveOut;
 
 
 //i2cMgr_t i2cMgr;
@@ -81,7 +83,10 @@ int main(void)
 	calipers.Init();
 	calipers.Callback=CalipersCallBack;
 
-	ValveControl.Init();
+	DoubleChanelPwm.Init();
+
+	ValveIn.Init(&DoubleChanelPwm,1);
+	ValveOut.Init(&DoubleChanelPwm,2);
 	uint8_t bPWM=20;
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
@@ -90,6 +95,8 @@ int main(void)
 	Delay.Reset(&iUserBattonTimer);
     while(1)
     {
+    	ValveIn.Task();
+    	ValveOut.Task();
     	ad7799.Task();
     	ms5803.Task();
     	//Delay.ms(500);
@@ -127,7 +134,8 @@ int main(void)
     	{
     		if (flag==0)
     			{
-    				ValveControl.SetCh1(bPWM);
+    				//ValveIn.Open(10,bPWM);
+    				//ValveOut.Close();
     				bPWM+=10;
     				BLedDiscOn();
     				flag=1;
@@ -136,15 +144,14 @@ int main(void)
     				//ms5803.SendReset();
     				//i2cMgr.AddCmd(comRead);
     				ad7799.PswPinOn();
-
-
     			}
     			else
     			{
     				//GPIO_SetBits(GPIOB,GPIO_Pin_12);
     				//i2cMgr.AddCmd(comReadStart);
     				//DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
-
+    				//ValveIn.Close();
+    				//ValveOut.Open(10,bPWM);
     			  //  Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
@@ -234,8 +241,29 @@ void CalipersCallBack(uint32_t iData)
 	//ComportUART.SendPrintF("Calip2=%d \n",i);
 	//ComportUART.SendByte('a');
 }
-void UplinkCallback(uint32_t iData)
+void UplinkCallback(DataPack_t* pDataPack)
 {
-	DbgUART.SendPrintF("Recived coommand=%d \n",iData);
+	uint8_t bCommand=pDataPack->Command;
+	uint32_t uiData=pDataPack->Data;
+	uint8_t bPow;
+	uint8_t bTime;
+
+	bPow=*(((uint8_t*)&uiData)+1);
+	bTime=*(((uint8_t*)&uiData)+3);
+	DbgUART.SendPrintF("Data=%X \n",uiData);
+	switch (bCommand)
+	{
+	case 0x12:
+		DbgUART.SendPrintF("ValveIn Command");
+		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
+		ValveIn.Open(bTime,bPow);
+		break;
+	case 0x14:
+		DbgUART.SendPrintF("ValveOut Command");
+		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
+		break;
+	}
+
+
 }
 

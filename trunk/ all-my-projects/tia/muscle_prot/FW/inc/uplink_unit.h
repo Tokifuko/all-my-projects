@@ -14,9 +14,9 @@
 #define DATA_PACK_SIZE	sizeof(DataPack_t) // размер структуры
 #define DATA_CRC_CALC_SIZE	DATA_PACK_SIZE-4 // кол-во байт, по которым считается CRC16
 
-#define DATA_PACK_PREF	0x5AA5 // префикс
-#define HI_DATA_PACK_PREF_BYTE	0x5A
-#define LO_DATA_PACK_PREF_BYTE	0xA5
+#define DATA_PACK_PREF	0x5AA5 // префикс, записан в обратном порядке байт
+#define HI_DATA_PACK_PREF_BYTE	0xA5
+#define LO_DATA_PACK_PREF_BYTE	0x5A
 #define BUF_NAMBER			4
 
 #define CRC16_INIT		0x00
@@ -43,6 +43,8 @@ struct DataPack_t {
     uint32_t Data;
 };
 
+typedef void (*ftVoid_pDataPack)(DataPack_t* pDataPack);
+
 class SmartBufClass {
 private:
 	DataPack_t DataPack;
@@ -64,7 +66,7 @@ private:
 	SmartBufClass BufArray[BUF_NAMBER];
 public:
 	//UART_Class* DbgUART;
-	ftVoid_uint32 Callback;
+	ftVoid_pDataPack Callback;
 	void SetUart(UART_Class* p) {pUART=p;};
 	uint8_t Init(uint16_t iSize);
 	void Send (DataPack_t* pDataPack);

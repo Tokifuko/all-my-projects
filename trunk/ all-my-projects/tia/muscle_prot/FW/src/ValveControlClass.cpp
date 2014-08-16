@@ -8,27 +8,33 @@
 #include "stm32f10x_tim.h"
 #include "stm32f10x_rcc.h"
 #include "kl_lib.h"
+#include "delay_util.h"
 
-void ValveControlClass::Init(void)
+/************************  DoubleChanelPwmClass  ****************************************/
+// класс настраивает таймер на работу с двумя каналами ШИМ и
+// возвращает указатели на функции для контроля этих каналов
+/**************************************************************************************/
+// TODO: откалибровать таймер !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void DoubleChanelPwmClass::Init(void)
 {
-	  RCC_APB1PeriphClockCmd(VALVE_TIM_CLK, ENABLE);
+	RCC_APB1PeriphClockCmd(VALVE_TIM_CLK, ENABLE);
 
 	  /* GPIOA and GPIOB clock enable */
 	  klGpioSetupByMsk(VALVE_CH1_PORT,VALVE_CH1_PIN,GPIO_Mode_AF_PP);
 	  klGpioSetupByMsk(VALVE_CH2_PORT,VALVE_CH2_PIN,GPIO_Mode_AF_PP);
 	 /* -----------------------------------------------------------------------
-	    TIM4 Configuration: generate 2 PWM signals with 2 different duty cycles:
-	    The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
-	    clock at 24 MHz the Prescaler is computed as following:
-	     - Prescaler = (TIM4CLK / TIM4 counter clock) - 1
-	    SystemCoreClock is set to 72 MHz for Low-density, Medium-density, High-density
-	    and Connectivity line devices and to 24 MHz for Low-Density Value line and
-	    Medium-Density Value line devices
+		TIM4 Configuration: generate 2 PWM signals with 2 different duty cycles:
+		The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
+		clock at 24 MHz the Prescaler is computed as following:
+		 - Prescaler = (TIM4CLK / TIM4 counter clock) - 1
+		SystemCoreClock is set to 72 MHz for Low-density, Medium-density, High-density
+		and Connectivity line devices and to 24 MHz for Low-Density Value line and
+		Medium-Density Value line devices
 
-	    The TIM4 is running at 93,75 KHz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
-	                                                  = 24 MHz / TOP_PWM_VALUE = 93.75 KHz
-	    TIM4 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100
-	    TIM4 Channel2 duty cycle = (TIM4_CCR2/ TIM4_ARR)* 100
+		The TIM4 is running at 93,75 KHz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
+													  = 24 MHz / TOP_PWM_VALUE = 93.75 KHz
+		TIM4 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100
+		TIM4 Channel2 duty cycle = (TIM4_CCR2/ TIM4_ARR)* 100
 	  ----------------------------------------------------------------------- */
 
 	  /* Compute the prescaler value */
@@ -59,17 +65,64 @@ void ValveControlClass::Init(void)
 
 	  TIM_ARRPreloadConfig(VALVE_TIM, ENABLE);
 
-	  /* TIM3 enable counter */
+	  /* TIM enable counter */
 	  TIM_Cmd(VALVE_TIM, ENABLE);
 }
-void ValveControlClass::SetCh1(uint8_t b)
+/**************************************************************************************/
+
+
+/**********************  ValveControlClass ********************************************/
+// содержит логику управления клапаном
+/**************************************************************************************/
+void ValveControlClass::Init(DoubleChanelPwmClass* pPwm, uint8_t bPwmChanelNamber)
 {
-	TIM_SetCompare1(VALVE_TIM,b);
+	this->pPwm=pPwm;;
+	this->bPwmChanelNamber=bPwmChanelNamber;
+	isValveActiv=false;
 }
 
 void ValveControlClass::Task(void)
 {
+	if (!(isValveActiv)) return;
+	if  (Delay.Elapsed(&dwCommandTimer,bCurCommandTime))
+	{
+		Close();
+		isValveActiv=false;
+	}
+}
+void ValveControlClass::Open(uint8_t bCommandTime, uint8_t bCommandPower)
+{
+	if ((bCommandTime==0) |(bCommandPower==0) )
+	{
+		Close();
+		return;
+	}
+	isValveActiv=true;
+	bCurCommandTime=bCommandTime;// милисекунды перводим в сотые секунды
+	bCurCommandPwm=bCommandPower;
+	Delay.Reset(&dwCommandTimer);
+	switch (bPwmChanelNamber)
+	{
+	case 1:
+		pPwm->SetCh1(bCommandPower);
+		break;
+	case 2:
+		pPwm->SetCh2(bCommandPower);
+		break;
+	}
 
 }
-
-
+void ValveControlClass::Close(void)
+{
+	isValveActiv=false;
+	switch (bPwmChanelNamber)
+	{
+	case 1:
+		pPwm->SetCh1(0);
+		break;
+	case 2:
+		pPwm->SetCh2(0);
+		break;
+	}
+}
+/**************************************************************************************/

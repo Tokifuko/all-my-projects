@@ -11,7 +11,7 @@ namespace GUI_muscule.PacketManager
     {
         public const byte POCKET_LO_PREFIX = 0x5A;
         public const byte POCKET_HI_PREFIX = 0xA5;
-        public const UInt16 POCKET_PREFIX = 0xA55A;
+        public const UInt16 POCKET_PREFIX = 0x5AA5; // Инверсный порядок байт, 
         public const int POCKET_LENGTH = 12;
         public const byte COMM_RX_PREASURE = 0x02;
         public const byte COMM_RX_TENZO = 0x04;

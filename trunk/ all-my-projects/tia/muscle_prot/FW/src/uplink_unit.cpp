@@ -22,6 +22,11 @@ uint8_t UplinkClass :: Init(uint16_t iSize)
 
 void UplinkClass :: Task(void)
 {
+	// обрабатывам входящий байт
+	while (!(pUART->FIFO_RxData.IsEmpty()))
+	{
+		Recive(pUART->FIFO_RxData.SimpleReadByte());
+	}
 	// обрабатываем текущие буферы
 	uint8_t i=0;
 	DataPack_t* dpPack;
@@ -31,17 +36,11 @@ void UplinkClass :: Task(void)
 		{
 			//DbgUART->SendPrintF("IsValidCommand=true n=%d \n",i);
 			dpPack=BufArray[i].GetCommand();
-			if (Callback!=NULL) Callback(dpPack->Command);
+			if (Callback!=NULL) Callback(dpPack);
 			BufArray[i].Clear();
 		}
 		i++;
 	}
-	// обрабатывам входящий байт
-	while (!(pUART->FIFO_RxData.IsEmpty()))
-	{
-		Recive(pUART->FIFO_RxData.SimpleReadByte());
-	}
-
 }
 
 void UplinkClass :: Send (DataPack_t* pDataPack)

@@ -22,7 +22,6 @@ namespace GUI_muscule
         PacketReciver myPacketReciver = new PacketReciver();  
         FakeDevForm myFakeDevForm =new FakeDevForm();
         StatisticForm myStatForm = new StatisticForm();
-        ValveControl myValveControl = new ValveControl();
 
         public MainForm()
         {
@@ -239,6 +238,7 @@ namespace GUI_muscule
 
        private void btValveControl_Click(object sender, EventArgs e)
        {
+           ValveControl myValveControl = new ValveControl(myPacketTransmitter);
            myValveControl.Show();
        }
     }
