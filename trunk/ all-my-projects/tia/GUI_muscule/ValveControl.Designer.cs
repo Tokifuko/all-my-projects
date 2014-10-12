@@ -50,7 +50,7 @@
             // 
             // tbTime
             // 
-            this.tbTime.Location = new System.Drawing.Point(143, 22);
+            this.tbTime.Location = new System.Drawing.Point(143, 29);
             this.tbTime.Maximum = 255;
             this.tbTime.Name = "tbTime";
             this.tbTime.Orientation = System.Windows.Forms.Orientation.Vertical;

@@ -93,6 +93,7 @@ int main(void)
 
 	Delay.Reset(&iDebugLedTimer);
 	Delay.Reset(&iUserBattonTimer);
+	iUserBattonFlag=1;
     while(1)
     {
     	ValveIn.Task();
@@ -115,10 +116,11 @@ int main(void)
 				tTestData.Addr=0x11;
 				tTestData.Command=0xFF;
 				tTestData.Data=0x33445566;
+				ValveOut.Open(50,250);
 				count =0;
 				while (count<20)
 				{
-					uplink.Send(&tTestData);
+					//uplink.Send(&tTestData);
 					count++;
 				}
     		}
@@ -205,7 +207,7 @@ void Ad7799Callback(uint32_t iData)
 	DataPack_t sDataPack;
 	sDataPack.Addr=0;
 	sDataPack.Reserv=0;
-	sDataPack.Command=DATA_PACK_ADDR_TENZO;
+	sDataPack.Command=DATA_PACK_COMMAND_TENZO;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 	/*iTemp++;
@@ -224,7 +226,7 @@ void Ms5803Callback(uint32_t iData)
 	DataPack_t sDataPack;
 	sDataPack.Addr=0;
 	sDataPack.Reserv=0;
-	sDataPack.Command=DATA_PACK_ADDR_PRES;
+	sDataPack.Command=DATA_PACK_COMMAND_PRES;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 }
@@ -235,7 +237,7 @@ void CalipersCallBack(uint32_t iData)
 	DataPack_t sDataPack;
 	sDataPack.Addr=0;
 	sDataPack.Reserv=0;
-	sDataPack.Command=DATA_PACK_ADDR_LENGTH;
+	sDataPack.Command=DATA_PACK_COMMAND_LENGTH;
 	sDataPack.Data=iData;
 	uplink.Send(&sDataPack);
 	//ComportUART.SendPrintF("Calip2=%d \n",i);
@@ -253,14 +255,15 @@ void UplinkCallback(DataPack_t* pDataPack)
 	DbgUART.SendPrintF("Data=%X \n",uiData);
 	switch (bCommand)
 	{
-	case 0x12:
+	case DATA_PACK_COMMAND_IN_VALVE_SET:
 		DbgUART.SendPrintF("ValveIn Command");
 		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
 		ValveIn.Open(bTime,bPow);
 		break;
-	case 0x14:
+	case DATA_PACK_COMMAND_OUT_VALVE_SET:
 		DbgUART.SendPrintF("ValveOut Command");
 		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
+		ValveOut.Open(bTime,bPow);
 		break;
 	}
 

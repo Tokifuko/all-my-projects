@@ -25,20 +25,20 @@ void DoubleChanelPwmClass::Init(void)
 	 /* -----------------------------------------------------------------------
 		TIM4 Configuration: generate 2 PWM signals with 2 different duty cycles:
 		The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
-		clock at 24 MHz the Prescaler is computed as following:
+		clock at 4 kHz the Prescaler is computed as following:
 		 - Prescaler = (TIM4CLK / TIM4 counter clock) - 1
 		SystemCoreClock is set to 72 MHz for Low-density, Medium-density, High-density
 		and Connectivity line devices and to 24 MHz for Low-Density Value line and
 		Medium-Density Value line devices
 
-		The TIM4 is running at 93,75 KHz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
-													  = 24 MHz / TOP_PWM_VALUE = 93.75 KHz
+		The TIM4 is running at 15,7 Hz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
+													  = 4 kHz / TOP_PWM_VALUE = 15,7 Hz
 		TIM4 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100
 		TIM4 Channel2 duty cycle = (TIM4_CCR2/ TIM4_ARR)* 100
 	  ----------------------------------------------------------------------- */
 
 	  /* Compute the prescaler value */
-		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 24000000) - 1;
+		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 4000) - 1; // 4000 - 6000
 
 	  /* Time base configuration */
 	  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -84,7 +84,7 @@ void ValveControlClass::Init(DoubleChanelPwmClass* pPwm, uint8_t bPwmChanelNambe
 void ValveControlClass::Task(void)
 {
 	if (!(isValveActiv)) return;
-	if  (Delay.Elapsed(&dwCommandTimer,bCurCommandTime))
+	if  (Delay.Elapsed(&dwCommandTimer,uiCurCommandTime))
 	{
 		Close();
 		isValveActiv=false;
@@ -98,7 +98,8 @@ void ValveControlClass::Open(uint8_t bCommandTime, uint8_t bCommandPower)
 		return;
 	}
 	isValveActiv=true;
-	bCurCommandTime=bCommandTime;// милисекунды перводим в сотые секунды
+	uiCurCommandTime=bCommandTime;
+	uiCurCommandTime=uiCurCommandTime*10;// милисекунды перводим в сотые секунды
 	bCurCommandPwm=bCommandPower;
 	Delay.Reset(&dwCommandTimer);
 	switch (bPwmChanelNamber)

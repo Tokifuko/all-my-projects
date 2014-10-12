@@ -33,7 +33,7 @@ private:
 	uint32_t dwCommandTimer;
 	DoubleChanelPwmClass* pPwm;
 	uint8_t bPwmChanelNamber;
-	uint8_t bCurCommandTime;
+	uint16_t uiCurCommandTime;
 	uint8_t bCurCommandPwm;
 	bool isValveActiv;
 public:

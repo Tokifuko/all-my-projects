@@ -22,17 +22,32 @@
 #define CRC16_INIT		0x00
 
 
-/*«начение пол€ Addr:
+/*«начение пол€ Command:
 	2 Ц в Data передаетс€ давление
 	4 Ц в Data передаетс€ усилие
 	8 Ц в Data передаетс€ длинна
 	16 Ц в Data передаетс€ температура
+	0x42 Ц состо€ние верхнего клапана IN_VALVE
+	0х44 Ц состо€ние нижнего клапана OUT_VALVE
+вход€щие
+	0x12 Ц ѕередаетс€ команда управлени€ нагнетающим клапаном (IN_VALVE)
+	0х14 Ц ѕередаетс€ команда управлени€ спускающим клапаном (OUT_VALVE)
+	0х22 Ц «апрос состо€ни€ IN_VALVE
+	0х24 Ц «апрос состо€ни€ OUT_VALVE
+
  */
-#define DATA_PACK_ADDR_TEST			0x00
-#define DATA_PACK_ADDR_PRES			0x02
-#define DATA_PACK_ADDR_TENZO		0x04
-#define DATA_PACK_ADDR_LENGTH		0x08
-#define DATA_PACK_ADDR_TEMP			0x0F
+#define DATA_PACK_COMMAND_TEST				0x00
+#define DATA_PACK_COMMAND_PRES				0x02
+#define DATA_PACK_COMMAND_TENZO				0x04
+#define DATA_PACK_COMMAND_LENGTH			0x08
+#define DATA_PACK_COMMAND_TEMP				0x0F
+#define DATA_PACK_COMMAND_IN_VALVE_STAT		0x42
+#define DATA_PACK_COMMAND_OUT_VALVE_STAT	0x44
+
+#define DATA_PACK_COMMAND_IN_VALVE_SET		0x12
+#define DATA_PACK_COMMAND_OUT_VALVE_SET		0x14
+#define DATA_PACK_COMMAND_IN_VALVE_GET		0x22
+#define DATA_PACK_COMMAND_OUT_VALVE_GET		0x24
 
 struct DataPack_t {
 	uint16_t Pref;
