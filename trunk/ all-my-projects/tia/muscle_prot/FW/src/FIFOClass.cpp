@@ -26,11 +26,13 @@ uint16_t FIFO_Class ::Length( void )
 uint16_t FIFO_Class ::WriteByte(uint8_t chByte)
 {
 	if (IsFull()) return 0;
+	  __disable_irq (); // Запретить прерывания IRQ.
 	*pTail=chByte;
 	pTail++;
 	if (pTail==pEnd) pTail=pStart;
 	chEmptyFlag=false;
 	if (pTail==pHead) chFullFlag=true;
+	  __enable_irq ();  // Разрешить прерывания IRQ.
 	return 1;
 }
 uint16_t FIFO_Class ::WriteData(uint16_t iDataSize,uint8_t* pDataBuf)
