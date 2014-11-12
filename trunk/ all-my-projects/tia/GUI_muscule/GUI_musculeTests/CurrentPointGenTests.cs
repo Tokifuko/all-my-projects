@@ -8,6 +8,7 @@ using GUI_muscule.PacketManager;
 using GUI_muscule.MatLabChats;
 using NUnit.Framework;
 using NSubstitute;
+using GUI_muscule.PointSource;
 
 namespace GUI_muscule.Tests
 {

@@ -5,18 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using myMatlabLib;
+using GUI_muscule.PointSource;
+using MatLabChartLib;
 
 using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabChats
 {
-    public struct stPoint3D
-    {
-        public UInt32 uiX;
-        public UInt32 uiY;
-        public UInt32 uiZ;
-    }
+
    
 
     /************************ MatLabBaseAxes  ***************************************

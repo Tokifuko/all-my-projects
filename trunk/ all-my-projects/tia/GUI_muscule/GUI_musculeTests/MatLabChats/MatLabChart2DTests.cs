@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GUI_muscule.MatLabChats;
 using NUnit.Framework;
 using NSubstitute;
+using GUI_muscule.PointSource;
 
 using GUI_muscule.PacketManager;
 

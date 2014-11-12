@@ -48,16 +48,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MatLabChartLib">
+      <HintPath>..\Matlab\MatLabChartLib\for_testing\MatLabChartLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MatLabSaveVectorLib">
+      <HintPath>..\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLib.dll</HintPath>
+    </Reference>
     <Reference Include="MWArray, Version=2.14.0.0, Culture=neutral, PublicKeyToken=e1d84a0da19db86f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll</HintPath>
     </Reference>
-    <Reference Include="myMatlabLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="NSubstitute, Version=1.8.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Matlab\myMatlabLib\for_testing\myMatlabLib.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+      <HintPath>packages\NSubstitute.1.8.0.0\lib\net45\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,11 +76,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MatLabChats\MatLabFigure.cs" />
+    <Compile Include="MatLabStorage\MatLabStore.cs" />
     <Compile Include="MatLabChats\StringPropertiySetter.cs" />
     <Compile Include="PacketManager\DataPack_t.cs" />
     <Compile Include="PacketManager\PacketReciver.cs" />
     <Compile Include="PacketManager\PacketTransmitter.cs" />
     <Compile Include="PacketManager\SmartDataBuf.cs" />
+    <Compile Include="PointSource\IPointRecever.cs" />
     <Compile Include="SpeedMeasurement.cs" />
     <Compile Include="FakeDevForm.cs">
       <SubType>Form</SubType>
@@ -87,7 +92,7 @@
     </Compile>
     <Compile Include="MatLabChats\MatLabAxes.cs" />
     <Compile Include="MatLabChats\IMatLabLib.cs" />
-    <Compile Include="MatLabChats\PointSource.cs" />
+    <Compile Include="PointSource\PointSource.cs" />
     <Compile Include="MySerialPort.cs">
       <SubType>Component</SubType>
     </Compile>

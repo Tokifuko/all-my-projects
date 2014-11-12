@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-using myMatlabLib;
+using MatLabChartLib;
 using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabChats
