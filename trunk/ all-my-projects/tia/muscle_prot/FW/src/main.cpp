@@ -129,7 +129,7 @@ int main(void)
 				tTestData.Addr=0x11;
 				tTestData.Command=0xFF;
 				tTestData.Data=0x33445566;
-				ValveIn.GetNewCommand(5,250);
+				ValveIn.GetNewCommand(3,250);
 				count =0;
 				while (count<20)
 				{

@@ -130,34 +130,33 @@ void ValvePwmClass::SetChanel(uint8_t bPwmPower)
     }
 }
 
-void ValvePwmClass::Close(void)
+void ValvePwmClass::PauseToClose(uint8_t bNextPwm)
 {
     switch (myChanel)
     {
     case 1:
-    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Disable);
-    	SetChanel(0);
-    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Enable);
+    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Disable); // выключается система прелоадет-регистров
+    	SetChanel(0);										// напрямую записывается ноль в значение PWM
+    	TIM_SetCounter(myTIM,TOP_PWM_VALUE-MIN_CLOSE_DALAY);// Счетчик устанавливается в обратный отсчет паузы
+    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Enable); // включаем  прелоадет регистр, следующее значение в PWM будет записано при переполнении счетчика
     	break;
     case 2:
     	TIM_OC2PreloadConfig(myTIM, TIM_OCPreload_Disable);
     	SetChanel(0);
+    	TIM_SetCounter(myTIM,TOP_PWM_VALUE-MIN_CLOSE_DALAY);
     	TIM_OC2PreloadConfig(myTIM, TIM_OCPreload_Enable);
     	break;
     case 4:
     	TIM_OC4PreloadConfig(myTIM, TIM_OCPreload_Disable);
     	SetChanel(0);
+    	TIM_SetCounter(myTIM,TOP_PWM_VALUE-MIN_CLOSE_DALAY);
     	TIM_OC4PreloadConfig(myTIM, TIM_OCPreload_Enable);
     	break;
     }
-	TIM_Cmd(myTIM,DISABLE);
+    uiIterationCounter=0;
+    SetChanel(bNextPwm);
 }
-void ValvePwmClass::Restart(void)
-{
-	uiIterationCounter=0;
-	TIM_SetCounter(myTIM,TOP_PWM_VALUE);
-	TIM_Cmd(myTIM,ENABLE);
-}
+
 void ValvePwmClass::TIM_InterruptHandler(void)
 {
 	uiIterationCounter++;
@@ -187,7 +186,7 @@ void TIM3_IRQHandler(void)
 void ValveControlClass::Init(ValvePwmClass* pPwm)
 {
 	this->pPwm=pPwm;
-	bNewCommandFlag=false;
+	uiLastIterationNamber=pPwm->uiIterationCounter;
 }
 
 void ValveControlClass::Task(void)
@@ -195,29 +194,23 @@ void ValveControlClass::Task(void)
 	if (uiLastIterationNamber!=(pPwm->uiIterationCounter)) // был один импульс PWM ( прошло 0.1 сек)
 	{
 		uiLastIterationNamber=pPwm->uiIterationCounter;
+		if (Callback!=0)Callback(bCurCommandPower); //тут отправляем значение Power  через uplink
+
 		if (bCurCommandPower!=0)
 		{
-			if (uiLastIterationNamber>=bCurCommandCount ) pPwm->SetChanel(0); // отключаем выход
+			if (uiLastIterationNamber>=bCurCommandCount )
+			{
+				pPwm->SetChanel(0); // отключаем выход (сработает в следующем цикле)
+				bCurCommandPower=0;
+			}
 		}
-		if (Callback!=0)Callback(bCurCommandPower); //тут отправляем значение Power  через uplink
 	}
-
-	if  (bNewCommandFlag & (Delay.Elapsed(&dwFixDelayTimer,MIN_CLOSE_DALAY)))
-	{
-		pPwm->SetChanel(bCurCommandPower);
-		pPwm->Restart();
-		bNewCommandFlag=false;
-	}
-
 }
 void ValveControlClass::GetNewCommand(uint8_t bCommandNamber, uint8_t bCommandPower)
 {
-	pPwm->Close();  // останавливает таймер, закрываем клапан
-	Delay.Reset(&dwFixDelayTimer);
 	bCurCommandPower=bCommandPower;
 	bCurCommandCount=bCommandNamber;
-	bNewCommandFlag=true;
-
+	pPwm->PauseToClose(bCurCommandPower);
 }
 
 /**************************************************************************************/

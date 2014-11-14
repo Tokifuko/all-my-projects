@@ -12,7 +12,7 @@
 #include "common.h"
 
 #define TOP_PWM_VALUE				255
-#define MIN_CLOSE_DALAY				5 // в милисекундах
+#define MIN_CLOSE_DALAY				200 // в милисекундах
 
 #define VALVE_TIM4_CH2_PIN			GPIO_Pin_7
 #define VALVE_TIM4_CH2_PORT			GPIOB
@@ -31,10 +31,8 @@ private:
 	uint8_t myChanel;
 public:
 	void Init(TIM_TypeDef* TIMx,uint8_t bChanel);
-	void Close();
 	void SetChanel(uint8_t bPwmPower);
-	void Restart();
-	void GetCommand(uint8_t bCommandCount, uint8_t bCommandPower);
+	void PauseToClose(uint8_t bNextPwm);
 	uint32_t uiIterationCounter;
 	void TIM_InterruptHandler(void);
 };
@@ -42,12 +40,10 @@ public:
 class ValveControlClass
 {
 private:
-	uint32_t dwFixDelayTimer;
 	ValvePwmClass* pPwm;
 	uint8_t bCurCommandPower;
 	uint8_t bCurCommandCount;
 	uint32_t uiLastIterationNamber;
-	bool bNewCommandFlag;
 public:
 	void Init(ValvePwmClass* pPwm);
 	void Task();
