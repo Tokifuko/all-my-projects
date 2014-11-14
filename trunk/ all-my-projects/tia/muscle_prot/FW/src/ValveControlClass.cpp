@@ -10,18 +10,20 @@
 #include "kl_lib.h"
 #include "delay_util.h"
 
-/************************  DoubleChanelPwmClass  ****************************************/
-// класс настраивает таймер на работу с двумя каналами ШИМ и
-// возвращает указатели на функции для контроля этих каналов
-/**************************************************************************************/
-// TODO: откалибровать таймер !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void DoubleChanelPwmClass::Init(void)
-{
-	RCC_APB1PeriphClockCmd(VALVE_TIM_CLK, ENABLE);
+/**************** Описание работы *************************
+ * Таймер делает 10 итераций за секунду.
+ * Управляется командой, состоящей из значения скважности и количества итераций.
+ * В каждую итерацию он открывает клапан с заданой скважностью
+ * Перед началом итерации от отправляет текущую скважность в uplink
+ * новая команда отменяет предыдущую.
+ * новая команда начинает действовать в конце текущей итерации
+ */
 
-	  /* GPIOA and GPIOB clock enable */
-	  klGpioSetupByMsk(VALVE_CH1_PORT,VALVE_CH1_PIN,GPIO_Mode_AF_PP);
-	  klGpioSetupByMsk(VALVE_CH2_PORT,VALVE_CH2_PIN,GPIO_Mode_AF_PP);
+/************************   ValvePwmClass   ****************
+ *
+ ***********************************************************/
+void ValvePwmClass::Init(TIM_TypeDef* TIMx,uint8_t bChanel)
+{
 	 /* -----------------------------------------------------------------------
 		TIM4 Configuration: generate 2 PWM signals with 2 different duty cycles:
 		The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
@@ -31,15 +33,39 @@ void DoubleChanelPwmClass::Init(void)
 		and Connectivity line devices and to 24 MHz for Low-Density Value line and
 		Medium-Density Value line devices
 
-		The TIM4 is running at 15,7 Hz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
-													  = 4 kHz / TOP_PWM_VALUE = 15,7 Hz
+		The TIM4 is running at 10 Hz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
+													  = 2.55 kHz / TOP_PWM_VALUE = 10 Hz
 		TIM4 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100
 		TIM4 Channel2 duty cycle = (TIM4_CCR2/ TIM4_ARR)* 100
 	  ----------------------------------------------------------------------- */
 
 	  /* Compute the prescaler value */
-		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 4000) - 1; // 4000 - 6000
+		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 2550) - 1; // 4000 - 6000
 
+	    NVIC_InitTypeDef NVIC_InitStructure;
+
+    switch ((uint32_t)TIMx)
+    {
+      case ((uint32_t)TIM1_BASE):
+				NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_IRQn ;
+			  RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
+      	  	  if (bChanel==4)klGpioSetupByMsk(VALVE_TIM1_CH4_PORT,VALVE_TIM1_CH4_PIN,GPIO_Mode_AF_PP);
+      	  	  pTIM1=this;
+    		  break;
+      case ((uint32_t)TIM3_BASE):
+				NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn ;
+      	  	  GPIO_PinRemapConfig(GPIO_FullRemap_TIM3, ENABLE); // remap to C6, C7, C8, C9
+      	  	  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+      	  	  if (bChanel==1)klGpioSetupByMsk(VALVE_TIM3_CH1_PORT,VALVE_TIM3_CH1_PIN,GPIO_Mode_AF_PP);
+      	  	  pTIM3=this;
+    		  break;
+      case ((uint32_t)TIM4_BASE):
+				NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn ;
+			  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
+      	  	  if (bChanel==2)	klGpioSetupByMsk(VALVE_TIM4_CH2_PORT,VALVE_TIM4_CH2_PIN,GPIO_Mode_AF_PP);
+      	  	  pTIM4=this;
+    		  break;
+    }
 	  /* Time base configuration */
 	  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	  TIM_TimeBaseStructure.TIM_Period = TOP_PWM_VALUE;
@@ -47,83 +73,151 @@ void DoubleChanelPwmClass::Init(void)
 	  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-	  TIM_TimeBaseInit(VALVE_TIM, &TIM_TimeBaseStructure);
+	  TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);
 
-	  /* PWM1 Mode configuration: Channel1 */
+	  /* PWM1 Mode configuration */
 	  TIM_OCInitTypeDef  TIM_OCInitStructure;
 	  TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
 	  TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 	  TIM_OCInitStructure.TIM_Pulse = 0; // off then init
 	  TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    switch (bChanel)
+    {
+    case 1:
+	  	TIM_OC1Init(TIMx, &TIM_OCInitStructure);
+	  	TIM_OC1PreloadConfig(TIMx, TIM_OCPreload_Enable);
+    	break;
+    case 2:
+	  	TIM_OC2Init(TIMx, &TIM_OCInitStructure);
+	  	TIM_OC2PreloadConfig(TIMx, TIM_OCPreload_Enable);
+    	break;
+    case 4:
+	  	TIM_OC4Init(TIMx, &TIM_OCInitStructure);
+	  	TIM_OC4PreloadConfig(TIMx, TIM_OCPreload_Enable);
+    	break;
+    }
+    // Interrupt config
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
 
-	  TIM_OC1Init(VALVE_TIM, &TIM_OCInitStructure);
-	  TIM_OC1PreloadConfig(VALVE_TIM, TIM_OCPreload_Enable);
-
-	  /* PWM1 Mode configuration: Channel2 */
-	  TIM_OC2Init(VALVE_TIM, &TIM_OCInitStructure);
-	  TIM_OC2PreloadConfig(VALVE_TIM, TIM_OCPreload_Enable);
-
-	  TIM_ARRPreloadConfig(VALVE_TIM, ENABLE);
-
+    TIM_ARRPreloadConfig(TIMx, ENABLE);
 	  /* TIM enable counter */
-	  TIM_Cmd(VALVE_TIM, ENABLE);
-}
-/**************************************************************************************/
+	  TIM_Cmd(TIMx, ENABLE);
 
+	  TIM_ClearFlag(TIMx, TIM_FLAG_Update);
+	  /* TIM IT enable */
+	  TIM_ITConfig(TIMx,TIM_IT_Update, ENABLE);
+
+	  myTIM=TIMx;
+	  myChanel=bChanel;
+}
+
+void ValvePwmClass::SetChanel(uint8_t bPwmPower)
+{
+    switch (myChanel)
+    {
+    case 1:
+	  	TIM_SetCompare1(myTIM,bPwmPower);
+    	break;
+    case 2:
+	  	TIM_SetCompare2(myTIM,bPwmPower);
+    	break;
+    case 4:
+    	TIM_SetCompare4(myTIM,bPwmPower);
+    	break;
+    }
+}
+
+void ValvePwmClass::Close(void)
+{
+    switch (myChanel)
+    {
+    case 1:
+    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Disable);
+    	SetChanel(0);
+    	TIM_OC1PreloadConfig(myTIM, TIM_OCPreload_Enable);
+    	break;
+    case 2:
+    	TIM_OC2PreloadConfig(myTIM, TIM_OCPreload_Disable);
+    	SetChanel(0);
+    	TIM_OC2PreloadConfig(myTIM, TIM_OCPreload_Enable);
+    	break;
+    case 4:
+    	TIM_OC4PreloadConfig(myTIM, TIM_OCPreload_Disable);
+    	SetChanel(0);
+    	TIM_OC4PreloadConfig(myTIM, TIM_OCPreload_Enable);
+    	break;
+    }
+	TIM_Cmd(myTIM,DISABLE);
+}
+void ValvePwmClass::Restart(void)
+{
+	uiIterationCounter=0;
+	TIM_SetCounter(myTIM,TOP_PWM_VALUE);
+	TIM_Cmd(myTIM,ENABLE);
+}
+void ValvePwmClass::TIM_InterruptHandler(void)
+{
+	uiIterationCounter++;
+}
+// ================================ Interrupts =================================
+void TIM1_UP_TIM16_IRQHandler(void)
+{
+	TIM_ClearITPendingBit(TIM1, TIM_IT_Update); // Clear update interrupt
+	pTIM1->TIM_InterruptHandler();
+}
+void TIM4_IRQHandler(void)
+{
+	TIM_ClearITPendingBit(TIM4, TIM_IT_Update);// Clear update interrupt
+	pTIM4->TIM_InterruptHandler();
+}
+void TIM3_IRQHandler(void)
+{
+	TIM_ClearITPendingBit(TIM3, TIM_IT_Update);// Clear update interrupt
+	pTIM3->TIM_InterruptHandler();
+}
+
+/**************************************************************************************/
 
 /**********************  ValveControlClass ********************************************/
 // содержит логику управления клапаном
 /**************************************************************************************/
-void ValveControlClass::Init(DoubleChanelPwmClass* pPwm, uint8_t bPwmChanelNamber)
+void ValveControlClass::Init(ValvePwmClass* pPwm)
 {
-	this->pPwm=pPwm;;
-	this->bPwmChanelNamber=bPwmChanelNamber;
-	isValveActiv=false;
+	this->pPwm=pPwm;
+	bNewCommandFlag=false;
 }
 
 void ValveControlClass::Task(void)
 {
-	if (!(isValveActiv)) return;
-	if  (Delay.Elapsed(&dwCommandTimer,uiCurCommandTime))
+	if (uiLastIterationNamber!=(pPwm->uiIterationCounter)) // был один импульс PWM ( прошло 0.1 сек)
 	{
-		Close();
-		isValveActiv=false;
+		uiLastIterationNamber=pPwm->uiIterationCounter;
+		if (bCurCommandPower!=0)
+		{
+			if (uiLastIterationNamber>=bCurCommandCount ) pPwm->SetChanel(0); // отключаем выход
+		}
+		if (Callback!=0)Callback(bCurCommandPower); //тут отправляем значение Power  через uplink
 	}
-}
-void ValveControlClass::Open(uint8_t bCommandTime, uint8_t bCommandPower)
-{
-	if ((bCommandTime==0) |(bCommandPower==0) )
+
+	if  (bNewCommandFlag & (Delay.Elapsed(&dwFixDelayTimer,MIN_CLOSE_DALAY)))
 	{
-		Close();
-		return;
-	}
-	isValveActiv=true;
-	uiCurCommandTime=bCommandTime;
-	uiCurCommandTime=uiCurCommandTime*10;// милисекунды перводим в сотые секунды
-	bCurCommandPwm=bCommandPower;
-	Delay.Reset(&dwCommandTimer);
-	switch (bPwmChanelNamber)
-	{
-	case 1:
-		pPwm->SetCh1(bCommandPower);
-		break;
-	case 2:
-		pPwm->SetCh2(bCommandPower);
-		break;
+		pPwm->SetChanel(bCurCommandPower);
+		pPwm->Restart();
+		bNewCommandFlag=false;
 	}
 
 }
-void ValveControlClass::Close(void)
+void ValveControlClass::GetNewCommand(uint8_t bCommandNamber, uint8_t bCommandPower)
 {
-	isValveActiv=false;
-	switch (bPwmChanelNamber)
-	{
-	case 1:
-		pPwm->SetCh1(0);
-		break;
-	case 2:
-		pPwm->SetCh2(0);
-		break;
-	}
+	pPwm->Close();  // останавливает таймер, закрываем клапан
+	Delay.Reset(&dwFixDelayTimer);
+	bCurCommandPower=bCommandPower;
+	bCurCommandCount=bCommandNamber;
+	bNewCommandFlag=true;
+
 }
+
 /**************************************************************************************/

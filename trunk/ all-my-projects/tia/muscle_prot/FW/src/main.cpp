@@ -30,6 +30,8 @@ void Ad7799Callback(uint32_t iData);
 void Ms5803Callback(uint32_t iData);
 void UplinkCallback(DataPack_t* pDataPack);
 void CalipersCallBack(uint32_t iData);
+void ValveIn_Callback(uint32_t uiPower);
+void ValveOut_Callback(uint32_t uiPower);
 
 UART_Class DbgUART;
 UART_Class ComportUART;
@@ -39,10 +41,17 @@ UART_Class* pUART3;
 UART_Class* pUART4;
 UART_Class* pUART5;
 
+
+ValvePwmClass* pTIM1; // no use
+ValvePwmClass* pTIM3;
+ValvePwmClass* pTIM4;
+ValvePwmClass UpTim;
+ValvePwmClass DnTim;
+
 AD7799_Class ad7799;
 MS5803_Class ms5803;
 UplinkClass uplink;
-DoubleChanelPwmClass DoubleChanelPwm;
+
 ValveControlClass ValveIn;
 ValveControlClass ValveOut;
 
@@ -83,10 +92,14 @@ int main(void)
 	calipers.Init();
 	calipers.Callback=CalipersCallBack;
 
-	DoubleChanelPwm.Init();
+	UpTim.Init(TIM4,2);
+	DnTim.Init(TIM3,1);
 
-	ValveIn.Init(&DoubleChanelPwm,1);
-	ValveOut.Init(&DoubleChanelPwm,2);
+	ValveIn.Init(&DnTim);
+	ValveOut.Init(&UpTim);
+	ValveIn.Callback=ValveIn_Callback;
+	ValveOut.Callback=ValveOut_Callback;
+
 	uint8_t bPWM=20;
 
 	DbgUART.SendPrintF("Hello word %d \n",24);
@@ -116,7 +129,7 @@ int main(void)
 				tTestData.Addr=0x11;
 				tTestData.Command=0xFF;
 				tTestData.Data=0x33445566;
-				ValveOut.Open(50,250);
+				ValveIn.GetNewCommand(5,250);
 				count =0;
 				while (count<20)
 				{
@@ -136,7 +149,7 @@ int main(void)
     	{
     		if (flag==0)
     			{
-    				//ValveIn.Open(10,bPWM);
+    				//ValveIn.GetNewCommand(10,bPWM);
     				//ValveOut.Close();
     				bPWM+=10;
     				BLedDiscOn();
@@ -153,7 +166,7 @@ int main(void)
     				//i2cMgr.AddCmd(comReadStart);
     				//DbgUART.SendPrintF("Temp=%d \n",ms5803.GetTemp());
     				//ValveIn.Close();
-    				//ValveOut.Open(10,bPWM);
+    				//ValveOut.GetNewCommand(10,bPWM);
     			  //  Delay.ms(100);
     				BLedDiscOff();
     				flag=0;
@@ -258,15 +271,20 @@ void UplinkCallback(DataPack_t* pDataPack)
 	case DATA_PACK_COMMAND_IN_VALVE_SET:
 		DbgUART.SendPrintF("ValveIn Command");
 		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
-		ValveIn.Open(bTime,bPow);
+		ValveIn.GetNewCommand(bTime,bPow);
 		break;
 	case DATA_PACK_COMMAND_OUT_VALVE_SET:
 		DbgUART.SendPrintF("ValveOut Command");
 		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
-		ValveOut.Open(bTime,bPow);
+		ValveOut.GetNewCommand(bTime,bPow);
 		break;
 	}
-
-
 }
-
+void ValveIn_Callback(uint32_t uiPower)
+{
+	DbgUART.SendPrintF("ValvInCount = %d\n",uiPower);
+}
+void ValveOut_Callback(uint32_t uiPower)
+{
+	DbgUART.SendPrintF("ValvOutCount = %d\n",uiPower);
+}

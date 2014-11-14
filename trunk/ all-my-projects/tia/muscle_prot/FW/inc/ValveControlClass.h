@@ -9,39 +9,61 @@
 #define VALVECONTROLUNIT_H_
 
 #include "stm32f10x_conf.h"
+#include "common.h"
 
-#define TOP_PWM_VALUE	255
-#define VALVE_TIM		TIM4
-#define VALVE_TIM_CLK		RCC_APB1Periph_TIM4
+#define TOP_PWM_VALUE				255
+#define MIN_CLOSE_DALAY				5 // в милисекундах
 
-#define VALVE_CH1_PIN			GPIO_Pin_6
-#define VALVE_CH1_PORT			GPIOB
-#define VALVE_CH2_PIN			GPIO_Pin_7
-#define VALVE_CH2_PORT			GPIOB
+#define VALVE_TIM4_CH2_PIN			GPIO_Pin_7
+#define VALVE_TIM4_CH2_PORT			GPIOB
 
-class DoubleChanelPwmClass
+#define VALVE_TIM3_CH1_PIN			GPIO_Pin_6
+#define VALVE_TIM3_CH1_PORT			GPIOC
+
+#define VALVE_TIM1_CH4_PIN			GPIO_Pin_11
+#define VALVE_TIM1_CH4_PORT			GPIOA
+
+
+class ValvePwmClass
 {
+private:
+	TIM_TypeDef* myTIM;
+	uint8_t myChanel;
 public:
-	void Init();
-	void SetCh1(uint8_t b){TIM_SetCompare1(VALVE_TIM,b);};
-	void SetCh2(uint8_t b){TIM_SetCompare2(VALVE_TIM,b);};
+	void Init(TIM_TypeDef* TIMx,uint8_t bChanel);
+	void Close();
+	void SetChanel(uint8_t bPwmPower);
+	void Restart();
+	void GetCommand(uint8_t bCommandCount, uint8_t bCommandPower);
+	uint32_t uiIterationCounter;
+	void TIM_InterruptHandler(void);
 };
 
 class ValveControlClass
 {
 private:
-	uint32_t dwCommandTimer;
-	DoubleChanelPwmClass* pPwm;
-	uint8_t bPwmChanelNamber;
-	uint16_t uiCurCommandTime;
-	uint8_t bCurCommandPwm;
-	bool isValveActiv;
+	uint32_t dwFixDelayTimer;
+	ValvePwmClass* pPwm;
+	uint8_t bCurCommandPower;
+	uint8_t bCurCommandCount;
+	uint32_t uiLastIterationNamber;
+	bool bNewCommandFlag;
 public:
-	void Init(DoubleChanelPwmClass* pPwm, uint8_t bPwmChanelNamber);
+	void Init(ValvePwmClass* pPwm);
 	void Task();
-	void Open(uint8_t bCommandTime, uint8_t bCommandPower);
-	void Close();
+	void GetNewCommand(uint8_t bCommandTime, uint8_t bCommandPower);
+	ftVoid_uint32 Callback;
 };
+
+extern ValvePwmClass* pTIM1; // no use
+extern ValvePwmClass* pTIM3;
+extern ValvePwmClass* pTIM4;
+// Declare Timer IRQ. Use externC to make it visible from asm file.
+extern "C" {
+void TIM3_IRQHandler(void);
+void TIM4_IRQHandler(void);
+void TIM1_UP_TIM16_IRQHandler(void);
+}
 
 
 #endif /* VALVECONTROLUNIT_H_ */
