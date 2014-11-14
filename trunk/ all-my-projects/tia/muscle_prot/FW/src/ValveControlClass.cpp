@@ -16,7 +16,7 @@
  * В каждую итерацию он открывает клапан с заданой скважностью
  * Перед началом итерации от отправляет текущую скважность в uplink
  * новая команда отменяет предыдущую.
- * новая команда начинает действовать в конце текущей итерации
+ * новая команда начинает действовать выдержав паузу после предыдущей
  */
 
 /************************   ValvePwmClass   ****************
@@ -194,7 +194,8 @@ void ValveControlClass::Task(void)
 	if (uiLastIterationNamber!=(pPwm->uiIterationCounter)) // был один импульс PWM ( прошло 0.1 сек)
 	{
 		uiLastIterationNamber=pPwm->uiIterationCounter;
-		if (Callback!=0)Callback(bCurCommandPower); //тут отправляем значение Power  через uplink
+
+		SendState(); //тут отправляем текущее состояние через uplink
 
 		if (bCurCommandPower!=0)
 		{
@@ -206,6 +207,15 @@ void ValveControlClass::Task(void)
 		}
 	}
 }
+
+void ValveControlClass::SendState(void)
+{
+	uint32_t uiData=0;
+	uiData=bCurCommandPower<<16;
+	if (bCurCommandCount>uiLastIterationNamber) uiData+=(bCurCommandCount-uiLastIterationNamber);
+	if (Callback!=0)Callback(uiData);
+}
+
 void ValveControlClass::GetNewCommand(uint8_t bCommandNamber, uint8_t bCommandPower)
 {
 	bCurCommandPower=bCommandPower;

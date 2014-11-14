@@ -44,6 +44,7 @@ private:
 	uint8_t bCurCommandPower;
 	uint8_t bCurCommandCount;
 	uint32_t uiLastIterationNamber;
+	void SendState(void);
 public:
 	void Init(ValvePwmClass* pPwm);
 	void Task();

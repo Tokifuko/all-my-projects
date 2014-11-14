@@ -30,8 +30,8 @@ void Ad7799Callback(uint32_t iData);
 void Ms5803Callback(uint32_t iData);
 void UplinkCallback(DataPack_t* pDataPack);
 void CalipersCallBack(uint32_t iData);
-void ValveIn_Callback(uint32_t uiPower);
-void ValveOut_Callback(uint32_t uiPower);
+void ValveIn_Callback(uint32_t uiData);
+void ValveOut_Callback(uint32_t uiData);
 
 UART_Class DbgUART;
 UART_Class ComportUART;
@@ -280,11 +280,21 @@ void UplinkCallback(DataPack_t* pDataPack)
 		break;
 	}
 }
-void ValveIn_Callback(uint32_t uiPower)
+void ValveIn_Callback(uint32_t uiData)
 {
-	DbgUART.SendPrintF("ValvInCount = %d\n",uiPower);
+	DataPack_t sDataPack;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_COMMAND_IN_VALVE_STAT;
+	sDataPack.Data=uiData;
+	uplink.Send(&sDataPack);
 }
-void ValveOut_Callback(uint32_t uiPower)
+void ValveOut_Callback(uint32_t uiData)
 {
-	DbgUART.SendPrintF("ValvOutCount = %d\n",uiPower);
+	DataPack_t sDataPack;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_COMMAND_OUT_VALVE_STAT;
+	sDataPack.Data=uiData;
+	uplink.Send(&sDataPack);
 }
