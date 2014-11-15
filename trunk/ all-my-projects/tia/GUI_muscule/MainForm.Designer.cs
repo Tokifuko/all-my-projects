@@ -44,6 +44,7 @@
             this.btLengthSpectr = new System.Windows.Forms.Button();
             this.btComPortTest = new System.Windows.Forms.Button();
             this.btValveControl = new System.Windows.Forms.Button();
+            this.btMatLabStore = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // fake_batton
@@ -131,7 +132,7 @@
             // 
             // btTenzoButton
             // 
-            this.btTenzoButton.Location = new System.Drawing.Point(363, 210);
+            this.btTenzoButton.Location = new System.Drawing.Point(363, 198);
             this.btTenzoButton.Name = "btTenzoButton";
             this.btTenzoButton.Size = new System.Drawing.Size(164, 23);
             this.btTenzoButton.TabIndex = 10;
@@ -151,7 +152,7 @@
             // 
             // btStatistic
             // 
-            this.btStatistic.Location = new System.Drawing.Point(363, 360);
+            this.btStatistic.Location = new System.Drawing.Point(614, 116);
             this.btStatistic.Name = "btStatistic";
             this.btStatistic.Size = new System.Drawing.Size(164, 23);
             this.btStatistic.TabIndex = 12;
@@ -161,7 +162,7 @@
             // 
             // btLengthSpectr
             // 
-            this.btLengthSpectr.Location = new System.Drawing.Point(363, 248);
+            this.btLengthSpectr.Location = new System.Drawing.Point(363, 237);
             this.btLengthSpectr.Name = "btLengthSpectr";
             this.btLengthSpectr.Size = new System.Drawing.Size(164, 23);
             this.btLengthSpectr.TabIndex = 13;
@@ -181,7 +182,7 @@
             // 
             // btValveControl
             // 
-            this.btValveControl.Location = new System.Drawing.Point(331, 389);
+            this.btValveControl.Location = new System.Drawing.Point(582, 159);
             this.btValveControl.Name = "btValveControl";
             this.btValveControl.Size = new System.Drawing.Size(196, 23);
             this.btValveControl.TabIndex = 15;
@@ -189,11 +190,22 @@
             this.btValveControl.UseVisualStyleBackColor = true;
             this.btValveControl.Click += new System.EventHandler(this.btValveControl_Click);
             // 
+            // btMatLabStore
+            // 
+            this.btMatLabStore.Location = new System.Drawing.Point(569, 198);
+            this.btMatLabStore.Name = "btMatLabStore";
+            this.btMatLabStore.Size = new System.Drawing.Size(209, 23);
+            this.btMatLabStore.TabIndex = 16;
+            this.btMatLabStore.Text = "Сохранение данных в MatLab ";
+            this.btMatLabStore.UseVisualStyleBackColor = true;
+            this.btMatLabStore.Click += new System.EventHandler(this.btMatLabStore_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(574, 447);
+            this.ClientSize = new System.Drawing.Size(821, 327);
+            this.Controls.Add(this.btMatLabStore);
             this.Controls.Add(this.btValveControl);
             this.Controls.Add(this.btComPortTest);
             this.Controls.Add(this.btLengthSpectr);
@@ -235,6 +247,7 @@
         private System.Windows.Forms.Button btLengthSpectr;
         private System.Windows.Forms.Button btComPortTest;
         private System.Windows.Forms.Button btValveControl;
+        private System.Windows.Forms.Button btMatLabStore;
     }
 }
 

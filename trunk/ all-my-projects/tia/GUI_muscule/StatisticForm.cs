@@ -20,6 +20,8 @@ namespace GUI_muscule
         SpeedMeasurement myTenzoPocket = new SpeedMeasurement();
         SpeedMeasurement myLengthPocket = new SpeedMeasurement();
         SpeedMeasurement myTempPocket = new SpeedMeasurement();
+        SpeedMeasurement myValveInPocket = new SpeedMeasurement();
+        SpeedMeasurement myValveOutPocket = new SpeedMeasurement();
         SpeedMeasurement myOtherPocket = new SpeedMeasurement();
         public StatisticForm()
         {
@@ -34,6 +36,8 @@ namespace GUI_muscule
             myTenzoPocket.ClearCounters();
             myLengthPocket.ClearCounters();
             myTempPocket.ClearCounters();
+            myValveInPocket.ClearCounters();
+            myValveOutPocket.ClearCounters();
             myOtherPocket.ClearCounters();
         }
 
@@ -56,7 +60,6 @@ namespace GUI_muscule
             myTotalPocket.NewSample();
             switch(value.Command)
             {
-                     //iTenzoPocket, iLengthPocket, iTempPocket, iOtherPocket;
                 case Constants.COMM_RX_PREASURE:
                     myPresPocket.NewSample();
                     break;
@@ -66,9 +69,12 @@ namespace GUI_muscule
                 case Constants.COMM_RX_LENGTH:
                     myLengthPocket.NewSample();
                     break;
-                /*case Constants.:
-                    iTempPocket++;
-                    break;*/
+                case Constants.COMM_RX_VALVE_IN_STATE:
+                    myValveInPocket.NewSample();
+                    break;
+                case Constants.COMM_RX_VALVE_OUT_STATE:
+                    myValveOutPocket.NewSample();
+                    break;
                 default:
                     myOtherPocket.NewSample();
                     break;
@@ -101,8 +107,9 @@ namespace GUI_muscule
             lbTenzoPocket.Text = myTenzoPocket.iTotal.ToString();
             lbLengthPocket.Text = myLengthPocket.iTotal.ToString();
             lbTempPocket.Text = myTempPocket.iTotal.ToString();
+            lbValveInStatePocket.Text = myValveInPocket.iTotal.ToString();
+            lbValveOutStatePocket.Text = myValveOutPocket.iTotal.ToString();
             lbOtherPocket.Text = myOtherPocket.iTotal.ToString();
-
 
             lbTotalBytesSec.Text = myTotalBytes.iSamplePerSecond.ToString();
             lbTotalPocketSec.Text = myTotalPocket.dFreqMed.ToString();
@@ -110,9 +117,16 @@ namespace GUI_muscule
             lbTenzoPocketSec.Text = myTenzoPocket.dFreqMed.ToString();
             lbLengthPocketSec.Text = myLengthPocket.dFreqMed.ToString();
             lbTempPocketSec.Text = myTempPocket.dFreqMed.ToString();
+            lbValveInStatePocketSec.Text = myValveInPocket.dFreqMed.ToString();
+            lbValveOutStatePocketSec.Text = myValveOutPocket.dFreqMed.ToString();
             lbOtherPocketSec.Text = myOtherPocket.dFreqMed.ToString();
 
             lbKbitSec.Text = (myTotalBytes.iSamplePerSecond * 8).ToString();
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

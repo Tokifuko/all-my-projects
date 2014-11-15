@@ -242,5 +242,11 @@ namespace GUI_muscule
            ValveControl myValveControl = new ValveControl(myPacketTransmitter);
            myValveControl.Show();
        }
+
+       private void btMatLabStore_Click(object sender, EventArgs e)
+       {
+           SaveToMatLabForm mySaveToMatLabForm = new SaveToMatLabForm(myPacketReciver);
+           mySaveToMatLabForm.Show();
+       }
     }
 }

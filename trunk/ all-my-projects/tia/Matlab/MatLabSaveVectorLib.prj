@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1239273926" file="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabSaveVectorLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="4209424586" file="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabSaveVectorLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>MatLabSaveVectorLib</param.appname>
     <param.icon />
     <param.icons />
@@ -44,7 +44,7 @@
     <param.net.tsa.assembly />
     <param.net.tsa.interface />
     <param.net.tsa.namespace>MatLabSaveVectorLib</param.net.tsa.namespace>
-    <param.net.tsa.superclass>Class1</param.net.tsa.superclass>
+    <param.net.tsa.superclass>MTLSaveVector</param.net.tsa.superclass>
     <param.net.tsa.metadata />
     <param.net.tsa.metadata.assembly>C:\Users\Stefan\Documents\MATLAB</param.net.tsa.metadata.assembly>
     <unset>
@@ -68,6 +68,7 @@
       <param.server.ctf />
       <param.server.readme />
       <param.support.packages />
+      <param.namespace />
       <param.classorg />
       <param.function.data />
       <param.web.mcr />
@@ -93,12 +94,14 @@
       <param.net.tsa.metadata.assembly />
     </unset>
     <fileset.exports>
+      <file>${PROJECT_ROOT}\ClearVectorStorage.m</file>
       <file>${PROJECT_ROOT}\SaveVectorStorage.m</file>
       <file>${PROJECT_ROOT}\StoreVector.m</file>
     </fileset.exports>
     <fileset.classes>
       <entity.package name="">
-        <entity.class name="Class1">
+        <entity.class name="MTLSaveVector">
+          <file>${PROJECT_ROOT}\ClearVectorStorage.m</file>
           <file>${PROJECT_ROOT}\SaveVectorStorage.m</file>
           <file>${PROJECT_ROOT}\StoreVector.m</file>
         </entity.class>

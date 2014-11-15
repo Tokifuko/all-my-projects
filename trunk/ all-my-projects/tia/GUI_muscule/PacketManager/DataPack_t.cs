@@ -18,12 +18,12 @@ namespace GUI_muscule.PacketManager
         public const byte COMM_RX_LENGTH = 0x08;
         public const byte COMM_RX_TEMP = 0x0f;
         public const byte COMM_RX_DEF = 0;
-        public const byte COMM_TX_VALVE_UP_DRIVE = 0x12;
-        public const byte COMM_TX_VALVE_DOWN_DRIVE = 0x14;
-        public const byte COMM_TX_VALVE_UP_GET_STATE = 0x22;
-        public const byte COMM_TX_VALVE_DOWN_GET_STATE = 0x24;
-        public const byte COMM_RX_VALVE_UP_STATE = 0x42;
-        public const byte COMM_RX_VALVE_DOWN_STATE = 0x44;
+        public const byte COMM_TX_VALVE_IN_DRIVE = 0x12;
+        public const byte COMM_TX_VALVE_OUT_DRIVE = 0x14;
+        public const byte COMM_TX_VALVE_IN_GET_STATE = 0x22;
+        public const byte COMM_TX_VALVE_OUT_GET_STATE = 0x24;
+        public const byte COMM_RX_VALVE_IN_STATE = 0x42;
+        public const byte COMM_RX_VALVE_OUT_STATE = 0x44;
     }
 
     public struct DataPack_t

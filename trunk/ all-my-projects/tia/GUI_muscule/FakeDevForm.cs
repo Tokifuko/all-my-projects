@@ -121,7 +121,7 @@ namespace GUI_muscule
         private void timerLen_Tick(object sender, EventArgs e)
         {
             //dwLenCounter += 2;
-           // lockalDataPack.Data = (uint)GetSinData(dwLenCounter);
+           // lockalDataPack.ui32 = (uint)GetSinData(dwLenCounter);
             Random rnd = new Random();
             double delta = rnd.Next(250);
             double dwLen, dwTenzo, dwPres;

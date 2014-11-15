@@ -56,6 +56,12 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lbKbitSec = new System.Windows.Forms.Label();
+            this.lbValveInStatePocketSec = new System.Windows.Forms.Label();
+            this.lbValveInStatePocket = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lbValveOutStatePocketSec = new System.Windows.Forms.Label();
+            this.lbValveOutStatePocket = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tmSecTimer
@@ -66,7 +72,7 @@
             // 
             // btClearButton
             // 
-            this.btClearButton.Location = new System.Drawing.Point(399, 181);
+            this.btClearButton.Location = new System.Drawing.Point(399, 226);
             this.btClearButton.Name = "btClearButton";
             this.btClearButton.Size = new System.Drawing.Size(75, 23);
             this.btClearButton.TabIndex = 0;
@@ -131,7 +137,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 148);
+            this.label7.Location = new System.Drawing.Point(12, 189);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(106, 17);
             this.label7.TabIndex = 7;
@@ -194,7 +200,7 @@
             // lbOtherPocket
             // 
             this.lbOtherPocket.AutoSize = true;
-            this.lbOtherPocket.Location = new System.Drawing.Point(257, 148);
+            this.lbOtherPocket.Location = new System.Drawing.Point(257, 189);
             this.lbOtherPocket.Name = "lbOtherPocket";
             this.lbOtherPocket.Size = new System.Drawing.Size(16, 17);
             this.lbOtherPocket.TabIndex = 14;
@@ -203,7 +209,7 @@
             // lbOtherPocketSec
             // 
             this.lbOtherPocketSec.AutoSize = true;
-            this.lbOtherPocketSec.Location = new System.Drawing.Point(396, 148);
+            this.lbOtherPocketSec.Location = new System.Drawing.Point(396, 189);
             this.lbOtherPocketSec.Name = "lbOtherPocketSec";
             this.lbOtherPocketSec.Size = new System.Drawing.Size(16, 17);
             this.lbOtherPocketSec.TabIndex = 21;
@@ -284,7 +290,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 181);
+            this.label10.Location = new System.Drawing.Point(12, 226);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(129, 17);
             this.label10.TabIndex = 24;
@@ -293,17 +299,78 @@
             // lbKbitSec
             // 
             this.lbKbitSec.AutoSize = true;
-            this.lbKbitSec.Location = new System.Drawing.Point(257, 181);
+            this.lbKbitSec.Location = new System.Drawing.Point(257, 226);
             this.lbKbitSec.Name = "lbKbitSec";
             this.lbKbitSec.Size = new System.Drawing.Size(16, 17);
             this.lbKbitSec.TabIndex = 25;
             this.lbKbitSec.Text = "0";
             // 
+            // lbValveInStatePocketSec
+            // 
+            this.lbValveInStatePocketSec.AutoSize = true;
+            this.lbValveInStatePocketSec.Location = new System.Drawing.Point(396, 148);
+            this.lbValveInStatePocketSec.Name = "lbValveInStatePocketSec";
+            this.lbValveInStatePocketSec.Size = new System.Drawing.Size(16, 17);
+            this.lbValveInStatePocketSec.TabIndex = 28;
+            this.lbValveInStatePocketSec.Text = "0";
+            // 
+            // lbValveInStatePocket
+            // 
+            this.lbValveInStatePocket.AutoSize = true;
+            this.lbValveInStatePocket.Location = new System.Drawing.Point(257, 148);
+            this.lbValveInStatePocket.Name = "lbValveInStatePocket";
+            this.lbValveInStatePocket.Size = new System.Drawing.Size(16, 17);
+            this.lbValveInStatePocket.TabIndex = 27;
+            this.lbValveInStatePocket.Text = "0";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 148);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(134, 17);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "Пакеты клапана IN";
+            this.label13.Click += new System.EventHandler(this.label13_Click);
+            // 
+            // lbValveOutStatePocketSec
+            // 
+            this.lbValveOutStatePocketSec.AutoSize = true;
+            this.lbValveOutStatePocketSec.Location = new System.Drawing.Point(396, 165);
+            this.lbValveOutStatePocketSec.Name = "lbValveOutStatePocketSec";
+            this.lbValveOutStatePocketSec.Size = new System.Drawing.Size(16, 17);
+            this.lbValveOutStatePocketSec.TabIndex = 31;
+            this.lbValveOutStatePocketSec.Text = "0";
+            // 
+            // lbValveOutStatePocket
+            // 
+            this.lbValveOutStatePocket.AutoSize = true;
+            this.lbValveOutStatePocket.Location = new System.Drawing.Point(257, 165);
+            this.lbValveOutStatePocket.Name = "lbValveOutStatePocket";
+            this.lbValveOutStatePocket.Size = new System.Drawing.Size(16, 17);
+            this.lbValveOutStatePocket.TabIndex = 30;
+            this.lbValveOutStatePocket.Text = "0";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(12, 165);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(151, 17);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "Пакеты клапана OUT";
+            // 
             // StatisticForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(490, 216);
+            this.ClientSize = new System.Drawing.Size(490, 254);
+            this.Controls.Add(this.lbValveOutStatePocketSec);
+            this.Controls.Add(this.lbValveOutStatePocket);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.lbValveInStatePocketSec);
+            this.Controls.Add(this.lbValveInStatePocket);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.lbKbitSec);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -366,5 +433,11 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lbKbitSec;
+        private System.Windows.Forms.Label lbValveInStatePocketSec;
+        private System.Windows.Forms.Label lbValveInStatePocket;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lbValveOutStatePocketSec;
+        private System.Windows.Forms.Label lbValveOutStatePocket;
+        private System.Windows.Forms.Label label16;
     }
 }
