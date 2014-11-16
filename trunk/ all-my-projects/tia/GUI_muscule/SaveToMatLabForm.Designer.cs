@@ -44,20 +44,20 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // btStart
+            // btStartIn
             // 
             this.btStart.Location = new System.Drawing.Point(23, 84);
-            this.btStart.Name = "btStart";
+            this.btStart.Name = "btStartIn";
             this.btStart.Size = new System.Drawing.Size(75, 23);
             this.btStart.TabIndex = 0;
             this.btStart.Text = "Старт";
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
-            // btStop
+            // btStopIn
             // 
             this.btStop.Location = new System.Drawing.Point(135, 84);
-            this.btStop.Name = "btStop";
+            this.btStop.Name = "btStopIn";
             this.btStop.Size = new System.Drawing.Size(75, 23);
             this.btStop.TabIndex = 1;
             this.btStop.Text = "Стоп";

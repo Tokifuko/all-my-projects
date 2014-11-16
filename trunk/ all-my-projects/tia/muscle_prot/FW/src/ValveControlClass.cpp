@@ -40,7 +40,7 @@ void ValvePwmClass::Init(TIM_TypeDef* TIMx,uint8_t bChanel)
 	  ----------------------------------------------------------------------- */
 
 	  /* Compute the prescaler value */
-		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 2550) - 1; // 4000 - 6000
+		uint16_t PrescalerValue = (uint16_t) (SystemCoreClock / 2540) - 1; // 4000 - 6000
 
 	    NVIC_InitTypeDef NVIC_InitStructure;
 

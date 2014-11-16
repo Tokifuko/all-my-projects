@@ -25,11 +25,10 @@ namespace GUI_muscule
         {
             InitializeComponent();
             myPacketTransmitter = PackTx;
-            vdInValve = new ValveDriver(myPacketTransmitter, 0x12);
-            vdOutValve =new ValveDriver(myPacketTransmitter, 0x14);
+            vdInValve = new ValveDriver(myPacketTransmitter, ValveType.In);
+            vdOutValve =new ValveDriver(myPacketTransmitter, ValveType.Out);
         }
       
-
         private void tbPower_Scroll(object sender, EventArgs e)
         {
             lbPower.Text = csPower+tbPower.Value.ToString();
@@ -42,14 +41,24 @@ namespace GUI_muscule
             bSetTime = (byte)tbTime.Value;
         }
 
-        private void btStart_Click(object sender, EventArgs e)
+        private void btStartIn_Click(object sender, EventArgs e)
         {
             vdInValve.Open(bSetPower, bSetTime);
         }
 
-        private void btStop_Click(object sender, EventArgs e)
+        private void btStopIn_Click(object sender, EventArgs e)
         {
             vdInValve.Close();
+        }
+
+        private void btStartOut_Click(object sender, EventArgs e)
+        {
+            vdOutValve.Open(bSetPower, bSetTime);
+        }
+
+        private void btStopOut_Click(object sender, EventArgs e)
+        {
+            vdOutValve.Close();
         }
     }
 }

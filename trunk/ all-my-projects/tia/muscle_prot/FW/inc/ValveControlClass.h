@@ -11,8 +11,8 @@
 #include "stm32f10x_conf.h"
 #include "common.h"
 
-#define TOP_PWM_VALUE				255
-#define MIN_CLOSE_DALAY				200 // в милисекундах
+#define TOP_PWM_VALUE				254
+#define MIN_CLOSE_DALAY				37
 
 #define VALVE_TIM4_CH2_PIN			GPIO_Pin_7
 #define VALVE_TIM4_CH2_PORT			GPIOB

@@ -17,10 +17,9 @@ namespace GUI_muscule.Tests
         public void ValveDriver_CallOpen_SendCorrectPack()
         {
             IPacketTransmitter testReciever = Substitute.For<IPacketTransmitter>();
-            ValveDriver testValveDriver = new ValveDriver(testReciever, 5);
-            testValveDriver.Open(56, 78);
-            testReciever.Received(); // дописать сюда проверку содержимого пакета
-            Assert.Fail();
+            ValveDriver testValveDriver = new ValveDriver(testReciever, ValveType.In);
+            testValveDriver.Open(0x56, 0x78);
+            testReciever.Received().SendPacket(Constants.COMM_TX_VALVE_IN_DRIVE,0,0x78005600,0); 
         }
     }
 }

@@ -10,7 +10,7 @@ namespace GUI_muscule.PacketManager
 {
     public interface IPacketTransmitter
     {
-        void SendPacket(byte bCommand = 0, byte bAddr = Constants.COMM_RX_DEF, UInt32 uiData = 0, UInt16 uiReserv = 0);
+        void SendPacket(byte bCommand = Constants.COMM_RX_DEF, byte bAddr = 0, UInt32 uiData = 0, UInt16 uiReserv = 0);
     }
     public class PacketTransmitter : IPacketTransmitter
     {

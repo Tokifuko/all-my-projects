@@ -57,7 +57,6 @@
     <Compile Include="FakeDevFormTests.cs" />
     <Compile Include="MatLabChats\MatLabChart2DTests.cs" />
     <Compile Include="MatLabChats\SplitFigTests.cs" />
-    <Compile Include="MatLabStorage\StoreSourceTests.cs" />
     <Compile Include="PocketManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValveDriverTests.cs" />

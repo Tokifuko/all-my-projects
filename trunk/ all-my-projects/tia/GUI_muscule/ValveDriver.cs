@@ -7,15 +7,24 @@ using GUI_muscule.PacketManager;
 
 namespace GUI_muscule
 {
+    public enum ValveType { In, Out }
     public class ValveDriver
     {
         IPacketTransmitter myPacketTransmitter;
         byte bValveCommand;
-        public ValveDriver (IPacketTransmitter pPacketTransmitter, byte bValveCom)
+        public ValveDriver (IPacketTransmitter pPacketTransmitter, ValveType vt)
         {
             myPacketTransmitter = pPacketTransmitter;
-            bValveCommand = bValveCom;
-        }
+            switch (vt)
+            {
+                case ValveType.In:
+                    bValveCommand = Constants.COMM_TX_VALVE_IN_DRIVE;
+                    break;
+                case ValveType.Out:
+                    bValveCommand = Constants.COMM_TX_VALVE_OUT_DRIVE;
+                    break;
+            }
+          }
         public void Open(byte bPow, byte bTime)
         {
             myPacketTransmitter.SendPacket(bValveCommand, 0, (uint)(bPow << 8) + (uint)(bTime<<24));
