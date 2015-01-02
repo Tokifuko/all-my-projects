@@ -8,28 +8,37 @@ using System.Threading.Tasks;
 using MatLabSaveVectorLib;
 //using GUI_muscule.PacketManager;
 using GUI_muscule.PointSource;
+using System.Windows.Forms;
 
 using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabStorage
 {
-    class MatLabStoreClass : IPointRecever<stSpaceVector>
+    class MatLabStoreClass : IPointRecever<stQueueToAll>
     {
         MTLSaveVector myVectorSaver = new MTLSaveVector();
         public string sReturnMessage;
         public bool bPauseFlag = false;
-        void TransmitDataToMatLab(stSpaceVector sv)
+        void TransmitDataToMatLab(stQueueToAll sv)
         {
             if (bPauseFlag) return;
             MWArray nwRes;
-            nwRes=myVectorSaver.StoreVector(sv.qForce.ToNumArray(), 
-                                            sv.qPress.ToNumArray(), 
-                                            sv.qSpeed.ToNumArray(),
-                                            sv.qValveInPower.ToNumArray(),
-                                            sv.qValveOutPower.ToNumArray(),
-                                            sv.qValveInCounter.ToNumArray(),
-                                            sv.qValveOutCounter.ToNumArray());
-            sReturnMessage = nwRes.ToString();
+            try
+                {
+                    nwRes = myVectorSaver.StoreVector((MWNumericArray)sv.qForce.ToArray(), 
+                                                    (MWNumericArray)sv.qPress.ToArray(),
+                                                    (MWNumericArray)sv.qSpeed.ToArray(),
+                                                    (MWNumericArray)sv.qLength.ToArray(),
+                                                    (MWNumericArray)sv.qValveInPower.ToArray(),
+                                                    (MWNumericArray)sv.qValveOutPower.ToArray(),
+                                                    (MWNumericArray)sv.qValveInCounter.ToArray(), 
+                                                    (MWNumericArray)sv.qValveOutCounter.ToArray());
+                    sReturnMessage = nwRes.ToString();
+                }
+            catch (Exception ex)
+            {
+                MessageBox.Show ("Ошибка: " + ex.Message);
+            }
         }
         public string SaveToFile(string sPath,string sName)
         {
@@ -45,7 +54,7 @@ namespace GUI_muscule.MatLabStorage
         /********************************************************************
          * реализация интерфейса        IPointRecever<T>
         * *****************************************************************/
-        public void AddPoint(stSpaceVector tPoint)
+        public void AddPoint(stQueueToAll tPoint)
         {
             TransmitDataToMatLab(tPoint);
         }

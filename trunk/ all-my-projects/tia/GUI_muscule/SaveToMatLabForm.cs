@@ -15,21 +15,21 @@ namespace GUI_muscule
 {
     public partial class SaveToMatLabForm : Form
     {
-        StoreSource myPointSource;
+        StorageToAll myPointSource;
         MatLabStoreClass myMatLabStore;
         public SaveToMatLabForm(IObservable<DataPack_t> DataPackSource)
         {
             InitializeComponent();
             myMatLabStore=new MatLabStoreClass();
-            myPointSource = new StoreSource(myMatLabStore);
+            myPointSource = new StorageToAll(myMatLabStore);
             myPointSource.Subscribe(DataPackSource);
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
-            string s=saveFileDialog1.FileName;
+            string s = saveFileDialog1.FileName;
             lbFilePath.Text = Path.GetDirectoryName(s);
-            tbFileName.Text= Path.GetFileName(s);
+            tbFileName.Text = Path.GetFileName(s);
         }
 
         private void btSelectFile_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace GUI_muscule
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lbPointCounter.Text = myMatLabStore.sReturnMessage;
+            lbPointCounter.Text = myPointSource.GetQueueCounter();
         }
 
         private void btStart_Click(object sender, EventArgs e)
@@ -60,10 +60,12 @@ namespace GUI_muscule
         private void btClear_Click(object sender, EventArgs e)
         {
             myMatLabStore.Clear();
+            lbPointCounter.Text = "0";
         }
 
         private void btSaveFile_Click(object sender, EventArgs e)
         {
+            myPointSource.TransmitData();
             myMatLabStore.SaveToFile(lbFilePath.Text, tbFileName.Text);
         }
     }

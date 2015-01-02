@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GUI_muscule;
 using GUI_muscule.PacketManager;
 using NUnit.Framework;
+using GUI_muscule.Valve;
 using NSubstitute;
 
 namespace GUI_muscule.Tests

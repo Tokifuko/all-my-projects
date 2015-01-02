@@ -78,6 +78,7 @@
     <Compile Include="MatLabChats\MatLabFigure.cs" />
     <Compile Include="MatLabStorage\MatLabStore.cs" />
     <Compile Include="MatLabChats\StringPropertiySetter.cs" />
+    <Compile Include="MatLabStorage\StorageToAll.cs" />
     <Compile Include="MatLabStorage\StoreSource.cs" />
     <Compile Include="PacketManager\DataPack_t.cs" />
     <Compile Include="PacketManager\PacketReciver.cs" />
@@ -118,13 +119,14 @@
     <Compile Include="StatisticForm.Designer.cs">
       <DependentUpon>StatisticForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValveControl.cs">
+    <Compile Include="Valve\DoubleVaveRandom.cs" />
+    <Compile Include="Valve\ValveControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ValveControl.Designer.cs">
+    <Compile Include="Valve\ValveControl.Designer.cs">
       <DependentUpon>ValveControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ValveDriver.cs" />
+    <Compile Include="Valve\ValveDriver.cs" />
     <EmbeddedResource Include="FakeDevForm.resx">
       <DependentUpon>FakeDevForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,7 +149,7 @@
     <EmbeddedResource Include="StatisticForm.resx">
       <DependentUpon>StatisticForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ValveControl.resx">
+    <EmbeddedResource Include="Valve\ValveControl.resx">
       <DependentUpon>ValveControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

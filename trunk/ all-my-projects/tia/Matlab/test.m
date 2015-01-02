@@ -1,40 +1,75 @@
-function test
+function test(force,press,len,speed)
+hFig= figure('PaperSize',[20.98 29.68]);
+set(hFig,'CurrentAxes', axes());
+set(hFig,'Name','poly');
+hAxes= get(hFig,'CurrentAxes');
+
+X=force(5,:);
+%X=median(force);
 
 
-% x=0:pi/10:pi*8;
-% y=0:pi/20:pi*4;
-% z=sin(x)+cos(y);
-len=500;
-x=2*pi*rand (len,1);
-y=3*pi*rand(len,1);
-z=cos(x)+sin(y)+0.5*rand(len,1);
-z=z*(-1);
-x=x';
-y=y';
-z=z';
- %PlotArray(hA,x);
- hF1=GetFigHandle();
- hF2=GetFigHandle();
+Y=press(5,:);
+%Y=median(press);
 
+Z=len(5,:);
+SP=speed(5,:);
 
+X=double(X);
+Y=double(Y);
+Z=double(Z);
+SP=double(SP);
 
-hA=GetAxesHandle(hF1)
- hA1=SplitFigure(hF1,2,1,1)
- 
- %hA=GetAxesHandle(hF1);
- hA2=SplitFigure(hF1,2,2,3)
- 
- %hA=GetAxesHandle(hF1);
- hA3=SplitFigure(hF1,2,2,4)
-hA=GetAxesHandle(hF1)
- SetObjProp(hA,'Title','нулева€');
- SetObjProp(hA1,'Title','перва€');
- SetObjProp(hA2,'Title','втора€');
- SetObjProp(hA3,'Title','треть€');
- 
-% SetObjProp(hF,'Name','name');
-%PlotSpectr(hA,2,z);
+X=X';
+Y=Y';
+Z=Z';
+SP=SP';
 
-%PlotArray3D(hA,x*1000,y*1000,z*1000);
+order=8;
+Xin=[X,Y];
+p = polyfitn(Xin,Z,order);
+Z_calc = polyvaln(p,Xin);
+
+Error=(Z-Z_calc).^2;
+
+%% удал€ем из последовательности 1% артефактов с самой большой ошибкой
+percent=1;
+poz=length(Error)-(length(Error)/100)*percent;
+temp_array=sort(Error);
+max_Error=temp_array(poz);
+
+X(Error>max_Error)=[];
+Y(Error>max_Error)=[];
+Z(Error>max_Error)=[];
+Z_calc(Error>max_Error)=[];
+SP(Error>max_Error)=[];
+Error(Error>max_Error)=[];
+
+%% среднеквадратична€ ошибка
+% med_Error=median(Error);
+% plot(med_Error,'.');
+
+%% распределение квадратичного отклонени€
+% sort_Error=sort(Error);
+% plot (sort_Error);
+
+%% «ависимость ошибки от других величин
+%plot(Error,X,'.');
+
+%% рисование поверхности%%
+% plot3(hAxes,X',Y',Z','.');
+% [xg,yg]=meshgrid(min(X):(max(X)-min(X))/50:max(X),min(Y):(max(Y)-min(Y))/50:max(Y));
+% hold on
+% zg = polyvaln(p,[xg(:),yg(:)]);
+% surf(hAxes, xg,yg,reshape(zg,size(xg)))
+% hold off
+
+%% график реального и вычисленного значени€ длинны
+hAx1=subplot (2,1,1);
+hold on
+plot(hAx1,Z(1150:1300),'k');
+plot(hAx1,Z_calc(1150:1300),'r');
+hAx2=subplot(2,1,2);
+semilogy (hAx2,Error(1150:1300),'k');
+hold off
 
 end 

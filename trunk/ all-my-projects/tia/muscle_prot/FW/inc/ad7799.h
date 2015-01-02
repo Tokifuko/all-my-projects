@@ -14,10 +14,14 @@
 #include "stm32f10x.h"
 #include "common.h"
 
-#define AD7799_COM_CONFIG 			{0x10,0x07,0x30,0x00}  //g=128
+#define AD7799_COM_CONFIG 			{0x10,0x17,0x30,0x00}  //g=128
+
 //#define AD7799_COM_CONFIG 			{0x10,0x06,0x30,0x00}		// g=64
 //#define AD7799_COM_MODE_PSW_ON  	{0x08,0x10,0x01,0x00}  // f=420Hz
 //#define AD7799_COM_MODE_PSW_OFF  	{0x08,0x00,0x01,0x00}	// f=420Hz
+
+#define AD7799_COM_MODE_IDLE  		{0x08,0x40,0x0a,0x00}	// f=16.7Hz
+#define AD7799_COM_SET_OFFSET		{0x30,0x80,0x00,0x00}
 
 #define AD7799_COM_MODE_PSW_ON  	{0x08,0x10,0x0a,0x00}	// f=16.7Hz
 #define AD7799_COM_MODE_PSW_OFF  	{0x08,0x00,0x0a,0x00}	// f=16.7Hz
@@ -56,6 +60,7 @@ private:
 
 public:
     ftVoid_uint32 Callback;
+    ftVoid_uint32 ErrorCallback;
     void Init(void);
     void Task (void);
     void StartTxRx(uint8_t chDataSize);

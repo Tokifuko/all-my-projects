@@ -36,6 +36,7 @@ namespace GUI_muscule.MatLabStorage
         public const byte bPressLen = 5;
         public const byte bForceLen = 5;
         public const byte bSpeedLen = 5;
+        public const byte bLengthLen = 5;
         public const byte bValveInPowerLen = 5;
         public const byte bValveOutPowerLen = 5;
         public const byte bValveInCounterLen = 5;
@@ -43,6 +44,7 @@ namespace GUI_muscule.MatLabStorage
         public FixLenQueue<int> qPress = new FixLenQueue<int>(bPressLen, 0);
         public FixLenQueue<int> qForce = new FixLenQueue<int>(bForceLen, 0);
         public FixLenQueue<int> qSpeed = new FixLenQueue<int>(bSpeedLen, 0);
+        public FixLenQueue<int> qLength = new FixLenQueue<int>(bLengthLen, 0);
         public FixLenQueue<int> qValveInPower = new FixLenQueue<int>(bValveInPowerLen, 0);
         public FixLenQueue<int> qValveOutPower = new FixLenQueue<int>(bValveOutPowerLen, 0);
         public FixLenQueue<int> qValveInCounter = new FixLenQueue<int>(bValveInCounterLen, 0);
@@ -69,10 +71,11 @@ namespace GUI_muscule.MatLabStorage
                 case Constants.COMM_RX_TENZO:
                     curVect.qForce.Enqueue((int)uiData);
                     break;
-                case Constants.COMM_RX_LENGTH:  // получаем мы длинну, а нужно вычеслить скорость
-                    curVect.qSpeed.Enqueue(((Int32)uiData) - iOldLength);
+                case Constants.COMM_RX_LENGTH:
+                    curVect.qLength.Enqueue((int)uiData);
+                    curVect.qSpeed.Enqueue(((Int32)uiData) - iOldLength);// получаем мы длинну, а нужно вычеслить скорость
                     iOldLength = (Int32)uiData;
-                    NewDataReady();
+                    NewVectorReady();
                     break;
                 case Constants.COMM_RX_VALVE_IN_STATE:
                     curVect.qValveInPower.Enqueue(GetPowerFromDataPack(uiData));
@@ -84,7 +87,7 @@ namespace GUI_muscule.MatLabStorage
                     break;
             }//switch (bCommand)
         }//PointProcces
-        private void NewDataReady()
+        private void NewVectorReady()
         {
             myPointRecever.AddPoint(curVect);
         }

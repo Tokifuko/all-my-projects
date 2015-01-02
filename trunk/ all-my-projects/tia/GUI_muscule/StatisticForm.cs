@@ -22,6 +22,7 @@ namespace GUI_muscule
         SpeedMeasurement myTempPocket = new SpeedMeasurement();
         SpeedMeasurement myValveInPocket = new SpeedMeasurement();
         SpeedMeasurement myValveOutPocket = new SpeedMeasurement();
+        SpeedMeasurement myAdcErrorPocket = new SpeedMeasurement();
         SpeedMeasurement myOtherPocket = new SpeedMeasurement();
         public StatisticForm()
         {
@@ -38,6 +39,7 @@ namespace GUI_muscule
             myTempPocket.ClearCounters();
             myValveInPocket.ClearCounters();
             myValveOutPocket.ClearCounters();
+            myAdcErrorPocket.ClearCounters();
             myOtherPocket.ClearCounters();
         }
 
@@ -75,6 +77,9 @@ namespace GUI_muscule
                 case Constants.COMM_RX_VALVE_OUT_STATE:
                     myValveOutPocket.NewSample();
                     break;
+                case Constants.COMM_RX_ADC_ERROR:
+                    myAdcErrorPocket.NewSample();
+                    break;
                 default:
                     myOtherPocket.NewSample();
                     break;
@@ -109,6 +114,7 @@ namespace GUI_muscule
             lbTempPocket.Text = myTempPocket.iTotal.ToString();
             lbValveInStatePocket.Text = myValveInPocket.iTotal.ToString();
             lbValveOutStatePocket.Text = myValveOutPocket.iTotal.ToString();
+            lbAdcErrorPocket.Text = myAdcErrorPocket.iTotal.ToString();
             lbOtherPocket.Text = myOtherPocket.iTotal.ToString();
 
             lbTotalBytesSec.Text = myTotalBytes.iSamplePerSecond.ToString();
@@ -119,6 +125,7 @@ namespace GUI_muscule
             lbTempPocketSec.Text = myTempPocket.dFreqMed.ToString();
             lbValveInStatePocketSec.Text = myValveInPocket.dFreqMed.ToString();
             lbValveOutStatePocketSec.Text = myValveOutPocket.dFreqMed.ToString();
+            lbAdcErrorPocketSec.Text = myAdcErrorPocket.dFreqMed.ToString();
             lbOtherPocketSec.Text = myOtherPocket.dFreqMed.ToString();
 
             lbKbitSec.Text = (myTotalBytes.iSamplePerSecond * 8).ToString();

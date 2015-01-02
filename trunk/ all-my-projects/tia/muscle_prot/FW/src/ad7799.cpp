@@ -33,7 +33,9 @@
 #define RECEIVE_DATA_STEP				5
 #define CALIBRATION_MODE_STEP 			6
 #define WAIT_RDY_AFTER_CAIBRATION_STEP	7
-
+#define RECEIVE_STATUS_STEP				8
+#define OFFSET_STEP						9
+#define MODE_IDLE_STEP					10
 
 void AD7799_Class :: Init(void)
 {
@@ -142,8 +144,19 @@ void AD7799_Class :: Task(void)
 			SPI_MASTER_Buffer_Tx=AD7799_COM_RESET;
 			StartTxRx(4);
 			AD7799_state=CONFIG_STEP;
+			//AD7799_state=MODE_IDLE_STEP;
 			break;
-		case CONFIG_STEP:	// write to configuration register
+	/*	case MODE_IDLE_STEP:
+			SPI_MASTER_Buffer_Tx=AD7799_COM_MODE_IDLE;
+			StartTxRx(4);
+			AD7799_state=OFFSET_STEP;
+			break;
+		case OFFSET_STEP:
+			SPI_MASTER_Buffer_Tx=AD7799_COM_SET_OFFSET;
+			StartTxRx(4);
+			AD7799_state=CONFIG_STEP;
+			break;
+		*/case CONFIG_STEP:	// write to configuration register
 			SPI_MASTER_Buffer_Tx=AD7799_COM_CONFIG;
 			StartTxRx(3);
 			AD7799_state=MODE_SET_STEP;
@@ -170,10 +183,22 @@ void AD7799_Class :: Task(void)
 		case IDLE_STEP:   // wait RDY pin
 			if (GPIO_ReadInputDataBit(SPI_MASTER_GPIO, SPI_MASTER_PIN_MISO) == Bit_RESET)
 			{
-				SPI_MASTER_Buffer_Tx=AD7799_COM_GET_DATA;
-				StartTxRx(4);
-				AD7799_state=RECEIVE_DATA_STEP;
+				SPI_MASTER_Buffer_Tx=AD7799_COM_GET_STATUS;
+				StartTxRx(2);
+				AD7799_state=RECEIVE_STATUS_STEP;
 			}
+			break;
+		case RECEIVE_STATUS_STEP:
+			iData=SPI_MASTER_Buffer_Rx[1];
+			if (SPI_MASTER_Buffer_Rx[1]!=0x08)// An error has occurred
+			{
+				AD7799_state=START_STEP;
+				if(ErrorCallback != 0) ErrorCallback(iData);
+				break;
+			}
+			SPI_MASTER_Buffer_Tx=AD7799_COM_GET_DATA;
+			StartTxRx(4);
+			AD7799_state=RECEIVE_DATA_STEP;
 			break;
 		case RECEIVE_DATA_STEP: //data process
 				AD7799_state=IDLE_STEP;

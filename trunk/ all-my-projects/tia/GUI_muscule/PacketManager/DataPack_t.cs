@@ -24,6 +24,7 @@ namespace GUI_muscule.PacketManager
         public const byte COMM_TX_VALVE_OUT_GET_STATE = 0x24;
         public const byte COMM_RX_VALVE_IN_STATE = 0x42;
         public const byte COMM_RX_VALVE_OUT_STATE = 0x44;
+        public const byte COMM_RX_ADC_ERROR = 0x81;
     }
 
     public struct DataPack_t

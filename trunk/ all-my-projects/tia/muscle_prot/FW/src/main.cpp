@@ -27,6 +27,7 @@
 
 void GeneralInit(void);
 void Ad7799Callback(uint32_t iData);
+void Ad7799ErrorCallback(uint32_t iData);
 void Ms5803Callback(uint32_t iData);
 void UplinkCallback(DataPack_t* pDataPack);
 void CalipersCallBack(uint32_t iData);
@@ -78,6 +79,7 @@ int main(void)
 	ComportUART.UART_Init(USART3);
 	ad7799.Init();
 	ad7799.Callback=Ad7799Callback;
+	ad7799.ErrorCallback=Ad7799ErrorCallback;
 
 	ms5803.Init();
 	ms5803.Callback=Ms5803Callback;
@@ -232,6 +234,23 @@ void Ad7799Callback(uint32_t iData)
 	}
 */
 	//DbgUART.SendPrintF("Tenzo=%d \n",iData);
+}
+
+void Ad7799ErrorCallback(uint32_t iData)
+{
+	DbgUART.SendPrintF("Tenzo ADC error Stat=%X \n",iData);
+	DataPack_t sDataPack;
+	sDataPack.Addr=0;
+	sDataPack.Reserv=0;
+	sDataPack.Command=DATA_PACK_COMMAND_ADC_ERROR;
+	sDataPack.Data=iData;
+	uplink.Send(&sDataPack);
+	/*iTemp++;
+	if (iTemp>100)
+	{
+		DbgUART.SendPrintF("Tenzo=%X \n",iData);
+    	iTemp=0;
+	}*/
 }
 void Ms5803Callback(uint32_t iData)
 {
