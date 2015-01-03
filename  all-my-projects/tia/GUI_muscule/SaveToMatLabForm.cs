@@ -49,17 +49,17 @@ namespace GUI_muscule
 
         private void btStart_Click(object sender, EventArgs e)
         {
-            myMatLabStore.bPauseFlag = false;
+            myPointSource.bPauseFlag = false;
         }
 
         private void btStop_Click(object sender, EventArgs e)
         {
-            myMatLabStore.bPauseFlag = true;
+            myPointSource.bPauseFlag = true;
         }
 
         private void btClear_Click(object sender, EventArgs e)
         {
-            myMatLabStore.Clear();
+            myPointSource.Clear();
             lbPointCounter.Text = "0";
         }
 

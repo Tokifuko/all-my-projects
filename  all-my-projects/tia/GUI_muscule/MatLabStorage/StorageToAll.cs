@@ -27,6 +27,17 @@ namespace GUI_muscule.MatLabStorage
         {
             return (qForce.Count) + (qLength.Count) + (qPress.Count )+ (qSpeed.Count) + (qValveInCounter.Count) + (qValveInPower.Count) + (qValveOutCounter.Count) + (qValveOutPower.Count);
         }
+        public void ClearAll()
+        {
+            qPress.Clear();
+            qForce.Clear();
+            qSpeed.Clear();
+            qLength.Clear();
+            qValveInPower.Clear();
+            qValveOutPower.Clear();
+            qValveInCounter.Clear();
+            qValveOutCounter.Clear();
+        }
     }
     /*------------------------------StoreSource--------------------------
  * Класс получает данные, накапливает их в очередях структуры stQueueToAll .
@@ -35,10 +46,12 @@ namespace GUI_muscule.MatLabStorage
     {
         public stQueueToAll curVect = new stQueueToAll();
         Int32 iOldLength;
+        public bool bPauseFlag = false;
         public StorageToAll(IPointRecever<stQueueToAll> tQueueReciver) : base(tQueueReciver) { /*Add further instructions here.*/}
 
         override protected void PointProcces(byte bCommand, UInt32 uiData)
         {
+            if (bPauseFlag) return;
             switch (bCommand)
             {
                 case Constants.COMM_RX_PREASURE:
@@ -62,6 +75,10 @@ namespace GUI_muscule.MatLabStorage
                     break;
             }//switch (bCommand)
         }//PointProcces
+        public void Clear()
+        {
+            curVect.ClearAll();
+        }
         public void TransmitData()
         {
             myPointRecever.AddPoint(curVect);
