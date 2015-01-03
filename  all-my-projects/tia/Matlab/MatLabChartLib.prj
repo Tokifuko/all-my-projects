@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3090311311" file="C:\all-my-projects\tia\Matlab\MatLabChartLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabChartLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabChartLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="3924901982" file="C:\all-my-projects\tia\Matlab\MatLabChartLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabChartLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabChartLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>MatLabChartLib</param.appname>
     <param.icon />
     <param.icons />

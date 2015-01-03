@@ -1,0 +1,476 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MatLabSaveVectorLib</name>
+    </assembly>
+    <members>
+        <member name="T:MatLabSaveVectorLib.MTLSaveVector">
+            <summary>
+            The MTLSaveVector class provides a CLS compliant, MWArray interface to the MATLAB
+            functions contained in the files:
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\ClearVectorStorage.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\SaveVectorStorage.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\StoreVector.m
+            <newpara></newpara>
+            deployprint.m
+            <newpara></newpara>
+            printdlg.m
+            </summary>
+            <remarks>
+            @Version 0.0
+            </remarks>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.#cctor">
+            <summary internal= "true">
+            The static constructor instantiates and initializes the MATLAB Compiler Runtime
+            instance.
+            </summary>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.#ctor">
+            <summary>
+            Constructs a new instance of the MTLSaveVector class.
+            </summary>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.Finalize">
+            <summary internal= "true">
+            Class destructor called by the CLR garbage collector.
+            </summary>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.Dispose">
+            <summary>
+            Frees the native resources associated with this object
+            </summary>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.Dispose(System.Boolean)">
+            <summary internal= "true">
+            Internal dispose function
+            </summary>
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.ClearVectorStorage">
+             <summary>
+             Provides a void output, 0-input MWArrayinterface to the ClearVectorStorage MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Отчищает глобальные накопители
+             </remarks>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.ClearVectorStorage(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the ClearVectorStorage MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Отчищает глобальные накопители
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the SaveVectorStorage
+             MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 1-input MWArrayinterface to the SaveVectorStorage
+             MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="path">Input argument #1</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 2-input MWArrayinterface to the SaveVectorStorage
+             MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="path">Input argument #1</param>
+             <param name="filename">Input argument #2</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the SaveVectorStorage MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the SaveVectorStorage MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="path">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the SaveVectorStorage MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="path">Input argument #1</param>
+             <param name="filename">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.SaveVectorStorage(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the SaveVectorStorage function in which the input and
+             output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             M-Documentation:
+             проверяем правильность пути
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 1-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 2-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 3-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 4-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 5-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 6-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 7-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <param name="ValveInCount">Input argument #7</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 8-input MWArrayinterface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <param name="ValveInCount">Input argument #7</param>
+             <param name="ValveOutCount">Input argument #8</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 4-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 5-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 6-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 7-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <param name="ValveInCount">Input argument #7</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 8-input MWArray interface to the StoreVector MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="Force">Input argument #1</param>
+             <param name="Press">Input argument #2</param>
+             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #4</param>
+             <param name="ValveInPower">Input argument #5</param>
+             <param name="ValveOutPower">Input argument #6</param>
+             <param name="ValveInCount">Input argument #7</param>
+             <param name="ValveOutCount">Input argument #8</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.StoreVector(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the StoreVector function in which the input and output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MatLabSaveVectorLib.MTLSaveVector.WaitForFiguresToDie">
+             <summary>
+             This method will cause a MATLAB figure window to behave as a modal dialog box.
+             The method will not return until all the figure windows associated with this
+             component have been closed.
+             </summary>
+             <remarks>
+             An application should only call this method when required to keep the
+             MATLAB figure window from disappearing.  Other techniques, such as calling
+             Console.ReadLine() from the application should be considered where
+             possible.</remarks>
+            
+        </member>
+    </members>
+</doc>
