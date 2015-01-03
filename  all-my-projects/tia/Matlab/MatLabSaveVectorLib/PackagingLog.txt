@@ -6,6 +6,30 @@ ant:
 mcc -W 'dotnet:MatLabSaveVectorLib,MTLSaveVector,0.0,private' -T link:lib -d C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing -v C:\all-my-projects\tia\Matlab\ClearVectorStorage.m C:\all-my-projects\tia\Matlab\SaveVectorStorage.m C:\all-my-projects\tia\Matlab\StoreVector.m 'class{MTLSaveVector:C:\all-my-projects\tia\Matlab\ClearVectorStorage.m,C:\all-my-projects\tia\Matlab\SaveVectorStorage.m,C:\all-my-projects\tia\Matlab\StoreVector.m}' 
 Compiler version: 5.1 (R2014a)
 Dependency analysis by REQUIREMENTS.
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\coder\simulinkcoder\cgv\API] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\matlab\winfun\NET] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR\dataclasses] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\simulink\simulink\MPlayIO] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\slvnv\reqmgt\RTExplorer] 
+[> In path at 33
+  In requirements at 156] 
 [Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
 [Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
 [Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
