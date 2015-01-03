@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GUI_muscule.PacketManager;
 
-namespace GUI_muscule
+namespace GUI_muscule.Valve
 {
     public enum ValveType { In, Out }
     public class ValveDriver
