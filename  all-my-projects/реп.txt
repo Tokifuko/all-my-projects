@@ -1,0 +1,5 @@
+This password is used by project members when checking out or committing source code changes, or when using command-line tools to upload files to the project "Downloads" tab.
+
+For Git repositories, you can add the following line to your .netrc file recording your password for each repository domain you have commit access to. Make sure you have set the permissions on .netrc so that only your user account can read it.
+
+machine code.google.com login tokifuko@gmail.com password uE8Kw8ZR7mK8
