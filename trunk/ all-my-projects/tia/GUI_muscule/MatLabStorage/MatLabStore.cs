@@ -18,10 +18,8 @@ namespace GUI_muscule.MatLabStorage
     {
         MTLSaveVector myVectorSaver = new MTLSaveVector();
         public string sReturnMessage;
-        public bool bPauseFlag = false;
         void TransmitDataToMatLab(stQueueToAll sv)
         {
-            if (bPauseFlag) return;
             MWArray nwRes;
             try
                 {
