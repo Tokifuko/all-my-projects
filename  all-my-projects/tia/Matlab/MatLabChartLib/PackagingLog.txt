@@ -1,0 +1,48 @@
+ant:
+<ant>
+  <mkdir dir="C:\all-my-projects\tia\Matlab\MatLabChartLib\for_redistribution" />
+  <mkdir dir="C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing" />
+</ant>
+mcc -W 'dotnet:MatLabChartLib,MTLChart,4.0,private' -T link:lib -d C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing -v C:\all-my-projects\tia\Matlab\GetAxesHandle.m C:\all-my-projects\tia\Matlab\GetFigHandle.m C:\all-my-projects\tia\Matlab\PlotArray.m C:\all-my-projects\tia\Matlab\PlotArray3D.m C:\all-my-projects\tia\Matlab\PlotSpectr.m C:\all-my-projects\tia\Matlab\SetObjProp.m C:\all-my-projects\tia\Matlab\SplitFigure.m 'class{MTLChart:C:\all-my-projects\tia\Matlab\GetAxesHandle.m,C:\all-my-projects\tia\Matlab\GetFigHandle.m,C:\all-my-projects\tia\Matlab\PlotArray.m,C:\all-my-projects\tia\Matlab\PlotArray3D.m,C:\all-my-projects\tia\Matlab\PlotSpectr.m,C:\all-my-projects\tia\Matlab\SetObjProp.m,C:\all-my-projects\tia\Matlab\SplitFigure.m}' -a C:\all-my-projects\tia\Matlab\PolyfitnTools\polyfitn.m -a C:\all-my-projects\tia\Matlab\PolyfitnTools\polyvaln.m 
+Compiler version: 5.1 (R2014a)
+Dependency analysis by REQUIREMENTS.
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+Parsing file "C:\all-my-projects\tia\Matlab\GetAxesHandle.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\GetFigHandle.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\PlotArray.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\PlotArray3D.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\PlotSpectr.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\SetObjProp.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\SplitFigure.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\deployprint.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\printdlg.m"
+	(Referenced from: "Compiler Command Line").
+Deleting 0 temporary MEX authorization files.
+Generating file "C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MTLChartNative.cs".
+Generating file "C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MTLChart.cs".
+Generating file "C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\readme.txt".
+Executing command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /optimize /doc:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLib.xml" /t:library /r:"C:\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll" /resource:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLib.ctf" /out:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLib.dll" "C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MTLChart.cs"Executing command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /optimize /doc:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLibNative.xml" /t:library /r:"C:\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll" /resource:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLib.ctf" /out:"C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MatLabChartLibNative.dll" "C:\all-my-projects\tia\Matlab\MatLabChartLib\for_testing\MTLChartNative.cs"
+Packaging...
+Creating the bundle...
+Web based installer created at C:\all-my-projects\tia\Matlab\MatLabChartLib\for_redistribution\MyAppInstaller_web.exe.
+Packaging complete.

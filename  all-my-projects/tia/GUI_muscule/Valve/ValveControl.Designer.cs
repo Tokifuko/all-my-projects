@@ -40,33 +40,33 @@
             this.btStopOut = new System.Windows.Forms.Button();
             this.btStartOut = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.nPowMin = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.nPowMax = new System.Windows.Forms.NumericUpDown();
-            this.nCountMax = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.nCountMin = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.btRandomStop = new System.Windows.Forms.Button();
+            this.btRandomStart = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.nDelayMax = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.nDelayMin = new System.Windows.Forms.NumericUpDown();
-            this.btRandomStart = new System.Windows.Forms.Button();
-            this.btRandomStop = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.nCountMax = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.nCountMin = new System.Windows.Forms.NumericUpDown();
+            this.nPowMax = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.nPowMin = new System.Windows.Forms.NumericUpDown();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.tbPower)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbTime)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPowMin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPowMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nCountMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nCountMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDelayMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDelayMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCountMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCountMin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPowMax)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPowMin)).BeginInit();
             this.SuspendLayout();
             // 
             // tbPower
@@ -191,122 +191,25 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Случайная последовательность команд";
             // 
-            // nPowMin
+            // btRandomStop
             // 
-            this.nPowMin.Location = new System.Drawing.Point(6, 38);
-            this.nPowMin.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nPowMin.Name = "nPowMin";
-            this.nPowMin.Size = new System.Drawing.Size(62, 22);
-            this.nPowMin.TabIndex = 15;
-            this.nPowMin.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.btRandomStop.Location = new System.Drawing.Point(88, 157);
+            this.btRandomStop.Name = "btRandomStop";
+            this.btRandomStop.Size = new System.Drawing.Size(75, 23);
+            this.btRandomStop.TabIndex = 31;
+            this.btRandomStop.Text = "Стоп";
+            this.btRandomStop.UseVisualStyleBackColor = true;
+            this.btRandomStop.Click += new System.EventHandler(this.btRandomStop_Click);
             // 
-            // label3
+            // btRandomStart
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(71, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 17);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "max";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 18);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(30, 17);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "min";
-            // 
-            // nPowMax
-            // 
-            this.nPowMax.Location = new System.Drawing.Point(74, 38);
-            this.nPowMax.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nPowMax.Name = "nPowMax";
-            this.nPowMax.Size = new System.Drawing.Size(62, 22);
-            this.nPowMax.TabIndex = 18;
-            this.nPowMax.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            // 
-            // nCountMax
-            // 
-            this.nCountMax.Location = new System.Drawing.Point(74, 83);
-            this.nCountMax.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nCountMax.Name = "nCountMax";
-            this.nCountMax.Size = new System.Drawing.Size(62, 22);
-            this.nCountMax.TabIndex = 22;
-            this.nCountMax.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 63);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 17);
-            this.label5.TabIndex = 21;
-            this.label5.Text = "min";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(71, 63);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(33, 17);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "max";
-            // 
-            // nCountMin
-            // 
-            this.nCountMin.Location = new System.Drawing.Point(6, 83);
-            this.nCountMin.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.nCountMin.Name = "nCountMin";
-            this.nCountMin.Size = new System.Drawing.Size(62, 22);
-            this.nCountMin.TabIndex = 19;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(142, 38);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(246, 17);
-            this.label7.TabIndex = 23;
-            this.label7.Text = "Мощность(0-255, 0=закр, 255=откр)";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(142, 83);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(290, 17);
-            this.label8.TabIndex = 24;
-            this.label8.Text = "Количество открываний  (0-255, 10=1 сек)";
+            this.btRandomStart.Location = new System.Drawing.Point(6, 157);
+            this.btRandomStart.Name = "btRandomStart";
+            this.btRandomStart.Size = new System.Drawing.Size(75, 23);
+            this.btRandomStart.TabIndex = 30;
+            this.btRandomStart.Text = "Старт";
+            this.btRandomStart.UseVisualStyleBackColor = true;
+            this.btRandomStart.Click += new System.EventHandler(this.btRandomStart_Click);
             // 
             // label9
             // 
@@ -360,29 +263,136 @@
             0,
             0,
             0});
+            this.nDelayMin.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nDelayMin.Name = "nDelayMin";
             this.nDelayMin.Size = new System.Drawing.Size(62, 22);
             this.nDelayMin.TabIndex = 25;
+            this.nDelayMin.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // btRandomStart
+            // label8
             // 
-            this.btRandomStart.Location = new System.Drawing.Point(6, 157);
-            this.btRandomStart.Name = "btRandomStart";
-            this.btRandomStart.Size = new System.Drawing.Size(75, 23);
-            this.btRandomStart.TabIndex = 30;
-            this.btRandomStart.Text = "Старт";
-            this.btRandomStart.UseVisualStyleBackColor = true;
-            this.btRandomStart.Click += new System.EventHandler(this.btRandomStart_Click);
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(142, 83);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(290, 17);
+            this.label8.TabIndex = 24;
+            this.label8.Text = "Количество открываний  (0-255, 10=1 сек)";
             // 
-            // btRandomStop
+            // label7
             // 
-            this.btRandomStop.Location = new System.Drawing.Point(88, 157);
-            this.btRandomStop.Name = "btRandomStop";
-            this.btRandomStop.Size = new System.Drawing.Size(75, 23);
-            this.btRandomStop.TabIndex = 31;
-            this.btRandomStop.Text = "Стоп";
-            this.btRandomStop.UseVisualStyleBackColor = true;
-            this.btRandomStop.Click += new System.EventHandler(this.btRandomStop_Click);
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(142, 38);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(246, 17);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "Мощность(0-255, 0=закр, 255=откр)";
+            // 
+            // nCountMax
+            // 
+            this.nCountMax.Location = new System.Drawing.Point(74, 83);
+            this.nCountMax.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nCountMax.Name = "nCountMax";
+            this.nCountMax.Size = new System.Drawing.Size(62, 22);
+            this.nCountMax.TabIndex = 22;
+            this.nCountMax.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 63);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(30, 17);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "min";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(71, 63);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 17);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "max";
+            // 
+            // nCountMin
+            // 
+            this.nCountMin.Location = new System.Drawing.Point(6, 83);
+            this.nCountMin.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nCountMin.Name = "nCountMin";
+            this.nCountMin.Size = new System.Drawing.Size(62, 22);
+            this.nCountMin.TabIndex = 19;
+            // 
+            // nPowMax
+            // 
+            this.nPowMax.Location = new System.Drawing.Point(74, 38);
+            this.nPowMax.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nPowMax.Name = "nPowMax";
+            this.nPowMax.Size = new System.Drawing.Size(62, 22);
+            this.nPowMax.TabIndex = 18;
+            this.nPowMax.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 18);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(30, 17);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "min";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(71, 18);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(33, 17);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "max";
+            // 
+            // nPowMin
+            // 
+            this.nPowMin.Location = new System.Drawing.Point(6, 38);
+            this.nPowMin.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nPowMin.Name = "nPowMin";
+            this.nPowMin.Size = new System.Drawing.Size(62, 22);
+            this.nPowMin.TabIndex = 15;
+            this.nPowMin.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // timer1
             // 
@@ -410,12 +420,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbTime)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nPowMin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nPowMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nCountMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nCountMin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDelayMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDelayMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCountMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nCountMin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPowMax)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nPowMin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

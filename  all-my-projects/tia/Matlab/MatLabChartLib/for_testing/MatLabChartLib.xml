@@ -1,0 +1,780 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MatLabChartLib</name>
+    </assembly>
+    <members>
+        <member name="T:MatLabChartLib.MTLChart">
+            <summary>
+            The MTLChart class provides a CLS compliant, MWArray interface to the MATLAB
+            functions contained in the files:
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\GetAxesHandle.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\GetFigHandle.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\PlotArray.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\PlotArray3D.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\PlotSpectr.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\SetObjProp.m
+            <newpara></newpara>
+            C:\all-my-projects\tia\Matlab\SplitFigure.m
+            <newpara></newpara>
+            deployprint.m
+            <newpara></newpara>
+            printdlg.m
+            </summary>
+            <remarks>
+            @Version 4.0
+            </remarks>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.#cctor">
+            <summary internal= "true">
+            The static constructor instantiates and initializes the MATLAB Compiler Runtime
+            instance.
+            </summary>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.#ctor">
+            <summary>
+            Constructs a new instance of the MTLChart class.
+            </summary>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.Finalize">
+            <summary internal= "true">
+            Class destructor called by the CLR garbage collector.
+            </summary>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.Dispose">
+            <summary>
+            Frees the native resources associated with this object
+            </summary>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.Dispose(System.Boolean)">
+            <summary internal= "true">
+            Internal dispose function
+            </summary>
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetAxesHandle">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the GetAxesHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Возвращает указатель на оси
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetAxesHandle(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 1-input MWArrayinterface to the GetAxesHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Возвращает указатель на оси
+             </remarks>
+             <param name="hFig">Input argument #1</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetAxesHandle(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the GetAxesHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Возвращает указатель на оси
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetAxesHandle(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the GetAxesHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Возвращает указатель на оси
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hFig">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetAxesHandle(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the GetAxesHandle function in which the input and
+             output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             M-Documentation:
+             Возвращает указатель на оси
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetFigHandle">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the GetFigHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             global  globalFigHandler ;
+             globalFigHandler= figure('PaperSize',[20.98 29.68]);
+             hFig=globalFigHandler;
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetFigHandle(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the GetFigHandle MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             global  globalFigHandler ;
+             globalFigHandler= figure('PaperSize',[20.98 29.68]);
+             hFig=globalFigHandler;
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.GetFigHandle(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the GetFigHandle function in which the input and output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             M-Documentation:
+             global  globalFigHandler ;
+             globalFigHandler= figure('PaperSize',[20.98 29.68]);
+             hFig=globalFigHandler;
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray">
+             <summary>
+             Provides a void output, 0-input MWArrayinterface to the PlotArray MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 1-input MWArrayinterface to the PlotArray MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 2-input MWArrayinterface to the PlotArray MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="points">Input argument #2</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the PlotArray MATLAB function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the PlotArray MATLAB function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the PlotArray MATLAB function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="points">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D">
+             <summary>
+             Provides a void output, 0-input MWArrayinterface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 1-input MWArrayinterface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 2-input MWArrayinterface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 3-input MWArrayinterface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+             <param name="Y">Input argument #3</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 4-input MWArrayinterface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+             <param name="Y">Input argument #3</param>
+             <param name="Z">Input argument #4</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+             <param name="Y">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotArray3D(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 4-input MWArray interface to the PlotArray3D MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Invalid or deleted object.
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="X">Input argument #2</param>
+             <param name="Y">Input argument #3</param>
+             <param name="Z">Input argument #4</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr">
+             <summary>
+             Provides a void output, 0-input MWArrayinterface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 1-input MWArrayinterface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 2-input MWArrayinterface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="Fd">Input argument #2</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 3-input MWArrayinterface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="hAxes">Input argument #1</param>
+             <param name="Fd">Input argument #2</param>
+             <param name="points">Input argument #3</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="Fd">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.PlotSpectr(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the PlotSpectr MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Спектральное представление сигнала
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hAxes">Input argument #1</param>
+             <param name="Fd">Input argument #2</param>
+             <param name="points">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp">
+             <summary>
+             Provides a void output, 0-input MWArrayinterface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 1-input MWArrayinterface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="hHandler">Input argument #1</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 2-input MWArrayinterface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="hHandler">Input argument #1</param>
+             <param name="sPropName">Input argument #2</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a void output, 3-input MWArrayinterface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="hHandler">Input argument #1</param>
+             <param name="sPropName">Input argument #2</param>
+             <param name="vValue">Input argument #3</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hHandler">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hHandler">Input argument #1</param>
+             <param name="sPropName">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SetObjProp(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the SetObjProp MATLAB
+             function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             tx=text('String',vValue); 
+             set(hHandler,sPropName,tx);
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hHandler">Input argument #1</param>
+             <param name="sPropName">Input argument #2</param>
+             <param name="vValue">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 1-input MWArrayinterface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hFig">Input argument #1</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 2-input MWArrayinterface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 3-input MWArrayinterface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <param name="n">Input argument #3</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 4-input MWArrayinterface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <param name="n">Input argument #3</param>
+             <param name="p">Input argument #4</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hFig">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <param name="n">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 4-input MWArray interface to the SplitFigure MATLAB
+             function.
+             </summary>
+             <remarks>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="hFig">Input argument #1</param>
+             <param name="m">Input argument #2</param>
+             <param name="n">Input argument #3</param>
+             <param name="p">Input argument #4</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.SplitFigure(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the SplitFigure function in which the input and output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MatLabChartLib.MTLChart.WaitForFiguresToDie">
+             <summary>
+             This method will cause a MATLAB figure window to behave as a modal dialog box.
+             The method will not return until all the figure windows associated with this
+             component have been closed.
+             </summary>
+             <remarks>
+             An application should only call this method when required to keep the
+             MATLAB figure window from disappearing.  Other techniques, such as calling
+             Console.ReadLine() from the application should be considered where
+             possible.</remarks>
+            
+        </member>
+    </members>
+</doc>
