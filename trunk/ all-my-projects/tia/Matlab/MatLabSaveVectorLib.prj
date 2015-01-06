@@ -46,7 +46,7 @@
     <param.net.tsa.namespace>MatLabSaveVectorLib</param.net.tsa.namespace>
     <param.net.tsa.superclass>MTLSaveVector</param.net.tsa.superclass>
     <param.net.tsa.metadata />
-    <param.net.tsa.metadata.assembly>C:\Users\MOON\Documents\MATLAB</param.net.tsa.metadata.assembly>
+    <param.net.tsa.metadata.assembly>C:\all-my-projects\tia\GUI_muscule\bin\Debug</param.net.tsa.metadata.assembly>
     <unset>
       <param.icon />
       <param.icons />
