@@ -17,6 +17,7 @@
  * Перед началом итерации от отправляет текущую скважность в uplink
  * новая команда отменяет предыдущую.
  * новая команда начинает действовать выдержав паузу после предыдущей
+ * ВНИМАНИЕ, для коректного сбора данных пауза между командами отключена
  */
 
 /************************   ValvePwmClass   ****************
@@ -220,7 +221,9 @@ void ValveControlClass::GetNewCommand(uint8_t bCommandNamber, uint8_t bCommandPo
 {
 	bCurCommandPower=bCommandPower;
 	bCurCommandCount=bCommandNamber;
-	pPwm->PauseToClose(bCurCommandPower);
+	//ВНИМАНИЕ, для коректного сбора данных пауза между командами отключена
+	//pPwm->PauseToClose(bCurCommandPower);
+	pPwm->SetChanel(bCurCommandPower);
 }
 
 /**************************************************************************************/

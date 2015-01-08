@@ -46,6 +46,7 @@ namespace GUI_muscule.MatLabStorage
     {
         public stQueueToAll curVect = new stQueueToAll();
         Int32 iOldLength;
+        UInt32 uiOldTenzo=0;
         public bool bPauseFlag = false;
         public StorageToAll(IPointRecever<stQueueToAll> tQueueReciver) : base(tQueueReciver) { /*Add further instructions here.*/}
 
@@ -59,6 +60,11 @@ namespace GUI_muscule.MatLabStorage
                     break;
                 case Constants.COMM_RX_TENZO:
                     curVect.qForce.Enqueue((int)uiData);
+                    uiOldTenzo = uiData;
+                    break;
+                case Constants.COMM_RX_ADC_ERROR: // сбой в работе тензодатчика
+                    curVect.qForce.Enqueue((int)uiOldTenzo); 
+                    curVect.qForce.Enqueue((int)uiOldTenzo); // записываем предыдущее значение, чтоб не искажать данные
                     break;
                 case Constants.COMM_RX_LENGTH:
                     curVect.qLength.Enqueue((int)uiData);
