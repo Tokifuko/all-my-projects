@@ -78,6 +78,7 @@
     <Compile Include="MatLabChats\MatLabFigure.cs" />
     <Compile Include="MatLabStorage\MatLabStore.cs" />
     <Compile Include="MatLabChats\StringPropertiySetter.cs" />
+    <Compile Include="MatLabStorage\QuantumQueue.cs" />
     <Compile Include="MatLabStorage\StorageToAll.cs" />
     <Compile Include="MatLabStorage\StoreSource.cs" />
     <Compile Include="PacketManager\DataPack_t.cs" />

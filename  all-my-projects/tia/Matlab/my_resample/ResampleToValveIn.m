@@ -8,6 +8,16 @@ function ResampleToValveIn( filename, shift_len, shift_valve)
 
 resample_shift='shift';
 
+global VectorArray;
+global ForceArray;
+global PressArray;
+global SpeedArray;
+global LengthArray;
+global ValveInPowerArray;
+global ValveOutPowerArray;
+global ValveInCountArray;
+global ValveOutCountArray;
+
 load(filename,'ForceArray','PressArray','SpeedArray','LengthArray','ValveInPowerArray','ValveOutPowerArray','ValveInCountArray','ValveOutCountArray');
 new_len=length(ValveInPowerArray);
 ForceArray=myresample(ForceArray,new_len,resample_shift);
@@ -30,14 +40,24 @@ ValveInCountArray((end-shift_len+1):end)=[];
 ValveOutCountArray((end-shift_len+1):end)=[];
 
 % сдвигаем по данным клапанов
-SpeedArray(1:shift_valve)=[];
-LengthArray(1:shift_valve)=[];
-ForceArray(1:shift_valve)=[];
-PressArray(1:shift_valve)=[];
-ValveInPowerArray((end-shift_valve+1):end)=[];
-ValveOutPowerArray((end-shift_valve+1):end)=[];
-ValveInCountArray((end-shift_valve+1):end)=[];
-ValveOutCountArray((end-shift_valve+1):end)=[];
+% SpeedArray(1:shift_valve)=[];
+% LengthArray(1:shift_valve)=[];
+% ForceArray(1:shift_valve)=[];
+% PressArray(1:shift_valve)=[];
+% ValveInPowerArray((end-shift_valve+1):end)=[];
+% ValveOutPowerArray((end-shift_valve+1):end)=[];
+% ValveInCountArray((end-shift_valve+1):end)=[];
+% ValveOutCountArray((end-shift_valve+1):end)=[];
+
+SpeedArray((end-shift_valve+1):end)=[];
+LengthArray((end-shift_valve+1):end)=[];
+ForceArray((end-shift_valve+1):end)=[];
+PressArray((end-shift_valve+1):end)=[];
+ValveOutCountArray(1:shift_valve)=[];
+ValveInCountArray(1:shift_valve)=[];
+ValveOutPowerArray(1:shift_valve)=[];
+ValveInPowerArray(1:shift_valve)=[];
+
 
 filename=strcat('resample_',filename);
 save(filename,'ForceArray','PressArray','SpeedArray','LengthArray','ValveInPowerArray','ValveOutPowerArray','ValveInCountArray','ValveOutCountArray');
