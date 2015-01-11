@@ -17,7 +17,6 @@
  * Перед началом итерации от отправляет текущую скважность в uplink
  * новая команда отменяет предыдущую.
  * новая команда начинает действовать выдержав паузу после предыдущей
- * ВНИМАНИЕ, для коректного сбора данных пауза между командами отключена
  */
 
 /************************   ValvePwmClass   ****************
@@ -129,6 +128,7 @@ void ValvePwmClass::SetChanel(uint8_t bPwmPower)
     	TIM_SetCompare4(myTIM,bPwmPower);
     	break;
     }
+    uiIterationCounter=0;
 }
 
 void ValvePwmClass::PauseToClose(uint8_t bNextPwm)
@@ -154,7 +154,6 @@ void ValvePwmClass::PauseToClose(uint8_t bNextPwm)
     	TIM_OC4PreloadConfig(myTIM, TIM_OCPreload_Enable);
     	break;
     }
-    uiIterationCounter=0;
     SetChanel(bNextPwm);
 }
 
@@ -196,7 +195,7 @@ void ValveControlClass::Task(void)
 	{
 		uiLastIterationNamber=pPwm->uiIterationCounter;
 
-		SendState(); //тут отправляем текущее состояние через uplink
+		if (uiLastIterationNamber!=0) SendState(); //тут отправляем текущее состояние через uplink (если 0 - то это просто команда пришла)
 
 		if (bCurCommandPower!=0)
 		{
@@ -221,9 +220,8 @@ void ValveControlClass::GetNewCommand(uint8_t bCommandNamber, uint8_t bCommandPo
 {
 	bCurCommandPower=bCommandPower;
 	bCurCommandCount=bCommandNamber;
-	//ВНИМАНИЕ, для коректного сбора данных пауза между командами отключена
-	//pPwm->PauseToClose(bCurCommandPower);
-	pPwm->SetChanel(bCurCommandPower);
+	pPwm->PauseToClose(bCurCommandPower);
+	//pPwm->SetChanel(bCurCommandPower);
 }
 
 /**************************************************************************************/

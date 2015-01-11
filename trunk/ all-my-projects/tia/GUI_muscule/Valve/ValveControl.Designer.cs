@@ -354,7 +354,7 @@
             this.nPowMax.Size = new System.Drawing.Size(62, 22);
             this.nPowMax.TabIndex = 18;
             this.nPowMax.Value = new decimal(new int[] {
-            50,
+            60,
             0,
             0,
             0});
@@ -389,7 +389,7 @@
             this.nPowMin.Size = new System.Drawing.Size(62, 22);
             this.nPowMin.TabIndex = 15;
             this.nPowMin.Value = new decimal(new int[] {
-            10,
+            12,
             0,
             0,
             0});
