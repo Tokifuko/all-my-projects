@@ -42,22 +42,23 @@
             this.lbPointCounter = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.QuantumTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // btStartIn
+            // btStart
             // 
             this.btStart.Location = new System.Drawing.Point(23, 84);
-            this.btStart.Name = "btStartIn";
+            this.btStart.Name = "btStart";
             this.btStart.Size = new System.Drawing.Size(75, 23);
             this.btStart.TabIndex = 0;
             this.btStart.Text = "Старт";
             this.btStart.UseVisualStyleBackColor = true;
             this.btStart.Click += new System.EventHandler(this.btStart_Click);
             // 
-            // btStopIn
+            // btStop
             // 
             this.btStop.Location = new System.Drawing.Point(135, 84);
-            this.btStop.Name = "btStopIn";
+            this.btStop.Name = "btStop";
             this.btStop.Size = new System.Drawing.Size(75, 23);
             this.btStop.TabIndex = 1;
             this.btStop.Text = "Стоп";
@@ -156,6 +157,12 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // QuantumTimer
+            // 
+            this.QuantumTimer.Enabled = true;
+            this.QuantumTimer.Interval = 1;
+            this.QuantumTimer.Tick += new System.EventHandler(this.QuantumTimer_Tick);
+            // 
             // SaveToMatLabForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -195,5 +202,6 @@
         private System.Windows.Forms.Label lbPointCounter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer QuantumTimer;
     }
 }

@@ -238,7 +238,7 @@
              </remarks>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #3</param>
              <returns>An Object containing the first output argument.</returns>
             
         </member>
@@ -251,8 +251,8 @@
              </remarks>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
              <returns>An Object containing the first output argument.</returns>
             
         </member>
@@ -265,9 +265,9 @@
              </remarks>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
              <returns>An Object containing the first output argument.</returns>
             
         </member>
@@ -280,10 +280,10 @@
              </remarks>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
+             <param name="ValveInCount">Input argument #6</param>
              <returns>An Object containing the first output argument.</returns>
             
         </member>
@@ -296,29 +296,11 @@
              </remarks>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
-             <param name="ValveInCount">Input argument #7</param>
-             <returns>An Object containing the first output argument.</returns>
-            
-        </member>
-        <member name="M:MatLabSaveVectorLibNative.MTLSaveVector.StoreVector(System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,System.Object)">
-             <summary>
-             Provides a single output, 8-input Objectinterface to the StoreVector MATLAB
-             function.
-             </summary>
-             <remarks>
-             </remarks>
-             <param name="Force">Input argument #1</param>
-             <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
-             <param name="ValveInCount">Input argument #7</param>
-             <param name="ValveOutCount">Input argument #8</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
+             <param name="ValveInCount">Input argument #6</param>
+             <param name="ValveOutCount">Input argument #7</param>
              <returns>An Object containing the first output argument.</returns>
             
         </member>
@@ -371,7 +353,7 @@
              <param name="numArgsOut">The number of output arguments to return.</param>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
+             <param name="Length">Input argument #3</param>
              <returns>An Array of length "numArgsOut" containing the output
              arguments.</returns>
             
@@ -386,8 +368,8 @@
              <param name="numArgsOut">The number of output arguments to return.</param>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
              <returns>An Array of length "numArgsOut" containing the output
              arguments.</returns>
             
@@ -402,9 +384,9 @@
              <param name="numArgsOut">The number of output arguments to return.</param>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
              <returns>An Array of length "numArgsOut" containing the output
              arguments.</returns>
             
@@ -419,10 +401,10 @@
              <param name="numArgsOut">The number of output arguments to return.</param>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
+             <param name="ValveInCount">Input argument #6</param>
              <returns>An Array of length "numArgsOut" containing the output
              arguments.</returns>
             
@@ -437,31 +419,11 @@
              <param name="numArgsOut">The number of output arguments to return.</param>
              <param name="Force">Input argument #1</param>
              <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
-             <param name="ValveInCount">Input argument #7</param>
-             <returns>An Array of length "numArgsOut" containing the output
-             arguments.</returns>
-            
-        </member>
-        <member name="M:MatLabSaveVectorLibNative.MTLSaveVector.StoreVector(System.Int32,System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,System.Object,System.Object)">
-             <summary>
-             Provides the standard 8-input Object interface to the StoreVector MATLAB
-             function.
-             </summary>
-             <remarks>
-             </remarks>
-             <param name="numArgsOut">The number of output arguments to return.</param>
-             <param name="Force">Input argument #1</param>
-             <param name="Press">Input argument #2</param>
-             <param name="Speed">Input argument #3</param>
-             <param name="Length">Input argument #4</param>
-             <param name="ValveInPower">Input argument #5</param>
-             <param name="ValveOutPower">Input argument #6</param>
-             <param name="ValveInCount">Input argument #7</param>
-             <param name="ValveOutCount">Input argument #8</param>
+             <param name="Length">Input argument #3</param>
+             <param name="ValveInPower">Input argument #4</param>
+             <param name="ValveOutPower">Input argument #5</param>
+             <param name="ValveInCount">Input argument #6</param>
+             <param name="ValveOutCount">Input argument #7</param>
              <returns>An Array of length "numArgsOut" containing the output
              arguments.</returns>
             

@@ -1,8 +1,6 @@
-function cur_size=StoreVector( Force,Press,Speed,Length,ValveInPower,ValveOutPower,ValveInCount,ValveOutCount)
-global VectorArray;
+function cur_size=StoreVector( Force,Press,Length,ValveInPower,ValveOutPower,ValveInCount,ValveOutCount)
 global ForceArray;
 global PressArray;
-global SpeedArray;
 global LengthArray;
 global ValveInPowerArray;
 global ValveOutPowerArray;
@@ -11,20 +9,19 @@ global ValveOutCountArray;
 
 Force=Force';
 Press=Press';
-Speed=Speed';
 Length=Length';
 ValveInPower=ValveInPower';
 ValveOutPower=ValveOutPower';
 ValveInCount=ValveInCount';
 ValveOutCount=ValveOutCount';
-ForceArray=Force;
-PressArray= Press;
-SpeedArray= Speed;
-LengthArray= Length;
-ValveInPowerArray= ValveInPower;
-ValveOutPowerArray=ValveOutPower;
-ValveInCountArray= ValveInCount;
-ValveOutCountArray= ValveOutCount;
+
+ForceArray=[ForceArray,Force];
+PressArray=[PressArray,Press];
+LengthArray= [LengthArray, Length];
+ValveInPowerArray=[ValveInPowerArray, ValveInPower];
+ValveOutPowerArray=[ValveOutPowerArray, ValveOutPower];
+ValveInCountArray= [ValveInCountArray, ValveInCount];
+ValveOutCountArray= [ValveOutCountArray, ValveOutCount];
 temp = size(LengthArray);
 cur_size=temp(2);
 end

@@ -1,6 +1,6 @@
 /*
 * MATLAB Compiler: 5.1 (R2014a)
-* Date: Fri Jan 02 21:54:46 2015
+* Date: Sun Jan 11 21:15:56 2015
 * Arguments: "-B" "macro_default" "-W"
 * "dotnet:MatLabSaveVectorLib,MTLSaveVector,0.0,private" "-T" "link:lib" "-d"
 * "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing" "-v"
@@ -365,12 +365,12 @@ namespace MatLabSaveVectorLib
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
+    /// <param name="Length">Input argument #3</param>
     /// <returns>An MWArray containing the first output argument.</returns>
     ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed)
+    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Length)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length);
     }
 
 
@@ -382,14 +382,14 @@ namespace MatLabSaveVectorLib
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
     /// <returns>An MWArray containing the first output argument.</returns>
     ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed, MWArray 
-                         Length)
+    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Length, MWArray 
+                         ValveInPower)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower);
     }
 
 
@@ -401,15 +401,15 @@ namespace MatLabSaveVectorLib
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
     /// <returns>An MWArray containing the first output argument.</returns>
     ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed, MWArray 
-                         Length, MWArray ValveInPower)
+    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Length, MWArray 
+                         ValveInPower, MWArray ValveOutPower)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower);
     }
 
 
@@ -421,16 +421,16 @@ namespace MatLabSaveVectorLib
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
     /// <returns>An MWArray containing the first output argument.</returns>
     ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed, MWArray 
-                         Length, MWArray ValveInPower, MWArray ValveOutPower)
+    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Length, MWArray 
+                         ValveInPower, MWArray ValveOutPower, MWArray ValveInCount)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount);
     }
 
 
@@ -442,42 +442,18 @@ namespace MatLabSaveVectorLib
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
+    /// <param name="ValveOutCount">Input argument #7</param>
     /// <returns>An MWArray containing the first output argument.</returns>
     ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed, MWArray 
-                         Length, MWArray ValveInPower, MWArray ValveOutPower, MWArray 
-                         ValveInCount)
+    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Length, MWArray 
+                         ValveInPower, MWArray ValveOutPower, MWArray ValveInCount, 
+                         MWArray ValveOutCount)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount);
-    }
-
-
-    /// <summary>
-    /// Provides a single output, 8-input MWArrayinterface to the StoreVector MATLAB
-    /// function.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <param name="Force">Input argument #1</param>
-    /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
-    /// <param name="ValveOutCount">Input argument #8</param>
-    /// <returns>An MWArray containing the first output argument.</returns>
-    ///
-    public MWArray StoreVector(MWArray Force, MWArray Press, MWArray Speed, MWArray 
-                         Length, MWArray ValveInPower, MWArray ValveOutPower, MWArray 
-                         ValveInCount, MWArray ValveOutCount)
-    {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
     }
 
 
@@ -541,14 +517,14 @@ namespace MatLabSaveVectorLib
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
+    /// <param name="Length">Input argument #3</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
     public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed)
+                           Length)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length);
     }
 
 
@@ -561,15 +537,15 @@ namespace MatLabSaveVectorLib
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
     public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed, MWArray Length)
+                           Length, MWArray ValveInPower)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower);
     }
 
 
@@ -582,16 +558,16 @@ namespace MatLabSaveVectorLib
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
     public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed, MWArray Length, MWArray ValveInPower)
+                           Length, MWArray ValveInPower, MWArray ValveOutPower)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower);
     }
 
 
@@ -604,18 +580,18 @@ namespace MatLabSaveVectorLib
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
     public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed, MWArray Length, MWArray ValveInPower, MWArray 
-                           ValveOutPower)
+                           Length, MWArray ValveInPower, MWArray ValveOutPower, MWArray 
+                           ValveInCount)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount);
     }
 
 
@@ -628,45 +604,19 @@ namespace MatLabSaveVectorLib
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
+    /// <param name="ValveOutCount">Input argument #7</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
     public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed, MWArray Length, MWArray ValveInPower, MWArray 
-                           ValveOutPower, MWArray ValveInCount)
+                           Length, MWArray ValveInPower, MWArray ValveOutPower, MWArray 
+                           ValveInCount, MWArray ValveOutCount)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount);
-    }
-
-
-    /// <summary>
-    /// Provides the standard 8-input MWArray interface to the StoreVector MATLAB
-    /// function.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <param name="numArgsOut">The number of output arguments to return.</param>
-    /// <param name="Force">Input argument #1</param>
-    /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
-    /// <param name="ValveOutCount">Input argument #8</param>
-    /// <returns>An Array of length "numArgsOut" containing the output
-    /// arguments.</returns>
-    ///
-    public MWArray[] StoreVector(int numArgsOut, MWArray Force, MWArray Press, MWArray 
-                           Speed, MWArray Length, MWArray ValveInPower, MWArray 
-                           ValveOutPower, MWArray ValveInCount, MWArray ValveOutCount)
-    {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
     }
 
 

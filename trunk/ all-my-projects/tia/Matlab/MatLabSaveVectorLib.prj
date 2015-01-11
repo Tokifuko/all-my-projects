@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1192027062" file="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabSaveVectorLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
+  <configuration build-checksum="3555023621" file="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib.prj" location="C:\all-my-projects\tia\Matlab" name="MatLabSaveVectorLib" preferred-package-location="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.library" target-name="MATLAB Compiler for Libraries and Classes">
     <param.appname>MatLabSaveVectorLib</param.appname>
     <param.icon />
     <param.icons />
@@ -46,7 +46,7 @@
     <param.net.tsa.namespace>MatLabSaveVectorLib</param.net.tsa.namespace>
     <param.net.tsa.superclass>MTLSaveVector</param.net.tsa.superclass>
     <param.net.tsa.metadata />
-    <param.net.tsa.metadata.assembly>C:\all-my-projects\tia\GUI_muscule\bin\Debug</param.net.tsa.metadata.assembly>
+    <param.net.tsa.metadata.assembly>C:\Users\MOON\Documents\MATLAB</param.net.tsa.metadata.assembly>
     <unset>
       <param.icon />
       <param.icons />
