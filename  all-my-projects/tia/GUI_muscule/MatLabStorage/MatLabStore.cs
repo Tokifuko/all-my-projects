@@ -14,23 +14,22 @@ using MathWorks.MATLAB.NET.Arrays;
 
 namespace GUI_muscule.MatLabStorage
 {
-    class MatLabStoreClass : IPointRecever<stQueueToAll>
+    class MatLabStoreClass : IPointRecever<stAllPoint>
     {
         MTLSaveVector myVectorSaver = new MTLSaveVector();
         public string sReturnMessage;
-        void TransmitDataToMatLab(stQueueToAll sv)
+        void TransmitDataToMatLab(stAllPoint sv)
         {
             MWArray nwRes;
             try
                 {
-                    nwRes = myVectorSaver.StoreVector((MWNumericArray)sv.qForce.ToArray(), 
-                                                    (MWNumericArray)sv.qPress.ToArray(),
-                                                    (MWNumericArray)sv.qSpeed.ToArray(),
-                                                    (MWNumericArray)sv.qLength.ToArray(),
-                                                    (MWNumericArray)sv.qValveInPower.ToArray(),
-                                                    (MWNumericArray)sv.qValveOutPower.ToArray(),
-                                                    (MWNumericArray)sv.qValveInCounter.ToArray(), 
-                                                    (MWNumericArray)sv.qValveOutCounter.ToArray());
+                    nwRes = myVectorSaver.StoreVector((MWNumericArray)sv.iForce, 
+                                                    (MWNumericArray)sv.iPress,
+                                                    (MWNumericArray)sv.iLength,
+                                                    (MWNumericArray)sv.iValveInPow,
+                                                    (MWNumericArray)sv.iValveOutPow,
+                                                    (MWNumericArray)sv.iValveInCount, 
+                                                    (MWNumericArray)sv.iValveOutCount);
                     sReturnMessage = nwRes.ToString();
                 }
             catch (Exception ex)
@@ -47,12 +46,13 @@ namespace GUI_muscule.MatLabStorage
         public void Clear()
         {
             myVectorSaver.ClearVectorStorage();
+            sReturnMessage = "0";
         }
 
         /********************************************************************
          * реализация интерфейса        IPointRecever<T>
         * *****************************************************************/
-        public void AddPoint(stQueueToAll tPoint)
+        public void AddPoint(stAllPoint tPoint)
         {
             TransmitDataToMatLab(tPoint);
         }

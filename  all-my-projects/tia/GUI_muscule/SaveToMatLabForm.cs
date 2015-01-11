@@ -15,13 +15,13 @@ namespace GUI_muscule
 {
     public partial class SaveToMatLabForm : Form
     {
-        StorageToAll myPointSource;
+        QuantumStorage myPointSource;
         MatLabStoreClass myMatLabStore;
         public SaveToMatLabForm(IObservable<DataPack_t> DataPackSource)
         {
             InitializeComponent();
             myMatLabStore=new MatLabStoreClass();
-            myPointSource = new StorageToAll(myMatLabStore);
+            myPointSource = new QuantumStorage(myMatLabStore);
             myPointSource.Subscribe(DataPackSource);
         }
 
@@ -44,7 +44,8 @@ namespace GUI_muscule
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            lbPointCounter.Text = myPointSource.GetQueueCounter();
+            myPointSource.TransmitData();
+            lbPointCounter.Text = myMatLabStore.sReturnMessage;
         }
 
         private void btStart_Click(object sender, EventArgs e)
@@ -60,13 +61,18 @@ namespace GUI_muscule
         private void btClear_Click(object sender, EventArgs e)
         {
             myPointSource.Clear();
+            myMatLabStore.Clear();
             lbPointCounter.Text = "0";
         }
 
         private void btSaveFile_Click(object sender, EventArgs e)
         {
-            myPointSource.TransmitData();
             myMatLabStore.SaveToFile(lbFilePath.Text, tbFileName.Text);
+        }
+
+        private void QuantumTimer_Tick(object sender, EventArgs e)
+        {
+            myPointSource.Tick_001();
         }
     }
 }

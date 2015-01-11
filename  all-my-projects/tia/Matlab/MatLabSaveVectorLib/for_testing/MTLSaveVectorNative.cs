@@ -1,6 +1,6 @@
 /*
 * MATLAB Compiler: 5.1 (R2014a)
-* Date: Fri Jan 02 21:54:46 2015
+* Date: Sun Jan 11 21:15:56 2015
 * Arguments: "-B" "macro_default" "-W"
 * "dotnet:MatLabSaveVectorLib,MTLSaveVector,0.0,private" "-T" "link:lib" "-d"
 * "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing" "-v"
@@ -388,12 +388,12 @@ namespace MatLabSaveVectorLibNative
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
+    /// <param name="Length">Input argument #3</param>
     /// <returns>An Object containing the first output argument.</returns>
     ///
-    public Object StoreVector(Object Force, Object Press, Object Speed)
+    public Object StoreVector(Object Force, Object Press, Object Length)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length);
     }
 
 
@@ -405,13 +405,14 @@ namespace MatLabSaveVectorLibNative
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
     /// <returns>An Object containing the first output argument.</returns>
     ///
-    public Object StoreVector(Object Force, Object Press, Object Speed, Object Length)
+    public Object StoreVector(Object Force, Object Press, Object Length, Object 
+                        ValveInPower)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower);
     }
 
 
@@ -423,15 +424,15 @@ namespace MatLabSaveVectorLibNative
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
     /// <returns>An Object containing the first output argument.</returns>
     ///
-    public Object StoreVector(Object Force, Object Press, Object Speed, Object Length, 
-                        Object ValveInPower)
+    public Object StoreVector(Object Force, Object Press, Object Length, Object 
+                        ValveInPower, Object ValveOutPower)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower);
     }
 
 
@@ -443,16 +444,16 @@ namespace MatLabSaveVectorLibNative
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
     /// <returns>An Object containing the first output argument.</returns>
     ///
-    public Object StoreVector(Object Force, Object Press, Object Speed, Object Length, 
-                        Object ValveInPower, Object ValveOutPower)
+    public Object StoreVector(Object Force, Object Press, Object Length, Object 
+                        ValveInPower, Object ValveOutPower, Object ValveInCount)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount);
     }
 
 
@@ -464,41 +465,18 @@ namespace MatLabSaveVectorLibNative
     /// </remarks>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
+    /// <param name="ValveOutCount">Input argument #7</param>
     /// <returns>An Object containing the first output argument.</returns>
     ///
-    public Object StoreVector(Object Force, Object Press, Object Speed, Object Length, 
-                        Object ValveInPower, Object ValveOutPower, Object ValveInCount)
+    public Object StoreVector(Object Force, Object Press, Object Length, Object 
+                        ValveInPower, Object ValveOutPower, Object ValveInCount, Object 
+                        ValveOutCount)
     {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount);
-    }
-
-
-    /// <summary>
-    /// Provides a single output, 8-input Objectinterface to the StoreVector MATLAB
-    /// function.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <param name="Force">Input argument #1</param>
-    /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
-    /// <param name="ValveOutCount">Input argument #8</param>
-    /// <returns>An Object containing the first output argument.</returns>
-    ///
-    public Object StoreVector(Object Force, Object Press, Object Speed, Object Length, 
-                        Object ValveInPower, Object ValveOutPower, Object ValveInCount, 
-                        Object ValveOutCount)
-    {
-      return mcr.EvaluateFunction("StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
+      return mcr.EvaluateFunction("StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
     }
 
 
@@ -562,13 +540,13 @@ namespace MatLabSaveVectorLibNative
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
+    /// <param name="Length">Input argument #3</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed)
+    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Length)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length);
     }
 
 
@@ -581,15 +559,15 @@ namespace MatLabSaveVectorLibNative
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed, 
-                          Object Length)
+    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object 
+                          Length, Object ValveInPower)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower);
     }
 
 
@@ -602,16 +580,16 @@ namespace MatLabSaveVectorLibNative
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed, 
-                          Object Length, Object ValveInPower)
+    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object 
+                          Length, Object ValveInPower, Object ValveOutPower)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower);
     }
 
 
@@ -624,17 +602,18 @@ namespace MatLabSaveVectorLibNative
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed, 
-                          Object Length, Object ValveInPower, Object ValveOutPower)
+    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object 
+                          Length, Object ValveInPower, Object ValveOutPower, Object 
+                          ValveInCount)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount);
     }
 
 
@@ -647,45 +626,19 @@ namespace MatLabSaveVectorLibNative
     /// <param name="numArgsOut">The number of output arguments to return.</param>
     /// <param name="Force">Input argument #1</param>
     /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
+    /// <param name="Length">Input argument #3</param>
+    /// <param name="ValveInPower">Input argument #4</param>
+    /// <param name="ValveOutPower">Input argument #5</param>
+    /// <param name="ValveInCount">Input argument #6</param>
+    /// <param name="ValveOutCount">Input argument #7</param>
     /// <returns>An Array of length "numArgsOut" containing the output
     /// arguments.</returns>
     ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed, 
-                          Object Length, Object ValveInPower, Object ValveOutPower, 
-                          Object ValveInCount)
+    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object 
+                          Length, Object ValveInPower, Object ValveOutPower, Object 
+                          ValveInCount, Object ValveOutCount)
     {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount);
-    }
-
-
-    /// <summary>
-    /// Provides the standard 8-input Object interface to the StoreVector MATLAB
-    /// function.
-    /// </summary>
-    /// <remarks>
-    /// </remarks>
-    /// <param name="numArgsOut">The number of output arguments to return.</param>
-    /// <param name="Force">Input argument #1</param>
-    /// <param name="Press">Input argument #2</param>
-    /// <param name="Speed">Input argument #3</param>
-    /// <param name="Length">Input argument #4</param>
-    /// <param name="ValveInPower">Input argument #5</param>
-    /// <param name="ValveOutPower">Input argument #6</param>
-    /// <param name="ValveInCount">Input argument #7</param>
-    /// <param name="ValveOutCount">Input argument #8</param>
-    /// <returns>An Array of length "numArgsOut" containing the output
-    /// arguments.</returns>
-    ///
-    public Object[] StoreVector(int numArgsOut, Object Force, Object Press, Object Speed, 
-                          Object Length, Object ValveInPower, Object ValveOutPower, 
-                          Object ValveInCount, Object ValveOutCount)
-    {
-      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Speed, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
+      return mcr.EvaluateFunction(numArgsOut, "StoreVector", Force, Press, Length, ValveInPower, ValveOutPower, ValveInCount, ValveOutCount);
     }
 
 
@@ -703,7 +656,7 @@ namespace MatLabSaveVectorLibNative
     /// <param name= "varArgsIn">Array of Object representing variable input
     /// arguments</param>
     ///
-    [MATLABSignature("StoreVector", 8, 1, 0)]
+    [MATLABSignature("StoreVector", 7, 1, 0)]
     protected void StoreVector(int numArgsOut, ref Object[] argsOut, Object[] argsIn, params Object[] varArgsIn)
     {
         mcr.EvaluateFunctionForTypeSafeCall("StoreVector", numArgsOut, ref argsOut, argsIn, varArgsIn);
