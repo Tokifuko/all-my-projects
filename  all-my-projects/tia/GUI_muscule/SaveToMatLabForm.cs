@@ -51,11 +51,13 @@ namespace GUI_muscule
         private void btStart_Click(object sender, EventArgs e)
         {
             myPointSource.bPauseFlag = false;
+            QuantumTimer.Enabled = true;
         }
 
         private void btStop_Click(object sender, EventArgs e)
         {
             myPointSource.bPauseFlag = true;
+            QuantumTimer.Enabled = false;
         }
 
         private void btClear_Click(object sender, EventArgs e)

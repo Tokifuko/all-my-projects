@@ -116,7 +116,7 @@ int main(void)
     	ad7799.Task();
     	ms5803.Task();
     	//Delay.ms(500);
-     	 calipers.Task();
+     	calipers.Task();
      	 uplink.Task();
     	//i2cMgr.Task();
 // --------------- user button start callibration process --------------
@@ -238,7 +238,7 @@ void Ad7799Callback(uint32_t iData)
 
 void Ad7799ErrorCallback(uint32_t iData)
 {
-	DbgUART.SendPrintF("Tenzo ADC error Stat=%X \n",iData);
+	//DbgUART.SendPrintF("Tenzo ADC error Stat=%X \n",iData);
 	DataPack_t sDataPack;
 	sDataPack.Addr=0;
 	sDataPack.Reserv=0;
@@ -284,17 +284,17 @@ void UplinkCallback(DataPack_t* pDataPack)
 
 	bPow=*(((uint8_t*)&uiData)+1);
 	bTime=*(((uint8_t*)&uiData)+3);
-	DbgUART.SendPrintF("Data=%X \n",uiData);
+	//DbgUART.SendPrintF("Data=%X \n",uiData);
 	switch (bCommand)
 	{
 	case DATA_PACK_COMMAND_IN_VALVE_SET:
-		DbgUART.SendPrintF("ValveIn Command");
-		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
+		//DbgUART.SendPrintF("ValveIn Command");
+		//DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
 		ValveIn.GetNewCommand(bTime,bPow);
 		break;
 	case DATA_PACK_COMMAND_OUT_VALVE_SET:
-		DbgUART.SendPrintF("ValveOut Command");
-		DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
+		//DbgUART.SendPrintF("ValveOut Command");
+		//DbgUART.SendPrintF("Power=%d , Time=%d \n",bPow,bTime);
 		ValveOut.GetNewCommand(bTime,bPow);
 		break;
 	}
