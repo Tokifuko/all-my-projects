@@ -73,12 +73,12 @@ namespace GUI_muscule.MatLabStorage
         public void TransmitData()
         {
             stAllPoint stPoint = new stAllPoint();
-            while (qLength.bQueueEmpty & qForce.bQueueEmpty & qPess.bQueueEmpty & qValveInCount.bQueueEmpty & qValveInPow.bQueueEmpty & qValveOutCount.bQueueEmpty & qValveOutPow.bQueueEmpty)
+            while (!qLength.bQueueEmpty & !qForce.bQueueEmpty & !qPess.bQueueEmpty & !qValveInCount.bQueueEmpty & !qValveInPow.bQueueEmpty & !qValveOutCount.bQueueEmpty & !qValveOutPow.bQueueEmpty)
             {
                 stPoint.iLength = qLength.GetDataFromQueue();
                 stPoint.iForce = qForce.GetDataFromQueue();
                 stPoint.iPress = qPess.GetDataFromQueue();
-                stPoint.iValveInPow = qPess.GetDataFromQueue();
+                stPoint.iValveInPow = qValveInPow.GetDataFromQueue();
                 stPoint.iValveOutPow = qValveOutPow.GetDataFromQueue();
                 stPoint.iValveInCount = qValveInCount.GetDataFromQueue();
                 stPoint.iValveOutCount = qValveOutCount.GetDataFromQueue();
