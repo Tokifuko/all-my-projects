@@ -1,61 +1,40 @@
-global ForceArray;
-global PressArray;
-global LengthArray;
-global ValveInPowerArray;
-global ValveOutPowerArray;
-global ValveInCountArray;
-global ValveOutCountArray
+%% подготовка данных для обучения нейросети
+f4=GetVectorFromArray(f1,40);
+p4=GetVectorFromArray(p1,40);
+v1_4=GetVectorFromArray(v1,40);
+v2_4=GetVectorFromArray(v2,40);
 
-% global gF; global gP; global gL; gF=[]; gP=[]; gL=[];
-% ResampleToValveIn('_данные_090115_94.mat',0,0); gF=[gF; ForceArray];
-% gP=[gP; PressArray]; gL=[gL; LengthArray];
-%  ForceArray=gF; PressArray=gP; LengthArray=gL;
- 
-load('data_120115_3.mat','ForceArray','PressArray','LengthArray','ValveInPowerArray','ValveOutPowerArray','ValveInCountArray','ValveOutCountArray');
-LengthArray=LengthArray+3000;
+Xin= [f4;p4];
+Z=[v1_4(20,:); v2_4(20,:)];
+ %% пробуем нейросеть
+nero_input=Xin;
+nero_output=Z;
 
-shift_len=-1;
-if (shift_len>0)
-    ForceArray(1:shift_len)=[];
-    PressArray(1:shift_len)=[];
-    ValveInPowerArray(1:shift_len)=[];
-    ValveOutPowerArray(1:shift_len)=[];
-    LengthArray((end-shift_len+1):end)=[];
-end
-if (shift_len<0)
-    shift_len=shift_len*(-1);
-    ForceArray((end-shift_len+1):end)=[];
-    PressArray((end-shift_len+1):end)=[];
-    ValveInPowerArray((end-shift_len+1):end)=[];
-    ValveOutPowerArray((end-shift_len+1):end)=[];
-    LengthArray(1:shift_len)=[];
-end
+% net.trainParam.epochs
+a=fitnet(30);
+a=train(a,nero_input,nero_output);
+% a=newlind(nero_input,nero_output);
+view (a);
 
+%% подготавливаем данные для графиков
+Z_calc=sim(a,nero_input);
 
-% save('collect_data','ForceArray','PressArray','LengthArray');
-st=5000;
-en=5700;
-% 
-order=5;
-Xin=[ForceArray; PressArray];
-Xin=Xin';
-Z=LengthArray';
-p = polyfitn(Xin,Z,order);
-Z_calc = polyvaln(p,Xin);
+% v1_pl=v1;
+% v2_pl=v2;
+% v1_pl(1:10)=[];
+% v2_pl(1:10)=[];
 
+%% Строим графики
 
-z1=Z_calc(st:en);
-z2=LengthArray(st:en);
+st=6400;
+en=6500;
 hold on
-plot(z1,'r');
-plot(z2,'g');
-% 
-x1=ValveInPowerArray(st:en);
-x2=ValveOutPowerArray(st:en);
-x3=LengthArray(st:en);
-x1=x1.*50;
-x2=x2.*50;
-hold on
-plot(x1);
-plot(x2,'r');
-plot(x3,'g');
+axis auto
+xlim([st,en])
+
+plot(Z_calc(1,:),'m');
+plot(Z_calc(2,:),'k');
+plot(Z(1,:),'r');
+plot(Z(2,:),'b');
+
+
