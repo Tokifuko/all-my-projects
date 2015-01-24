@@ -38,8 +38,10 @@
 
 #define MS5803_RESET_COMAND 		0x1E
 #define MS5803_READ_COEF_COMAND 	0xA0
-#define MS5803_TEMP_CONV_COMAND 	0x58
-#define MS5803_PRES_CONV_COMAND		0x48   // примерно 8ms на измерение = 12Hz
+#define MS5803_TEMP_CONV_COMAND 	0x54
+//#define MS5803_PRES_CONV_COMAND		0x48   // OSR =4096 примерно 8ms на измерение
+#define MS5803_PRES_CONV_COMAND		0x46   // OSR =2048 примерно 4ms на измерение
+
 #define MS5803_ADC_READ_COMAND		0x00
 
 void MS5803_Class :: Init(void)
