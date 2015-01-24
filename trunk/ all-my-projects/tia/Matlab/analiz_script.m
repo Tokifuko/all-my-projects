@@ -35,6 +35,8 @@ PressArray=PressArray.*0.01;
 l1=LengthArray;
 v1=ValveInPowerArray;
 v2=ValveOutPowerArray;
+bVPin=ValveInPowerArray>0;
+bVPout =ValveOutPowerArray>0;
 
 shift_len=12; % чтоб длинна соответствовала фильтрованным данным
 l1((end-shift_len+1):end)=[];
