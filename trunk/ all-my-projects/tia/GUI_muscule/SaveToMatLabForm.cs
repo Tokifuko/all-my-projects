@@ -73,6 +73,7 @@ namespace GUI_muscule
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (myMatLabStore == null) return;
             lbPointCounter.Text = myMatLabStore.sReturnMessage;
         }
 
