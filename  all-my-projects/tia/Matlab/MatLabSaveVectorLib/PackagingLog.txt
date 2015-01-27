@@ -2,9 +2,55 @@ ant:
 <ant>
   <mkdir dir="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution" />
   <mkdir dir="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing" />
-  <mkdir dir="C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution_files_only" />
 </ant>
-mcc -W 'dotnet:MatLabSaveVectorLib,MTLSaveVector,0.0,private' -T link:lib -d C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing -v 'class{MTLSaveVector:C:\all-my-projects\tia\Matlab\ClearVectorStorage.m,C:\all-my-projects\tia\Matlab\SaveVectorStorage.m,C:\all-my-projects\tia\Matlab\StoreVector.m}' 
-Test checkout of feature 'Compiler' failed.
-
-mcc failed.
+mcc -W 'dotnet:MatLabSaveVectorLib,MTLSaveVector,0.0,private' -T link:lib -d C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing -v C:\all-my-projects\tia\Matlab\ClearVectorStorage.m C:\all-my-projects\tia\Matlab\SaveVectorStorage.m C:\all-my-projects\tia\Matlab\StoreVector.m 'class{MTLSaveVector:C:\all-my-projects\tia\Matlab\ClearVectorStorage.m,C:\all-my-projects\tia\Matlab\SaveVectorStorage.m,C:\all-my-projects\tia\Matlab\StoreVector.m}' 
+Compiler version: 5.1 (R2014a)
+Dependency analysis by REQUIREMENTS.
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\coder\simulinkcoder\cgv\API] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\matlab\winfun\NET] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\rtw\targets\AUTOSAR\AUTOSAR\dataclasses] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\simulink\simulink\MPlayIO] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Duplicate directory name: C:\Program
+Files\MATLAB\R2014a\toolbox\slvnv\reqmgt\RTExplorer] 
+[> In path at 33
+  In requirements at 156] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+[Warning: Adding path "C:\all-my-projects\tia\Matlab" to Compiler path instance.] 
+[Warning: Duplicate directory name: C:\all-my-projects\tia\Matlab] 
+Parsing file "C:\all-my-projects\tia\Matlab\ClearVectorStorage.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\SaveVectorStorage.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\all-my-projects\tia\Matlab\StoreVector.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\deployprint.m"
+	(Referenced from: "Compiler Command Line").
+Parsing file "C:\Program Files\MATLAB\R2014a\toolbox\compiler\deploy\printdlg.m"
+	(Referenced from: "Compiler Command Line").
+Deleting 0 temporary MEX authorization files.
+Generating file "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MTLSaveVectorNative.cs".
+Generating file "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MTLSaveVector.cs".
+Generating file "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\readme.txt".
+Executing command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /optimize /doc:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLib.xml" /t:library /r:"C:\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll" /resource:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLib.ctf" /out:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLib.dll" "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MTLSaveVector.cs"Executing command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /nologo /optimize /doc:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLibNative.xml" /t:library /r:"C:\Program Files\MATLAB\R2014a\toolbox\dotnetbuilder\bin\win64\v2.0\MWArray.dll" /resource:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLib.ctf" /out:"C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MatLabSaveVectorLibNative.dll" "C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_testing\MTLSaveVectorNative.cs"
+Packaging...
+Creating the bundle...
+Web based installer created at C:\all-my-projects\tia\Matlab\MatLabSaveVectorLib\for_redistribution\MyAppInstaller_web.exe.
+Packaging complete.
