@@ -42,7 +42,6 @@
             this.lbPointCounter = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.QuantumTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btStart
@@ -157,12 +156,6 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // QuantumTimer
-            // 
-            this.QuantumTimer.Enabled = true;
-            this.QuantumTimer.Interval = 1;
-            this.QuantumTimer.Tick += new System.EventHandler(this.QuantumTimer_Tick);
-            // 
             // SaveToMatLabForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -202,6 +195,5 @@
         private System.Windows.Forms.Label lbPointCounter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Timer QuantumTimer;
     }
 }
