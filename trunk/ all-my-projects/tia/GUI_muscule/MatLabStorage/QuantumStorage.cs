@@ -21,13 +21,13 @@ namespace GUI_muscule.MatLabStorage
         public int iValveOutCount;
     }
     /*------------------------------StoreSource--------------------------
- * Класс получает данные, накапливает их в очередях структуры stQueueToAll .
+ * Класс получает данные, накапливает их в очередях QuantumQueue
  * ----------------------------------------------------------------*/
     public class QuantumStorage : PointSourceBase<stAllPoint>
     {
-        QuantumQueue qLength=new QuantumQueue();
-        QuantumQueue qForce=new QuantumQueue();
-        QuantumQueue qPess=new QuantumQueue();
+        QuantumQueue qLength=new QuantumQueue(true);
+        QuantumQueue qForce = new QuantumQueue(true);
+        QuantumQueue qPess = new QuantumQueue(true);
         QuantumQueue qValveInPow=new QuantumQueue();
         QuantumQueue qValveOutPow=new QuantumQueue();
         QuantumQueue qValveInCount = new QuantumQueue();
@@ -87,13 +87,14 @@ namespace GUI_muscule.MatLabStorage
         }
         public void Tick_001()
         {
-            qLength.TickSmooth();
-            qForce.TickSmooth();
-            qPess.TickSmooth();
-            qValveInCount.TickNoSmooth();
-            qValveInPow.TickNoSmooth();
-            qValveOutCount.TickNoSmooth();
-            qValveOutPow.TickNoSmooth();
+            if (bPauseFlag) return;
+            qLength.Tick();
+            qForce.Tick();
+            qPess.Tick();
+            qValveInCount.Tick();
+            qValveInPow.Tick();
+            qValveOutCount.Tick();
+            qValveOutPow.Tick();
         }
         public int GetPowerFromDataPack(UInt32 ui32)
         {

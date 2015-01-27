@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using GUI_muscule.MatLabStorage;
 using GUI_muscule.PacketManager;
+using System.Threading;
 
 namespace GUI_muscule
 {
@@ -17,12 +18,40 @@ namespace GUI_muscule
     {
         QuantumStorage myPointSource;
         MatLabStoreClass myMatLabStore;
+        Thread thMatLabThread;
+        Thread thQuantumStorageThread;
+        IObservable<DataPack_t> myDataPackSource;
+
         public SaveToMatLabForm(IObservable<DataPack_t> DataPackSource)
         {
             InitializeComponent();
-            myMatLabStore=new MatLabStoreClass();
+            myDataPackSource = DataPackSource;
+            thMatLabThread = new Thread(MatLabTread);
+            thMatLabThread.Priority = ThreadPriority.Lowest;
+            thMatLabThread.Start();
+        }
+        void MatLabTread() // поток отправляет данные в матлаб
+        {
+            myMatLabStore = new MatLabStoreClass();
             myPointSource = new QuantumStorage(myMatLabStore);
-            myPointSource.Subscribe(DataPackSource);
+            myPointSource.Subscribe(myDataPackSource);
+            thQuantumStorageThread = new Thread(QuantumStorageThread);
+            thQuantumStorageThread.Priority = ThreadPriority.Highest;
+            thQuantumStorageThread.Start();
+            while (true)
+            {
+                myPointSource.TransmitData();
+                Thread.Sleep(100);
+            }
+
+        }
+        void QuantumStorageThread() // поток квантует входящие данные 200 раз в секунду
+        {
+            while (true)
+            {
+                myPointSource.Tick_001();
+                Thread.Sleep(50);
+            }
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -44,20 +73,17 @@ namespace GUI_muscule
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            myPointSource.TransmitData();
             lbPointCounter.Text = myMatLabStore.sReturnMessage;
         }
 
         private void btStart_Click(object sender, EventArgs e)
         {
             myPointSource.bPauseFlag = false;
-            QuantumTimer.Enabled = true;
         }
 
         private void btStop_Click(object sender, EventArgs e)
         {
             myPointSource.bPauseFlag = true;
-            QuantumTimer.Enabled = false;
         }
 
         private void btClear_Click(object sender, EventArgs e)
@@ -74,7 +100,8 @@ namespace GUI_muscule
 
         private void QuantumTimer_Tick(object sender, EventArgs e)
         {
-            myPointSource.Tick_001();
+
         }
+
     }
 }
